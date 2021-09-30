@@ -484,3 +484,51 @@ footer a, footer {
   }
 }
 /* FOOTER END */
+
+
+
+/* LOG IN CARD */
+
+.login-card {
+  font-size: 30pt;
+
+  color: aqua;
+  background-color: rgba(82, 82, 82, 0.31);
+  padding: 50px 100px 50px 170px;
+  margin: 20vh 29vw 40vh;
+  width: 30vw;
+  
+}
+
+.login-card form {
+  
+  margin: 100px 60px;
+  display: flex;
+  flex-direction: column
+  ;
+}
+
+.login-label {
+  vertical-align: middle;
+  font-size: 22pt;  
+  margin-bottom: 40px;
+  margin-right: 10px;
+  
+}
+
+.login-field {
+  height: 25px; 
+}
+
+.login-button {
+
+  margin-top:50px;
+  align-self: end;
+  width: 100px;
+  border-radius: 10px;;
+  background-color: aqua;
+  font-weight: bold;
+  font-size: 16pt;;
+  color:white;
+  height:50px;
+}
