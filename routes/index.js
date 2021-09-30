@@ -9,7 +9,7 @@ let router = express.Router();
 function validateFormData(data) { 
   let loggedIn = false;
   //is username and password correct?
-  if (data.username){
+  if (data.username === 'Danny' && data.password === 'password'){
     loggedIn = true;
     console.log("VALIDDDDDDD");    
   }  else {
