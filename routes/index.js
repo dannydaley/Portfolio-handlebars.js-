@@ -1,7 +1,10 @@
 let express = require('express');
+let postData = require("../posts.json");
+
 
 
 let router = express.Router();  
+
 
 let database = {
   users: [
@@ -27,18 +30,18 @@ let database = {
 
 
 
-function validateFormData(data) { 
-  let loggedIn = false;
-  //is username and password correct?
-  if (data.username === 'Danny' && data.password === 'password'){
-    loggedIn = true;
-    console.log("VALIDDDDDDD");    
-  }  else {
-    console.log("noooope")
-    loggedIn = false;
-  }
-    return loggedIn;
-}
+// function validateFormData(data) { 
+//   let loggedIn = false;
+//   //is username and password correct?
+//   if (data.username === 'Danny' && data.password === 'password'){
+//     loggedIn = true;
+//     console.log("VALIDDDDDDD");    
+//   }  else {
+//     console.log("noooope")
+//     loggedIn = false;
+//   }
+//     return loggedIn;
+// }
 
 
 
@@ -55,6 +58,12 @@ router.get('/login/', function(req, res, next) {
 router.get('/loggedIn/', function(req, res, next) {
   res.render('loggedIn', { title: 'logged in '});
 });
+
+
+  /* GET home page. */
+  router.get('/blog', function(req, res, next) {
+    res.render('blog', postData);
+  });
 
 
 ////////////////////////////////////////////

@@ -541,3 +541,7 @@ footer a, footer {
   justify-content: space-between;
   margin: 100px;
 }
+
+.testPage {
+  color: aqua;
+}
