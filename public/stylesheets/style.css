@@ -351,7 +351,7 @@ margin-left: -3%;
 }
 
 .project-slide {
-  background-color: rgba(82, 82, 82, 0.31);
+  /* background-color: rgb(82, 82, 82); */
   padding: 20px;
   display: flex;
   justify-content: space-between;
@@ -542,6 +542,27 @@ footer a, footer {
   margin: 100px;
 }
 
+
+
+
 .testPage {
   color: aqua;
+}
+#projectsSection {
+  padding: 200px 0 100px;
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+}
+.project-slide-container {
+  width: 90vw;
+  background-color: rgba(82, 82, 82, 0.31);
+  margin-bottom: 100px;;
+}
+.projectTags {
+  background-color: aqua;
+  border-radius: 0 30px 0 0;
+  width: 50vw;
+  height:30px;
 }

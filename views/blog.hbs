@@ -1,14 +1,22 @@
-<div class="testPage">
+<section id="projectsSection">
 
-<h1>blog posts</h1>
-
-{{#each entries}}
-    <div>
-        <h2>{{this.title}}</h2>
-        <img src="{{this.image}}">
-    </div>
-
-{{/each}}
-
-</div>
-
+    {{#each entries}}
+        <!-- PROJECTS START -->
+        <div class="project-slide-container">
+        <div class="project-slide">
+            <div class="projInfo">
+                <a href="" target="_blank">
+                    <p>{{this.title}}</p>
+                </a>  
+                <p>{{this.content}}</p>
+            </div>
+            <a href="<!--project link-->>" target="_blank">
+                <img src="{{this.image}}">
+            </a>    
+               
+        </div>            <div class="projectTags">
+                <p>posted on {{this.date}}</p>
+            </div>
+            </div>
+    {{/each}}
+</section>
