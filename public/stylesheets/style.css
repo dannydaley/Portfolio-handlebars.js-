@@ -532,3 +532,12 @@ footer a, footer {
   color:white;
   height:50px;
 }
+
+.login-welcome  {
+  color: aqua;
+  background-color: rgba(82, 82, 82, 0.31);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin: 100px;
+}
