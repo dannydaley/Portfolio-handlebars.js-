@@ -6,8 +6,7 @@ body {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  margin-top: 200px;
+  -moz-osx-font-smoothing: grayscale;  
 }
 
 code {
@@ -497,7 +496,8 @@ footer a, footer {
   color: aqua;
   background-color: rgba(82, 82, 82, 0.31);
   padding: 30px 100px 30px 170px;
-  margin: 0vh 29vw 10vh;
+  margin: 0vh 29vw ;
+  margin-top: 100px;
   width: 25vw;  
 }
 
@@ -546,6 +546,7 @@ footer a, footer {
   padding: 20px;
   margin: 100px;
 }
+
 .login-welcome h1 {
   margin-left: 2vw;
 }
