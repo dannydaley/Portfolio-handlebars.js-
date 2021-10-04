@@ -537,9 +537,27 @@ footer a, footer {
   color: aqua;
   background-color: rgba(82, 82, 82, 0.31);
   padding: 20px;
-  display: flex;
-  justify-content: space-between;
   margin: 100px;
+}
+
+.post-manager {
+  margin: 100px 40%;
+}
+
+.post-manager ul {
+  list-style-type: none;
+  text-decoration: none;
+}
+.post-manager li {
+  margin: 25px 0;
+}
+.post-manager a {
+  color:aqua;
+  text-decoration: none;
+}
+.post-manager a:visited {
+  color:aqua;
+  text-decoration: none;
 }
 
 
