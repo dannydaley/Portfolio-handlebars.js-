@@ -1,95 +1,91 @@
-        <section id="welcome-section">
-            <h1>.daley<span class="version flashingLight">v4</span><span class="flashingLight title-under">Web.Developer</span></h1>
-        </section>
-        <div id="projWindow">
-            <section id="projects">
-
-
-                <!-- HANDLES THE SCRIPT EXTERNALLY -->
-                <script src="/javascripts/postPreviews.js" type="module"></script>
-                <!-- NEW WAY OF DOING THIS JUST ABOVE -->
-
-
-                <script>
-                    let posts = [    
-                        { 
-                            id: 'p1',
-                            title : 'Unshore',
-                            image: 'images/unshorelogo2.png',
-                            date: "2021, 2, 28"
-                        },
-                            { 
-                            id: 'p2',
-                            title: 'Version 3 launched!',
-                            image: 'images/v3.png',
-                            date: "2021, 3, 19"
-                        },
-                        { 
-                            id: "p3",
-                            title: 'SmartBrain - Face Recognition App',
-                            image: 'images/smartbrain.png',
-                            date: "2021, 4, 17"
-                        },
-                        {
-                            id: "p4",
-                            title: 'Final Fantasy VII:R Product Page',
-                            image: 'images/7.png',
-                            date: "2021, 5, 8"
-                        }, 
-                        { 
-                            id: 'p5',
-                            title: 'JavaScript Magic 8-ball',
-                            image: 'images/eightBall.png',
-                            date: new Date (2021, 2, 28)
-                        }
-                    ]
-                    let projects = () =>  posts.map(project =>
-                    document.getElementById('projects').innerHTML += 
-                    `<div class="project-tile">
-                        <a href="" target="_blank">
-                            <img alt="Project Thumbnail" src="${project.image}"/>
-                            <p>"${project.title}"</p>
-                        </a>  
-                    </div>`
-                    );
-                    projects();
-                </script>
-            </section>
-            <div class="seeMore">
-                <ul>
-                    <li id="seeMore" class="flashingLight"><a href="">See more</a></li>
-                </ul>
-            </div>
-        </div>
-        <section id="contact">
-            <header>Let's build something..</header>
-            <div class="contact-links">                
-                <a href="https://github.com/dannydaley" target="_blank" id="profile-link" class="contact-link">
-                    <i class="fab fa-github">
-                        <FontAwesomeIcon icon={['fab', 'github']} />                        
-                    </i> GitHub                        
-                </a>                
-                <a href="https://www.freecodecamp.org/dannydaley" target="_blank" class="contact-link">
-                    <i class="fab fa-free-code-camp">
-                        <FontAwesomeIcon icon={['fab', 'free-code-camp']} />
-                    </i> freeCodeCamp
-                </a>
-                <a href="https://codepen.io/dannydaley" target="_blank" class="contact-link">
-                    <i class="fab fa-codepen">
-                        <FontAwesomeIcon icon={['fab', 'codepen']} />
-                    </i> CodePen
-                </a>
-            </div>
-            <div  id="email_link">
-                <a href="#">
-                    <i class="far fa-envelope emailicon">
-                        <FontAwesomeIcon icon={['far', 'envelope']}/>
-                    </i>dannydaley@outlook.com
-                </a>
-            </div>
-            <div className="sandbox">                
-                <img alt="HTML5 Logo" class="html" src="images/html5.png" height="100px" width="80px" />
-                <img alt="CSS3 Logo" class="css" src="images/css3.png" height="100px" width="80px" />
-                <img alt="JavaScript Logo"class="js play" src="images/jslogo.png" height="100px" width="80px" />
-            </div>
-        </section>
+<section id="welcome-section">
+    <h1>.daley<span class="version flashingLight">v4</span><span class="flashingLight title-under">Web.Developer</span></h1>
+</section>
+<div id="projWindow">
+    <section id="projects">
+        <!-- HANDLES THE SCRIPT EXTERNALLY -->
+        <script src="/javascripts/postPreviews.js" type="module"></script>
+        <!-- NEW WAY OF DOING THIS JUST ABOVE -->
+        <script>
+            let posts = [    
+                { 
+                    id: 'p1',
+                    title : 'Unshore',
+                    image: 'images/unshorelogo2.png',
+                    date: "2021, 2, 28"
+                },
+                    { 
+                    id: 'p2',
+                    title: 'Version 3 launched!',
+                    image: 'images/v3.png',
+                    date: "2021, 3, 19"
+                },
+                { 
+                    id: "p3",
+                    title: 'SmartBrain - Face Recognition App',
+                    image: 'images/smartbrain.png',
+                    date: "2021, 4, 17"
+                },
+                {
+                    id: "p4",
+                    title: 'Final Fantasy VII:R Product Page',
+                    image: 'images/7.png',
+                    date: "2021, 5, 8"
+                }, 
+                { 
+                    id: 'p5',
+                    title: 'JavaScript Magic 8-ball',
+                    image: 'images/eightBall.png',
+                    date: new Date (2021, 2, 28)
+                }
+            ]
+            let projects = () =>  posts.map(project =>
+            document.getElementById('projects').innerHTML += 
+            `<div class="project-tile">
+                <a href="" target="_blank">
+                    <img alt="Project Thumbnail" src="${project.image}"/>
+                    <p>"${project.title}"</p>
+                </a>  
+            </div>`
+            );
+            projects();
+        </script>
+    </section>
+    <div class="seeMore">
+        <ul>
+            <li id="seeMore" class="flashingLight"><a href="/blog">See more</a></li>
+        </ul>
+    </div>
+</div>
+<section id="contact">
+    <header>Let's build something..</header>
+    <div class="contact-links">                
+        <a href="https://github.com/dannydaley" target="_blank" id="profile-link" class="contact-link">
+            <i class="fab fa-github">
+                <FontAwesomeIcon icon={['fab', 'github']} />                        
+            </i> GitHub                        
+        </a>                
+        <a href="https://www.freecodecamp.org/dannydaley" target="_blank" class="contact-link">
+            <i class="fab fa-free-code-camp">
+                <FontAwesomeIcon icon={['fab', 'free-code-camp']} />
+            </i> freeCodeCamp
+        </a>
+        <a href="https://codepen.io/dannydaley" target="_blank" class="contact-link">
+            <i class="fab fa-codepen">
+                <FontAwesomeIcon icon={['fab', 'codepen']} />
+            </i> CodePen
+        </a>
+    </div>
+    <div  id="email_link">
+        <a href="#">
+            <i class="far fa-envelope emailicon">
+                <FontAwesomeIcon icon={['far', 'envelope']}/>
+            </i>dannydaley@outlook.com
+        </a>
+    </div>
+    <div className="sandbox">                
+        <img alt="HTML5 Logo" class="html" src="images/html5.png" height="100px" width="80px" />
+        <img alt="CSS3 Logo" class="css" src="images/css3.png" height="100px" width="80px" />
+        <img alt="JavaScript Logo"class="js play" src="images/jslogo.png" height="100px" width="80px" />
+    </div>
+</section>

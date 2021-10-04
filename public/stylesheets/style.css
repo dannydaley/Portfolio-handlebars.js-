@@ -609,3 +609,29 @@ footer a, footer {
   width: 50vw;
   height:30px;
 }
+.projectTags a {
+  color:black;
+}
+.new-post-form {
+  margin: 265px auto;
+  background-color: rgba(82, 82, 82, 0.31);
+  padding: 50px;
+  width: 60vw;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.content-field {
+  display: flex;
+  margin: 20px 20px 20px 0px;
+}
+textarea {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  color: black;
+  padding: 3px 5px;
+  margin: 0px 5px;
+  
+}

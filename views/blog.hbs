@@ -1,5 +1,4 @@
 <section id="projectsSection">
-
     {{#each entries}}
         <!-- PROJECTS START -->
         <div class="project-slide-container">
@@ -10,13 +9,13 @@
                 </a>  
                 <p>{{this.content}}</p>
             </div>
-            <a href="<!--project link-->>" target="_blank">
+            <a href="<!--project link-->" target="_blank">
                 <img src="{{this.image}}">
-            </a>    
-               
-        </div>            <div class="projectTags">
-                <p>posted by {{this.author}} on {{this.date}} post id: {{this.id}}</p>
-            </div>
-            </div>
+            </a>
+            </div>            
+        <div class="projectTags">
+            <p>posted by <a href="#">{{this.author}}</a> on {{this.date}} post id: {{this.id}}</p>
+        </div>
+        </div>
     {{/each}}
 </section>
