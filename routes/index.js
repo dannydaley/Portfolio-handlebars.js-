@@ -9,26 +9,20 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-/* GET login page. */
-router.get('/login', function(req, res, next) {
-  res.render('login', { title: 'Log in' });
-});
-
-
-router.get('/loggedIn', function(req, res, next) {
-  res.render('loggedIn', { title: 'logged in '});
-});
-
 /* GET home page. */
 router.get('/blog', function(req, res, next) {
   res.render('blog', postData);
 });
 
+/* GET login page. */
+router.get('/login', function(req, res, next) {
+  res.render('login', { title: 'Log in' });
+});
+
 router.get('/name', function(req, res, next) {
   res.render('name', { name: req.query.name });
 });
-////////////////////////////////////////////
-//login validation
+
 router.post('/login', function(req, res, next){
   let found = false;
   for (let i = 0; i < userDatabase.users.length; i++) {
@@ -43,6 +37,28 @@ router.post('/login', function(req, res, next){
   };
 })
 
+router.get('/loggedIn', function(req, res, next) {
+  res.render('loggedIn', { title: 'logged in '});
+});
+
+
+router.get('/newPost', function(req, res){
+  res.render('newPost', { title: 'new post!' });
+});
+
+//adds a new post to posts.json
+router.post('/newPost', function (req, res, next) {
+  let { title, content, author } = req.body;
+  postData.entries.unshift({
+    id: "p" + (postData.entries.length + 1),
+    author: author,
+    title: title,
+    content: content,        
+    date: new Date()
+  })
+  res.render('blog', postData);  
+});
+
 //adds new user to user database
 router.post('/register', function (req, res, next) {
   let { email, name, password } = req.body;
@@ -55,9 +71,6 @@ router.post('/register', function (req, res, next) {
     joined: new Date()
   })
   res.json(userDatabase.users[userDatabase.users.length-1]);
-})
-
-
-
+});
 
 module.exports = router;

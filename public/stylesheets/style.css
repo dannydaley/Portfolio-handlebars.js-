@@ -1,4 +1,5 @@
 body {
+  color:aqua;
   background-color: black;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -6,6 +7,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin-top: 200px;
 }
 
 code {
@@ -24,6 +26,7 @@ code {
   display: flex;
   width: 100%;
   justify-content: flex-end;
+  
 }
 nav ul {
   list-style: none;
@@ -491,76 +494,93 @@ footer a, footer {
 
 .login-card {
   font-size: 30pt;
-
   color: aqua;
   background-color: rgba(82, 82, 82, 0.31);
-  padding: 50px 100px 50px 170px;
-  margin: 20vh 29vw 40vh;
-  width: 30vw;
-  
+  padding: 30px 100px 30px 170px;
+  margin: 0vh 29vw 10vh;
+  width: 25vw;  
 }
 
-.login-card form {
-  
-  margin: 100px 60px;
+.login-card form {  
+  margin: 80px 60px;
   display: flex;
-  flex-direction: column
-  ;
+  flex-direction: column;
+  text-align: end;
 }
 
 .login-label {
   vertical-align: middle;
   font-size: 22pt;  
-  margin-bottom: 40px;
-  margin-right: 10px;
-  
+  margin-bottom: 20px;
+  margin-right: 10px;  
+}
+
+.username-container, .password-container  {
+  width: 350px;
+  display: flex;    
+  justify-content: space-between;
 }
 
 .login-field {
-  height: 25px; 
+  height: 30px; 
 }
 
 .login-button {
-
-  margin-top:50px;
+  margin-top: 50px;
   align-self: end;
   width: 100px;
-  border-radius: 10px;;
+  border-radius: 10px;
+  border: 3px solid black;
   background-color: aqua;
   font-weight: bold;
   font-size: 16pt;;
-  color:white;
+  color: white;
   height:50px;
 }
+/* LOG IN PAGE END */
 
+/* LOGGED IN START */
 .login-welcome  {
   color: aqua;
   background-color: rgba(82, 82, 82, 0.31);
   padding: 20px;
   margin: 100px;
 }
+.login-welcome h1 {
+  margin-left: 2vw;
+}
 
 .post-manager {
-  margin: 100px 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: -22px;
+  margin: 50px 0 80px -22px;
 }
 
 .post-manager ul {
-  list-style-type: none;
-  text-decoration: none;
+  list-style-type: none;  
 }
-.post-manager li {
-  margin: 25px 0;
-}
-.post-manager a {
-  color:aqua;
-  text-decoration: none;
-}
-.post-manager a:visited {
+
+.post-manager a, .post-manager a:visited {
   color:aqua;
   text-decoration: none;
 }
 
 
+.UI-option {
+  background-color: rgba(90, 90, 90, 0.438);
+  font-size: 22pt;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 30px;
+  border: 3px solid black;
+  width: 400px;  
+}
+
+/* LOGGED IN PAGE END */
 
 
 .testPage {
@@ -579,6 +599,11 @@ footer a, footer {
   margin-bottom: 100px;;
 }
 .projectTags {
+  color:black;
+  font-weight: bold;
+  display:flex;
+  align-items: center;
+  padding-left: 20px;
   background-color: aqua;
   border-radius: 0 30px 0 0;
   width: 50vw;
