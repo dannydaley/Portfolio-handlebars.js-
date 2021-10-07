@@ -4,6 +4,27 @@ let userDatabase = require("../userDatabase.json");
 
 let router = express.Router(); 
 
+
+// let logInStatus = false;
+// let logInLink = "login";
+// let logInRoute = "/login/";
+// let myAccountLink = "my account";
+// let myAccountRoute = "/loggedIn/";
+// let inOutNavLink = "HELLOOO";
+// let inOutNavRoute;
+// let logInNavLink = "TESSST";
+
+
+//   if (logInStatus){
+//     inOutNavLink = myAccountLink;
+//     inOutNavRoute = myAccountRoute;    
+//   } else {
+//     inOutNavLink = logInLink;
+//     inOutNavRoute = logInRoute;
+//   }
+//   logInNavLink: inOutNavLink;
+//   logInNavRoute: inOutNavRoute;
+
   /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -31,6 +52,7 @@ router.post('/login', function(req, res, next){
     } 
   }
   if (found) {
+    logInStatus = true;
     res.render('loggedIn', { title: 'You are logged in!' });
   } else {
     res.status(400).json("ERRROORRRRR");
@@ -38,7 +60,7 @@ router.post('/login', function(req, res, next){
 })
 
 router.get('/loggedIn', function(req, res, next) {
-  res.render('loggedIn', { title: 'logged in '});
+  res.render('loggedIn', { title: 'logged in ' });
 });
 
 
