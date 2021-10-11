@@ -4,10 +4,33 @@
 <div id="projWindow">
     <section id="projects">
         <!-- HANDLES THE SCRIPT EXTERNALLY -->
-        <script src="/javascripts/postPreviews.js" type="module"></script>
+
+        <script>
+            //LOAD XML DATA
+
+             document.addEventListener('DOMContentLoaded', () => {
+                 // fetch the data as soon as the page has loaded
+                 let url = "xmlDatabase.txt";
+                 fetch(url)
+                 .then(response=>response.text())
+                 .then(data=>{
+                     console.log(data)
+                 })
+             });
+        </script>
+        <script src="/javascripts/postPreviews.js" type="module">
+        
+        </script>
         <!-- NEW WAY OF DOING THIS JUST ABOVE -->
         <script>
-            let posts = [    
+            let database = "posts.json";
+            let posts = fetch(database)
+                             .then(response=>response.text())
+                 .then(data=>{
+                     console.log(data)
+                 })
+             })
+            /*[    
                 { 
                     id: 'p1',
                     title : 'Unshore',
@@ -38,8 +61,9 @@
                     image: 'images/eightBall.png',
                     date: new Date (2021, 2, 28)
                 }
-            ]
-            let projects = () =>  posts.map(project =>
+            ]*/
+            /*
+            let projects = () =>  posts.entries.map(project =>
             document.getElementById('projects').innerHTML += 
             `<div class="project-tile">
                 <a href="" target="_blank">
@@ -49,6 +73,8 @@
             </div>`
             );
             projects();
+            */
+            console.log(posts);
         </script>
     </section>
 
