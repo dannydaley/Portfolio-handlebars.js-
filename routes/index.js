@@ -2,29 +2,7 @@ let express = require('express');
 let postData = require("../public/posts.json");
 let userDatabase = require("../userDatabase.json");
 
-
-
 let router = express.Router();
-
-// let logInStatus = false;
-// let logInLink = "login";
-// let logInRoute = "/login/";
-// let myAccountLink = "my account";
-// let myAccountRoute = "/loggedIn/";
-// let inOutNavLink = "HELLOOO";
-// let inOutNavRoute;
-// let logInNavLink = "TESSST";
-
-
-//   if (logInStatus){
-//     inOutNavLink = myAccountLink;
-//     inOutNavRoute = myAccountRoute;    
-//   } else {
-//     inOutNavLink = logInLink;
-//     inOutNavRoute = logInRoute;
-//   }
-//   logInNavLink: inOutNavLink;
-//   logInNavRoute: inOutNavRoute;
 
   /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -80,8 +58,7 @@ router.post('/newPost', function (req, res, next) {
     date: new Date()
   })
   res.render('index', postData);
-  res.render('blog', postData);  
-  
+  res.render('blog', postData);   
 });
 
 //adds new user to user database
