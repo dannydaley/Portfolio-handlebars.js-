@@ -1,3 +1,5 @@
+document.addEventListener('DOMContentLoaded', () => {
+
 fetch("../posts.json")
     .then(response => response.json())
     .then(json => 
@@ -12,4 +14,5 @@ fetch("../posts.json")
                     </div>`
             }
         }        
-);
+    );
+})
