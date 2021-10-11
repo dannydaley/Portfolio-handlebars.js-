@@ -2,8 +2,7 @@ let express = require('express');
 let postData = require("../posts.json");
 let userDatabase = require("../userDatabase.json");
 
-let router = express.Router(); 
-
+let router = express.Router();
 
 // let logInStatus = false;
 // let logInLink = "login";
