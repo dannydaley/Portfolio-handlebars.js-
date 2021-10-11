@@ -1,12 +1,12 @@
 let express = require('express');
-let postData = require("../posts.json");
+let postData = require("../public/posts.json");
 let userDatabase = require("../userDatabase.json");
 
 let router = express.Router(); 
 
   /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', postData);
 });
 
 /* GET home page. */
@@ -56,7 +56,9 @@ router.post('/newPost', function (req, res, next) {
     content: content,        
     date: new Date()
   })
+  res.render('index', postData);
   res.render('blog', postData);  
+  
 });
 
 //adds new user to user database
