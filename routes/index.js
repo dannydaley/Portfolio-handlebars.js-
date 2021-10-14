@@ -1,10 +1,5 @@
 let express = require('express');
-let router = express.Router();  
-
-
-
-
-
+let router = express.Router();
 
 function validateFormData(data) { 
   let loggedIn = false;
@@ -18,8 +13,6 @@ function validateFormData(data) {
   }
     return loggedIn;
 }
-
-
 
   /* GET home page. */
 router.get('/', function(req, res, next) {
