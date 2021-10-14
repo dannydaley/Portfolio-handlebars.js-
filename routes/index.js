@@ -3,6 +3,7 @@ let express = require('express');
 let router = express.Router();
 
 let postData = require("../public/posts.json");
+
 let userDatabase = require("../userDatabase.json");
 
 function validateFormData(data) { 
@@ -17,7 +18,6 @@ function validateFormData(data) {
   }
     return loggedIn;
 }
-
 
   /* GET home page. */
 router.get('/', function(req, res, next) {
