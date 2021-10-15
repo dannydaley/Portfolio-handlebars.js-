@@ -4,7 +4,29 @@ let router = express.Router();
 
 let postData = require("../public/posts.json");
 
+let recentFive = []; 
+for (let i = 0; i < 5; i++){
+  recentFive.push(postData.entries[i])
+};
+
+
 let userDatabase = require("../userDatabase.json");
+
+
+// for (let i = 0; i < 5; i++){
+//   recentFive.unshift(postData.entries[i])
+// }
+
+//   for(let i = 0; i < 5; i++){                
+//     document.getElementById('projects').innerHTML += 
+//         `<div class="project-tile">
+//             <a href="" target="_blank">
+//                 <img alt="Project Thumbnail" src="${postData.entries[i].image}"/>
+//                 <p>"${postData.entries[i].title}"</p>
+//             </a>  
+//         </div>`
+// }
+
 
 function validateFormData(data) { 
   let loggedIn = false;
@@ -21,7 +43,7 @@ function validateFormData(data) {
 
   /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', postData);
+  res.render('index', recentFive);
 });
 
 /* GET home page. */

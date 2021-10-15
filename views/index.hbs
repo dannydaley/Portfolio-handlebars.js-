@@ -3,7 +3,39 @@
 </section>
 <div id="projWindow">
     <section id="projects">
-        <script src="javascripts/postPreviews.js"></script>
+        
+    {{#each recentFive}}
+    
+        {{!-- document.getElementById('projects').innerHTML +=  --}}
+        <div class="project-tile">
+            <a href="" target="_blank">
+                <img alt="Project Thumbnail" src="{{this.image}}"/>
+                <p>"{{this.title}}"</p>
+            </a>  
+        </div>
+    {{/each}}
+
+{{!-- 
+        <!-- PROJECTS START -->
+        <div class="project-slide-container">
+        <div class="project-slide">
+            <div class="projInfo">
+                <a href="" target="_blank">
+                    <p>{{this.title}}</p>
+                </a>  
+                <p>{{this.content}}</p>
+            </div>
+            <a href="{{this.link}}" target="_blank">
+                <img src="{{this.image}}">
+            </a>
+            </div>            
+        <div class="projectTags">
+            <p>posted by <a href="#">{{this.author}}</a> on {{this.date}} post id: {{this.id}}</p>
+        </div>
+        </div> --}}
+    {{!-- {{/each}} --}}
+        
+        
     </section>
 
     <script>
