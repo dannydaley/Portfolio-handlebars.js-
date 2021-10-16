@@ -2,52 +2,17 @@
     <h1>.daley<span class="version flashingLight">v4</span><span class="flashingLight title-under">Web.Developer</span></h1>
 </section>
 <div id="projWindow">
+    <h1>{{navLink}}</h1>
     <section id="projects">
-        
-     
-    {{#each newArray}}
-        {{! document.getElementById('projects').innerHTML +=  --}}
-        <div class="project-tile">
-            <a href="" target="_blank">
-                <img alt="Project Thumbnail" src="{{this.image}}"/>
-                <p>{{this.title}}</p>
-            </a>  
-        </div>
-    {{/each}} 
-
-
-
- 
-        
-        
+        {{#each entries}}        
+            <div class="project-tile">
+                <a href="" target="_blank">
+                    <img alt="Project Thumbnail" src="{{this.image}}"/>
+                    <p>{{this.title}}</p>
+                </a>  
+            </div>        
+        {{/each}}       
     </section>
-
-    <script>
-
-window.onload = function(){
-    let socket = new WebSocket("ws://localhost:8080");
-    socket.onopen = function(evt) {
-        console.log("client happened!");
-        socket.send("hi server!");
-    };
-    socket.onmessage = function(evt) {
-        console.log(evt);
-    };
-}
-
-        let socket = new WebSocket("ws://localhost:8080");
-        socket.onopen = function(evt) {
-            console.log("client happened!");
-            socket.send("hi server!");
-        };
-        socket.onmessage = function(evt) {
-            console.log(evt);
-        };
-
-
-    </script>
-
-
     <div class="seeMore">
         <ul>
             <li id="seeMore" class="flashingLight"><a href="/blog">See more</a></li>
@@ -86,3 +51,23 @@ window.onload = function(){
         <img alt="JavaScript Logo"class="js play" src="images/jslogo.png" height="100px" width="80px" />
     </div>
 </section>
+<script>
+    window.onload = function(){
+        let socket = new WebSocket("ws://localhost:8080");
+        socket.onopen = function(evt) {
+            console.log("client happened!");
+            socket.send("hi server!");
+        };
+        socket.onmessage = function(evt) {
+            console.log(evt);
+        };
+    }
+    let socket = new WebSocket("ws://localhost:8080");
+    socket.onopen = function(evt) {
+        console.log("client happened!");
+        socket.send("hi server!");
+    };
+    socket.onmessage = function(evt) {
+        console.log(evt);
+    };
+</script>

@@ -1,16 +1,48 @@
 const { json } = require('express');
 let express = require('express');
+const { MethodNotAllowed } = require('http-errors');
 let postData = require("../public/posts.json");
-let newArray = []
+let newArray = postData;
 
-let recentFive = () => {  
-  for (let i = 0; i < 5; i++){
-    let newerArray = newArray.push(postData.entries[i]);
-    return newerArray;
-  }    
-}
 
-recentFive();
+
+
+let loggedIn = false;
+
+let loginNavLink = "";
+
+// var Handlebars = require('express-handlebars').create({
+//   defaultLayout:'layout',
+//   helpers: {
+//       navLink: function() {
+//         if (!loggedIn){
+//           loginNavLink = "log insss"
+//         }else{
+//           loginNavLink = "dashboard"
+//         }
+//           return loginNavLink;
+//       },
+//   }
+// });
+
+// Handlebars.registerHelper('navLink', function() {
+//   if (!loggedIn){
+//   loginNavLink = "log insss"
+// }else{
+//   loginNavLink = "dashboard"
+// }
+// console.log(loginNavLink)
+//   return new Handlebars.SafeString(loginNavLink);
+// });
+
+  // for (let i = 0; i < 5; i++){
+  //   newArray.push(postData.entries[i]);
+    
+    
+  // }    
+
+
+
 let router = express.Router();
 
 
@@ -25,19 +57,7 @@ let router = express.Router();
 let userDatabase = require("../userDatabase.json");
 
 
-// for (let i = 0; i < 5; i++){
-//   recentFive.unshift(postData.entries[i])
-// }
 
-//   for(let i = 0; i < 5; i++){                
-//     document.getElementById('projects').innerHTML += 
-//         `<div class="project-tile">
-//             <a href="" target="_blank">
-//                 <img alt="Project Thumbnail" src="${postData.entries[i].image}"/>
-//                 <p>"${postData.entries[i].title}"</p>
-//             </a>  
-//         </div>`
-// }
 
 
 function validateFormData(data) { 
@@ -54,19 +74,29 @@ function validateFormData(data) {
 }
 
   /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index');
+router.get('/', function(req, res, next) {  
+  for (let i = newArray.entries.length; i > 5; i--){
+    newArray.entries.pop();
+    console.log(newArray.entries.length);
+  }
+  res.render('index', newArray);  
 });
 
 /* GET home page. */
 router.get('/blog', function(req, res, next) {
-  res.render('blog', postData());
+  res.render('blog', postData);
 });
 
 /* GET login page. */
 router.get('/login', function(req, res, next) {
-  res.render('login', { title: 'Log in' });
-});
+  if (loggedIn){
+    res.render('loggedIn', { title: 'You are logged in!' });
+}
+  else {
+    res.render('login', { title: 'Log in' });
+  }})
+ 
+
 
 router.get('/name', function(req, res, next) {
   res.render('name', { name: req.query.name });
@@ -81,6 +111,7 @@ router.post('/login', function(req, res, next){
   }
   if (found) {
     logInStatus = true;
+    loggedIn = true;
     res.render('loggedIn', { title: 'You are logged in!' });
   } else {
     res.status(400).json("ERRROORRRRR");
@@ -98,15 +129,19 @@ router.get('/newPost', function(req, res){
 
 //adds a new post to posts.json
 router.post('/newPost', function (req, res, next) {
-  let { title, content, author } = req.body;
+  let { title, content, author, image } = req.body;
+  if (image === ''){
+    image = '/images/d2.png'
+  }
   postData.entries.unshift({
-    id: "p" + (postData.entries.length + 1),
-    author: author,
-    title: title,
-    content: content,        
-    date: new Date()
-  })
-  res.render('index', postData);
+  id: "p" + (postData.entries.length + 1),
+  author: author,
+  title: title,
+  image: image,
+  content: content,        
+  date: new Date()
+  });
+  console.log(postData.entries.length)
   res.render('blog', postData);   
 });
 
