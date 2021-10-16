@@ -1,14 +1,26 @@
+const { json } = require('express');
 let express = require('express');
+let postData = require("../public/posts.json");
+let newArray = []
 
+let recentFive = () => {  
+  for (let i = 0; i < 5; i++){
+    let newerArray = newArray.push(postData.entries[i]);
+    return newerArray;
+  }    
+}
+
+recentFive();
 let router = express.Router();
 
-let postData = require("../public/posts.json");
 
-let recentFive = []; 
-for (let i = 0; i < 5; i++){
-  recentFive.push(postData.entries[i])
-};
 
+
+
+//  for (let i = 0; i < 5; i++){
+//    recentFive.push(postData.entries[i])
+//  };
+// console.log(recentFive);
 
 let userDatabase = require("../userDatabase.json");
 
@@ -43,12 +55,12 @@ function validateFormData(data) {
 
   /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', recentFive);
+  res.render('index');
 });
 
 /* GET home page. */
 router.get('/blog', function(req, res, next) {
-  res.render('blog', postData);
+  res.render('blog', postData());
 });
 
 /* GET login page. */
