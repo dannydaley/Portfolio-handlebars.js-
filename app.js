@@ -3,7 +3,6 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 var webSocket = require('ws');
 
 var indexRouter = require('./routes/index');
@@ -15,7 +14,6 @@ const server = new webSocket.Server({
   port: 8080
 })
 
-
 server.on('connection', function(socket){
   socket.send('Hi User!');
 
@@ -23,6 +21,7 @@ server.on('connection', function(socket){
     console.log(message);
   })
 })
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');

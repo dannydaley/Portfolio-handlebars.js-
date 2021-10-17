@@ -1,67 +1,19 @@
 const { json } = require('express');
 let express = require('express');
 const { MethodNotAllowed } = require('http-errors');
+let router = express.Router();
+let userDatabase = require("../userDatabase.json");
+
 let postData = require("../public/posts.json");
-let newArray = postData;
 
-
-
+let newArray = {
+  "entries": [] 
+}
 
 let loggedIn = false;
 
-let loginNavLink = "";
-
-// var Handlebars = require('express-handlebars').create({
-//   defaultLayout:'layout',
-//   helpers: {
-//       navLink: function() {
-//         if (!loggedIn){
-//           loginNavLink = "log insss"
-//         }else{
-//           loginNavLink = "dashboard"
-//         }
-//           return loginNavLink;
-//       },
-//   }
-// });
-
-// Handlebars.registerHelper('navLink', function() {
-//   if (!loggedIn){
-//   loginNavLink = "log insss"
-// }else{
-//   loginNavLink = "dashboard"
-// }
-// console.log(loginNavLink)
-//   return new Handlebars.SafeString(loginNavLink);
-// });
-
-  // for (let i = 0; i < 5; i++){
-  //   newArray.push(postData.entries[i]);
-    
-    
-  // }    
-
-
-
-let router = express.Router();
-
-
-
-
-
-//  for (let i = 0; i < 5; i++){
-//    recentFive.push(postData.entries[i])
-//  };
-// console.log(recentFive);
-
-let userDatabase = require("../userDatabase.json");
-
-
-
-
-
 function validateFormData(data) { 
-  let loggedIn = false;
+    loggedIn = false;
   //is username and password correct?
   if (data.username === 'Danny' && data.password === 'password'){
     loggedIn = true;
@@ -75,12 +27,14 @@ function validateFormData(data) {
 
   /* GET home page. */
 router.get('/', function(req, res, next) {  
-  for (let i = newArray.entries.length; i > 5; i--){
-    newArray.entries.pop();
-    console.log(newArray.entries.length);
+  for (let i = 0; i < 5; i++){
+    newArray.entries.pop()    
+  }
+  for (let i = 0; i < 5; i++){
+    newArray.entries.push(postData.entries[i])    
   }
   res.render('index', newArray);  
-});
+})
 
 /* GET home page. */
 router.get('/blog', function(req, res, next) {
@@ -95,8 +49,12 @@ router.get('/login', function(req, res, next) {
   else {
     res.render('login', { title: 'Log in' });
   }})
- 
 
+  /* GET logOut page. */
+router.get('/logOut', function(req, res, next) {
+  loggedIn = false;
+  res.render('index', newArray);
+});
 
 router.get('/name', function(req, res, next) {
   res.render('name', { name: req.query.name });
@@ -121,7 +79,6 @@ router.post('/login', function(req, res, next){
 router.get('/loggedIn', function(req, res, next) {
   res.render('loggedIn', { title: 'logged in ' });
 });
-
 
 router.get('/newPost', function(req, res){
   res.render('newPost', { title: 'new post!' });

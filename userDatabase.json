@@ -1,20 +1,20 @@
 {
-    "users": [
-      {
-        "id": "123",
-        "name": "Danny",
-        "email": "dannydaley@outlook.com",
-        "password": "password",
-        "posts": 0,
-        "joined": "new Date()"
-      },
-      {
-        "id": 124,
-        "name": "DannyD1990",
-        "email": "dandaley1990@hotmail.com",
-        "password": "password123",
-        "posts": 0,
-        "joined": "new Date()"
-      }
-    ]
-  }
+  "users": [
+    {
+      "id": 123,
+      "name": "Danny",
+      "email": "dannydaley@outlook.com",
+      "password": "password",
+      "posts": 0,
+      "joined": "new Date()"
+    },
+    {
+      "id": 124,
+      "name": "DannyD1990",
+      "email": "dandaley1990@hotmail.com",
+      "password": "password123",
+      "posts": 0,
+      "joined": "new Date()"
+    }
+  ]
+}
