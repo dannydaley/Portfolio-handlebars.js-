@@ -1,0 +1,32 @@
+<section id="projectsSection">
+<h1 id="output"></h1>
+        <!-- PROJECTS START -->
+        <div class="project-slide-container">
+        <div class="project-slide">
+            <div class="projInfo">
+                <a href="" target="_blank">
+                    <p>{{this.title}}</p>
+                </a>  
+                <p>{{this.content}}</p>
+            </div>
+            <a href="{{this.link}}" target="_blank">
+                <img src="{{this.image}}">
+            </a>
+            </div>            
+        <div class="projectTags">
+            <p>posted by <a href="#">{{this.author}}</a> on {{this.date}} post id: {{this.id}}</p>
+        </div>
+        </div>
+</section>
+    <script>        
+        document.addEventListener('DOMContentLoaded', () => {
+        let url = "xmlDatabase.xml";
+        fetch(url)
+        .then(response=>response.text())
+        .then(data=>{
+            console.log(data)
+            let parser = new DOMParser();
+            let xml = parser.parseFromString(data, "application/xml");
+            document.getElementById("output").textContent = data.getElementById("4");
+        })})
+    </script>

@@ -1,9 +1,43 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<userData>
-    <name>
-        <firstName>Danny</firstName>
-        <lastName>Daley</lastName>
-    </name>
-    <dob>17/09/90</dob>
-</userData>
-    
+<entries>
+    <post id="4">
+        <author>Danny</author>
+        <title>JavaScript Magic 8-ball</title>
+        <image>images/eightBall.png</image>
+        <content>Had some fun and made a small Magic 8-Ball web app using some basic HTML, CSS shapes and some simple JavaScript switch statement logic.</content>
+        <link>https://dannydaley.github.io/eightBall/</link>
+        <date>2020, 2, 28</date>
+    </post>
+    <post id="3">
+        <author>Danny</author>
+        <title>Captive Design Studio</title>
+        <image>images/cap.png</image>
+        <contentI had a great time working on the Captive Design Studio site, the use of strong fonts and powerful colors was an absolute must to pull this design off and it came out looking fantastic. Definitely learned a lot about making an impact from this one.</content>
+        <link>https://dannydaley.github.io/captivedesign/</link>
+        <date>2020, 6, 15</date>
+    </post>
+    <post id="2">
+        <author>Danny</author>
+        <title>Makkio Ikui</title>
+        <image>images/makki.png</image>
+        <content>Inspired by the Kawaii japanese art style, of course this website was a lot of fun to make, a great use of color in the design really made it pop. It came with its challenges, but its hard to stay frustrated when you're working with these kind of images.</content>
+        <link>https://dannydaley.github.io/makkioikui/</link>
+        <date>2020, 4, 29</date>
+    </post>
+    <post id="1">
+        <author>Danny</author>
+        <title>Final Fantasy VII:R Product Page</title>
+        <image>images/7.png</image>
+        <content>Being a massive Final Fantasy fan, upon the release of FFVII:Remake I felt it was 100% necessary to make it the theme of my responsive web design submission for freeCodeCamp. I particularly enjoyed making a theme with a darker appeal, and using that very FF7 Mako green.</content>
+        <link>https://codepen.io/dannydaley/full/RwWdVEp</link>
+        <date>2021, 5, 8</date>
+    </post>
+    <post id="0">
+        <author>Danny</author>
+        <title>SmartBrain - Face Recognition App</title>
+        <image>images/smartbrain.png</image>
+        <content>This face recognition app allows you to scan any image-link for faces within the picture, this is my first project fully leveraging an API, and a fully built back-end, allowing user registration, login and a rank based on how many images that user has entered. The data held within the database is secure, using encryption technologies such as Bcrypt.</content>
+        <link>https://smartbrain902101.herokuapp.com/</link>
+        <date>2021, 4, 17</date>
+    </post>
+</entries>

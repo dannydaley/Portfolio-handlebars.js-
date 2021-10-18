@@ -6,6 +6,8 @@ let userDatabase = require("../userDatabase.json");
 
 let postData = require("../public/posts.json");
 
+
+
 let newArray = {
   "entries": [] 
 }
@@ -36,10 +38,15 @@ router.get('/', function(req, res, next) {
   res.render('index', newArray);  
 })
 
-/* GET home page. */
+/* GET work page. */
 router.get('/blog', function(req, res, next) {
   res.render('blog', postData);
 });
+
+// /* GET workXML page. */
+// router.get('/blogXml', function(req, res, next) {
+//   res.render('blogXml');
+// });
 
 /* GET login page. */
 router.get('/login', function(req, res, next) {
