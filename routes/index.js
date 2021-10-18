@@ -43,10 +43,10 @@ router.get('/blog', function(req, res, next) {
   res.render('blog', postData);
 });
 
-// /* GET workXML page. */
-// router.get('/blogXml', function(req, res, next) {
-//   res.render('blogXml');
-// });
+/* GET workXML page. */
+router.get('/blogXml', function(req, res, next) {
+  res.render('blogXml');
+});
 
 /* GET login page. */
 router.get('/login', function(req, res, next) {

@@ -1,32 +1,43 @@
 <section id="projectsSection">
-<h1 id="output"></h1>
-        <!-- PROJECTS START -->
-        <div class="project-slide-container">
-        <div class="project-slide">
-            <div class="projInfo">
-                <a href="" target="_blank">
-                    <p>{{this.title}}</p>
-                </a>  
-                <p>{{this.content}}</p>
-            </div>
-            <a href="{{this.link}}" target="_blank">
-                <img src="{{this.image}}">
-            </a>
-            </div>            
-        <div class="projectTags">
-            <p>posted by <a href="#">{{this.author}}</a> on {{this.date}} post id: {{this.id}}</p>
-        </div>
-        </div>
-</section>
+        <!-- PROJECTS START -->    
     <script>        
         document.addEventListener('DOMContentLoaded', () => {
-        let url = "xmlDatabase.xml";
-        fetch(url)
-        .then(response=>response.text())
-        .then(data=>{
-            console.log(data)
-            let parser = new DOMParser();
-            let xml = parser.parseFromString(data, "application/xml");
-            document.getElementById("output").textContent = data.getElementById("4");
-        })})
+            let url = "xmlDatabase.xml";
+            fetch(url)
+            .then(response=>response.text())
+            .then(data=>{
+                console.log(data)
+                let parser = new DOMParser();
+                let xml = parser.parseFromString(data, "text/xml");
+                let posts = xml.getElementsByTagName("post");
+                        for (let i = 0; i < posts.length; i++){
+                            let thisPost = xml.getElementsByTagName("post")[i];
+                            let postId = thisPost.children[0].innerHTML;
+                            let postAuthor = thisPost.children[1].innerHTML;
+                            let postTitle = thisPost.children[2].innerHTML;
+                            let postImage = thisPost.children[3].innerHTML;
+                            let postContent = thisPost.children[4].innerHTML;                        
+                            let postLink = thisPost.children[5].innerHTML;
+                            let postDate = thisPost.children[6].innerHTML;
+                            document.getElementById("projectsSection").innerHTML += `
+                                <div class="project-slide-container">
+                                    <div class="project-slide">
+                                        <div class="projInfo">
+                                            <a href="" target="_blank">
+                                                <p>${postTitle}</p>
+                                            </a>  
+                                            <p>${postContent}</p>
+                                        </div>
+                                        <a href="${postLink}" target="_blank">
+                                            <img src="${postImage}">
+                                        </a>
+                                    </div>            
+                                    <div class="projectTags">
+                                        <p>posted by <a href="#">${postAuthor}</a> on ${postDate} post id: ${postId}</p>
+                                    </div>
+                                </div>`
+                        }            
+            })
+        })
     </script>
+</section>
