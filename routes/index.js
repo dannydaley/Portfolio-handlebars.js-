@@ -18,8 +18,7 @@ function validateFormData(data) {
     loggedIn = false;
   //is username and password correct?
   if (data.username === 'Danny' && data.password === 'password'){
-    loggedIn = true;
-    console.log("VALIDDDDDDD");    
+    loggedIn = true;        
   }  else {
     console.log("noooope")
     loggedIn = false;
@@ -63,10 +62,12 @@ router.get('/logOut', function(req, res, next) {
   res.render('index', newArray);
 });
 
+/* GET name page (comp 280 handlebars variable tutorial) */
 router.get('/name', function(req, res, next) {
   res.render('name', { name: req.query.name });
 });
 
+/* POST login data to validate login page */
 router.post('/login', function(req, res, next){
   let found = false;
   for (let i = 0; i < userDatabase.users.length; i++) {
@@ -83,10 +84,12 @@ router.post('/login', function(req, res, next){
   };
 })
 
+/*GET logged in page (dashboard) */
 router.get('/loggedIn', function(req, res, next) {
   res.render('loggedIn', { title: 'logged in ' });
 });
 
+/*GET new post form page */
 router.get('/newPost', function(req, res){
   res.render('newPost', { title: 'new post!' });
 });
