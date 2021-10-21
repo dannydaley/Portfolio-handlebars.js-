@@ -3,16 +3,16 @@
     {
       "id": 123,
       "name": "Danny",
-      "email": "dannydaley@outlook.com",
-      "password": "password",
+      "email": "b4be1160e2b68f4821142a304e05a4d33bab1f98997ab73dd7c2e81b517e1fc61732a7f8cf04608da3520dcf86b53dcc2531d88d372d7b68400a945c699087c1",
+      "password": "87a3076ac12037bb393584b1bc2497e71c6845c17aa6a9826152d3f69875de9289b30d4df75e844872175cfec1793dd7eccbf3f9669a11b05665ee0246e384d0",
       "posts": 0,
       "joined": "new Date()"
     },
     {
       "id": 124,
       "name": "DannyD1990",
-      "email": "dandaley1990@hotmail.com",
-      "password": "password123",
+      "email": "ca4ca4018a5bb026fd90dc28dff30fa348beec21f8a425d061b7dbf3cbc8f5dca9de563f03b37327e076b77dde2acd568a34b5a83795d98913434f6941335e7c",
+      "password": "bedb5e0ea27c1bcdba8eab671909819673eb0c87bd9c47f61a4163b74f494bfd1f4c4dfef209df4f30f8baa7fd3867f92d706b4dc8b6ee699b021615e0a6e7e7",
       "posts": 0,
       "joined": "new Date()"
     }

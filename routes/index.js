@@ -7,7 +7,32 @@ let userDatabase = require("../userDatabase.json");
 let postData = require("../public/posts.json");
 
 
+///////////////////////////////////////////
 
+//SECURITY STUFF
+
+var crypto = require('crypto');
+
+const iterations = 1000;
+
+const hashSize = 64;
+
+const hashAlgorithm = 'sha256';
+
+const salt = crypto.randomBytes(256).toString('hex');
+
+//need to change the salt
+
+function emailHash(theEmail) {
+  return crypto.pbkdf2Sync(theEmail, 'SALTYYY', iterations, hashSize, hashAlgorithm).toString('hex');
+}
+
+function passwordHash(thePassword) {
+return crypto.pbkdf2Sync(thePassword, 'SALTYYY', iterations, hashSize, hashAlgorithm).toString('hex');
+}
+
+
+///////////////////////////////////////////
 let newArray = {
   "entries": [] 
 }
@@ -70,17 +95,17 @@ router.get('/name', function(req, res, next) {
 /* POST login data to validate login page */
 router.post('/login', function(req, res, next){
   let found = false;
-  for (let i = 0; i < userDatabase.users.length; i++) {
-    if (req.body.email === userDatabase.users[i].email && req.body.password === userDatabase.users[i].password) {      
+  for (let i = 0; i < userDatabase.users.length; i++) {               
+    if (emailHash(req.body.email) === userDatabase.users[i].email && passwordHash(req.body.password) === userDatabase.users[i].password) {      
       found = true;
     } 
   }
-  if (found) {
+  if (found) {    
     logInStatus = true;
     loggedIn = true;
     res.render('loggedIn', { title: 'You are logged in!' });
   } else {
-    res.status(400).json("ERRROORRRRR");
+    res.status(400).json("failed credentials");
   };
 })
 
@@ -119,7 +144,7 @@ router.post('/register', function (req, res, next) {
     id: userDatabase.users.length,
     name: name,
     email: email,
-    password: password,
+    password: hash(password),
     posts: 0,
     joined: new Date()
   })
