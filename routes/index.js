@@ -1,17 +1,22 @@
 const { json } = require('express');
+
 let express = require('express');
-const { MethodNotAllowed } = require('http-errors');
+
+let { MethodNotAllowed } = require('http-errors');
+
 let router = express.Router();
+
 let userDatabase = require("../userDatabase.json");
 
 let postData = require("../public/posts.json");
-
 
 ///////////////////////////////////////////
 
 //SECURITY STUFF
 
-var crypto = require('crypto');
+let loggedIn = false;
+
+let crypto = require('crypto');
 
 const iterations = 1000;
 
@@ -22,7 +27,6 @@ const hashAlgorithm = 'sha256';
 const salt = crypto.randomBytes(256).toString('hex');
 
 //need to change the salt
-
 function emailHash(theEmail) {
   return crypto.pbkdf2Sync(theEmail, 'SALTYYY', iterations, hashSize, hashAlgorithm).toString('hex');
 }
@@ -31,34 +35,34 @@ function passwordHash(thePassword) {
 return crypto.pbkdf2Sync(thePassword, 'SALTYYY', iterations, hashSize, hashAlgorithm).toString('hex');
 }
 
+function validateLoginData(data) { 
+  let found = false;
+  for (let i = 0; i < userDatabase.users.length; i++) {               
+    if (emailHash(data.email) === userDatabase.users[i].email && passwordHash(data.password) === userDatabase.users[i].password) {      
+      found = true;
+    } 
+  }
+  return found
+}
 
 ///////////////////////////////////////////
+
 let newArray = {
   "entries": [] 
 }
 
-let loggedIn = false;
-
-function validateFormData(data) { 
-    loggedIn = false;
-  //is username and password correct?
-  if (data.username === 'Danny' && data.password === 'password'){
-    loggedIn = true;        
-  }  else {
-    console.log("noooope")
-    loggedIn = false;
-  }
-    return loggedIn;
-}
-
-  /* GET home page. */
-router.get('/', function(req, res, next) {  
+function mostRecentFive() {
   for (let i = 0; i < 5; i++){
     newArray.entries.pop()    
   }
   for (let i = 0; i < 5; i++){
     newArray.entries.push(postData.entries[i])    
   }
+}
+
+  /* GET home page. */
+router.get('/', function(req, res, next) {    
+  mostRecentFive(); //most recent five necesary as database lives in the air and dumps on refresh currently.
   res.render('index', newArray);  
 })
 
@@ -94,13 +98,7 @@ router.get('/name', function(req, res, next) {
 
 /* POST login data to validate login page */
 router.post('/login', function(req, res, next){
-  let found = false;
-  for (let i = 0; i < userDatabase.users.length; i++) {               
-    if (emailHash(req.body.email) === userDatabase.users[i].email && passwordHash(req.body.password) === userDatabase.users[i].password) {      
-      found = true;
-    } 
-  }
-  if (found) {    
+  if (validateLoginData(req.body)) {    
     logInStatus = true;
     loggedIn = true;
     res.render('loggedIn', { title: 'You are logged in!' });
