@@ -134,19 +134,31 @@ router.post('/newPost', function (req, res, next) {
   console.log(postData.entries.length)
   res.render('blog', postData);   
 });
+router.get('/register', function (req, res, next) {
+  res.render('register')
+})
+
 
 //adds new user to user database
 router.post('/register', function (req, res, next) {
-  let { email, name, password } = req.body;
-  userDatabase.users.push({
+  let { email, username, password1, password2 } = req.body; 
+  if (req.body.password1 === req.body.password2){
+    let storeEmail = emailHash(email);
+    let storePassword = passwordHash(password2);
+    userDatabase.users.push({
     id: userDatabase.users.length,
-    name: name,
-    email: email,
-    password: hash(password),
+    name: username,
+    email: storeEmail,
+    password: storePassword,
     posts: 0,
     joined: new Date()
-  })
-  res.json(userDatabase.users[userDatabase.users.length-1]);
+      })
+      console.log(userDatabase.users)
+  res.render('index');
+    }
+    else {
+      res.render('register');
+    }
 });
 
 module.exports = router;
