@@ -78,7 +78,7 @@ router.get('/blogXml', function(req, res, next) {
 
 /* GET login page. */
 router.get('/login', function(req, res, next) {
-  if (loggedIn){
+  if (loggedIn) {
     res.render('loggedIn', { title: 'You are logged in!' });
 }
   else {
