@@ -525,7 +525,7 @@ footer a, footer {
   height: 30px; 
 }
 
-.login-button {
+.login-button, .register-button {
   margin-top: 50px;
   align-self: end;
   width: 100px;
