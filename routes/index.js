@@ -47,6 +47,132 @@ function validateLoginData(data) {
 
 ///////////////////////////////////////////
 
+///////////////////// SQL DATABASE STUFF ////////////
+/* Database setup endpoint */
+
+router.get('/setup', (req, res, next) => {
+  let db = req.app.locals.db;
+  //these queries must run one by one - dont try and delete and create tables at the same time.
+  db.serialize( () => {
+    //delete the table if it exists..
+    db.run('DROP TABLE IF EXISTS `test`');
+
+    db.run('CREATE TABLE `test` ( name varchar(255), amount INT )');
+
+    //create test rows
+    let rows = [
+      ['test', 42],
+      ['gold', 1337],
+      ['bread', 42],
+      ['ready meal', 42],
+    ];
+
+    rows.forEach( (row) => {
+      db.run('INSERT INTO `test` VALUES(?,?)', row);
+    });
+  })
+  res.render("test-db-done");
+})
+
+const SQL_GET_TEST = "SELECT * FROM test"; //sql command
+
+router.get('/test', (req, res, next) => {
+  let db = req.app.locals.db;
+
+  db.all(SQL_GET_TEST, [], (err, rows) => {
+    if (err) {
+      //something went wrong
+      res.status(500).send(err.message);
+      return;
+    }
+
+    //everything goes right..
+    res.render('test-db', { "rows": rows  });
+  })
+})
+
+const SQL_UPDATE_TEST = "UPDATE test SET amount = ? WHERE name = ?";
+
+router.post('/test', (req, res, next) => {
+
+var form = req.body;
+let db= req.app.locals.db;
+
+// do validation
+
+var errors = [];
+
+if (!form.amount || !form.name) {
+  errors.push("name or amount missing");
+}
+
+// TODO check that amount is positive
+// TODO check that name is at least 3 chars long
+// TODO (harder) check that name only contains [a-z0-9]
+// Just incase Warwick doesn't get the regex ( sorry Warwick :) )
+// that means numbers and letters only.
+
+// are there errors?
+if (  errors.length ) {
+  // TODO we should handle this better
+  // maybe display a form with the errors
+  // and the user submitted data, prefilled in.
+
+  res.status(400).send(errors);
+  return;
+}
+
+// no errors, update database.
+var params = [ form.amount, form.name ];
+db.run(SQL_UPDATE_TEST, params, function(err, result) {
+  if (err) {
+    //TODO we should handle this better, maybe a pretty error page.
+    res.status(500).send(err.message);
+    return;
+  }
+
+  // show the page telling the user it worked.
+  res.render('test-db-success', {  "params": params, "changes": this.changes })
+})
+})
+
+
+const SQL_ADD_TEST = "INSERT INTO `test` VALUES(?,?)"
+router.post('/test-add', (req, res, next) => {
+
+  var form = req.body;
+  let db= req.app.locals.db;
+
+  var params = [ form.name, form.amount ];
+
+  db.run(SQL_ADD_TEST, params, function(err, result) {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }  
+     res.render('test-db-success', {  "params": params, "changes": this.changes })
+   })
+  })
+
+const SQL_DELETE_TEST = "DELETE FROM `test` WHERE name = ?";
+
+router.post('/test-delete', (req, res, next) => {
+
+  var form = req.body;
+  let db= req.app.locals.db;
+
+  var params = [ form.name ];
+
+  db.run(SQL_DELETE_TEST, params, function(err, result) {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }  
+     res.render('test-db-success', {  "params": params, "changes": this.changes })
+   })
+  })
+/////////////////////////////////////////////////////
+
 let newArray = {
   "entries": [] 
 }

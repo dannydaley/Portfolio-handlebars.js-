@@ -1,0 +1,33 @@
+<div class="testDbCard">
+<h1>test database</h1>
+{{#each rows}}
+<h2>{{ name }}</h2>
+<p>current amount: {{ amount }}</p>
+<form action="#" method="post">
+<input type="hidden" name="name" value="{{ name }}" />
+<input type="number" name="amount" value="{{ amount }}" />
+<input class="updateButton" type="submit" value="Update" />
+</form>
+<!-- TODO add form for delete here -->
+{{/each}}
+<!-- this form won't function, it's an extention task for you -->
+<h2>add a new thing</h2>
+<form method="post" action="/test-add" formaction="/test-add">
+<label>name</label>
+<input type="text" name="name" value="{{name}}" /><br />
+<label>amount</label>
+<input type="number" name="amount" value="{{ amount }}" />
+<input class="updateButton" type="submit" value="create" />
+</form>
+
+<h2>delete a thing</h2>
+<form method="post" action="/test-delete" formaction="/test-delete">
+<label>name</label>
+<input type="text" name="name" value="{{name}}" /><br />
+<label>confirm</label><input type="checkbox" required>
+<input class="updateButton" type="submit" value="delete" />
+</form>
+
+
+
+</div>

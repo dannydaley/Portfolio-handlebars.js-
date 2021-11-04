@@ -636,3 +636,49 @@ textarea {
   margin: 0px 5px;
   
 }
+
+
+.donePage {
+  width: 100%;
+  height: 75.5vh;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
+}
+.donePage h1 {
+  font-size: 100px;
+}
+.donePage pre {
+  font-weight: bold;
+}
+.donePage a {
+  
+  font-weight: bold;
+  color: aqua
+}
+.donePage a:visited {
+  
+  font-weight: bold;
+  color: aqua;
+}
+.testDbCard {
+  background-color: rgba(82, 82, 82, 0.31);
+  /* width: 90vw; */
+  margin: 200px 10vw;
+  padding: 50px;
+}
+.testDbCard h1 {
+  font-size: 50px;
+}
+.testDbCard input {
+  padding: 5px;;
+}
+.testDbCard .updateButton {
+  border-radius: 5px;
+  background-color: aqua;
+  color: white;
+  padding: 5px;
+  font-weight: bold;
+}

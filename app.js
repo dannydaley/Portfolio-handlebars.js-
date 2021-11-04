@@ -4,11 +4,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var webSocket = require('ws');
+var sqlite3 = require('sqlite3').verbose();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+let db = new sqlite3.Database('./test.db');
+app.locals.db = db;
 
 const server = new webSocket.Server({
   port: 8080
