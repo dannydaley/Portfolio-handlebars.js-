@@ -17,6 +17,7 @@ let postData = require("../public/posts.json");
 let loggedIn = false;
 
 let crypto = require('crypto');
+const { debugPort } = require('process');
 
 const iterations = 1000;
 
@@ -46,10 +47,58 @@ function validateLoginData(data) {
 }
 
 ///////////////////////////////////////////
+// "id": "p1",
+// "author": "Danny",
+// "title": "JavaScript Magic 8-ball",
+// "image": "images/eightBall.png",
+// "content": "Had some fun and made a small Magic 8-Ball web app using some basic HTML, CSS shapes and some simple JavaScript switch statement logic.",
+// "link": "https://dannydaley.github.io/eightBall/",
+// "date": "2020, 2, 28"
+
 
 ///////////////////// SQL DATABASE STUFF ////////////
 /* Database setup endpoint */
+router.get('/blogDatabaseSetup', (req, res, next) => {
+  let blogDb = req.app.locals.blogDb;
+  //these queries must run one by one - dont try and delete and create tables at the same time.
+  blogDb.serialize( () => {
+    //delete the table if it exists..
+    blogDb.run('DROP TABLE IF EXISTS `blog`');
 
+    blogDb.run('CREATE TABLE `blog` ( id INT, author varchar(255), title varchar(255), image varchar(255), content varchar(2000), link varchar(255), date varchar(255) )');
+    //create test rows
+    let rows = [
+      [1, 'Danny', 'Test 1', 'imageLink1', 'This is content 1', 'Link1', '010101'],
+      [2, 'Danny', 'Test 2', 'imageLink2', 'This is content 2', 'Link2', '010101'],
+      [3, 'Danny', 'Test 3', 'imageLink3', 'This is content 3', 'Link3', '010101'],
+      [4, 'Danny', 'Test 4', 'imageLink4', 'This is content 4', 'Link4', '010101'],
+    ];
+    rows.forEach( (row) => {
+      blogDb.run('INSERT INTO `blog` VALUES(?,?,?,?,?,?,?)', row);
+    });
+  })
+  res.render("blog-db-done");
+})
+
+const GET_ALL_POSTS = "SELECT * FROM blog"; // SQL command
+const SQL_UPDATE_BLOG =  "UPDATE blog SET author = ?, title = ?, image = ?, content = ?, link = ? WHERE id = ?"
+router.get('/manageBlog', (req, res, next) => {
+  let blogDb = req.app.locals.blogDb;
+
+  blogDb.all(GET_ALL_POSTS, [], (err, rows) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }
+    res.render('manageBlog', { "rows": rows });
+  })
+})
+router.post('/manageBlog', (req, res, next) => {
+  /* THIS POST REQUEST REQUIRES A FORM
+     BUILDING ON MANAGEBLOG.HBS
+    IMPLEMENTATION TO FOLLOW IS BELOW
+      */
+})
 router.get('/setup', (req, res, next) => {
   let db = req.app.locals.db;
   //these queries must run one by one - dont try and delete and create tables at the same time.
@@ -58,7 +107,6 @@ router.get('/setup', (req, res, next) => {
     db.run('DROP TABLE IF EXISTS `test`');
 
     db.run('CREATE TABLE `test` ( name varchar(255), amount INT )');
-
     //create test rows
     let rows = [
       ['test', 42],
@@ -66,14 +114,12 @@ router.get('/setup', (req, res, next) => {
       ['bread', 42],
       ['ready meal', 42],
     ];
-
     rows.forEach( (row) => {
       db.run('INSERT INTO `test` VALUES(?,?)', row);
     });
   })
   res.render("test-db-done");
 })
-
 const SQL_GET_TEST = "SELECT * FROM test"; //sql command
 
 router.get('/test', (req, res, next) => {
