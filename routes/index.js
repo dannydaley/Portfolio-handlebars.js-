@@ -332,8 +332,8 @@ router.post('/register', function (req, res, next) {
     posts: 0,
     joined: new Date()
       })
-      console.log(JSON.stringify(userDatabase))
-  res.render('index');
+      // console.log(JSON.stringify(userDatabase)) FOR PRINTING NEW USER DATA DELETE WHEN FINISHED TESTING!!!!!!!!!!!!
+      res.render('index');
     }
     else {
       res.render('register');
