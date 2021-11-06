@@ -58,14 +58,14 @@ function validateLoginData(data) {
 
 ///////////////////// SQL DATABASE STUFF ////////////
 /* Database setup endpoint */
-router.get('/blogDatabaseSetup', (req, res, next) => {
-  let blogDb = req.app.locals.blogDb;
+router.get('/SQLDatabaseSetup', (req, res, next) => {
+  let SQLdatabase = req.app.locals.SQLdatabase;
   //these queries must run one by one - dont try and delete and create tables at the same time.
-  blogDb.serialize( () => {
+  SQLdatabase.serialize( () => {
     //delete the table if it exists..
-    blogDb.run('DROP TABLE IF EXISTS `blog`');
+    SQLdatabase.run('DROP TABLE IF EXISTS `blog`');
 
-    blogDb.run('CREATE TABLE `blog` ( id INT, author varchar(255), title varchar(255), image varchar(255), content varchar(2000), link varchar(255), date varchar(255) )');
+    SQLdatabase.run('CREATE TABLE `blog` ( id INT, author varchar(255), title varchar(255), image varchar(255), content varchar(2000), link varchar(255), date varchar(255) )');
     //create test rows
     let rows = [
       [1, 'Danny', 'JavaScript Magic 8-ball', 'images/eightBall.png', 'Had some fun and made a small Magic 8-Ball web app using some basic HTML, CSS shapes and some simple JavaScript switch statement logic.', 'https://dannydaley.github.io/eightBall/', '2020, 2, 28'],
@@ -77,7 +77,7 @@ router.get('/blogDatabaseSetup', (req, res, next) => {
       [7, 'Danny', 'Unshore', 'images/unshorelogo2.png', "Unshore was a great game to work on for my first project in Falmouth University’s Games Academy. Taking the role of UI Programmer was a great chance to to have some some fun in the Unity game engine whilst being part of a multifaceted team. The theme we were given was Cornwall and “a famous dead person”, we figured that a dark horror styled game of chasing evil piskies around the island of Saint Michaels Mount while being hunted by King Arthurs ghost was pretty bang on.",'#', '2021, 2, 28']
     ]
     rows.forEach( (row) => {
-      blogDb.run('INSERT INTO `blog` VALUES(?,?,?,?,?,?,?)', row);
+      SQLdatabase.run('INSERT INTO `blog` VALUES(?,?,?,?,?,?,?)', row);
     });
   })
   res.render("blog-db-done");
@@ -86,8 +86,8 @@ router.get('/blogDatabaseSetup', (req, res, next) => {
 const GET_ALL_POSTS = "SELECT * FROM blog"; // SQL command
 const SQL_UPDATE_BLOG =  "UPDATE blog SET  title = ?, image = ?, link = ?, author = ?, date = ?, content = ? WHERE id = ?" //SQL command
 router.get('/manageBlog', (req, res, next) => {
-  let blogDb = req.app.locals.blogDb;
-  blogDb.all(GET_ALL_POSTS, [], (err, rows) => {
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  SQLdatabase.all(GET_ALL_POSTS, [], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -97,7 +97,7 @@ router.get('/manageBlog', (req, res, next) => {
 })
 router.post('/manageBlog', (req, res, next) => {
   var form = req.body;
-  let blogDb = req.app.locals.blogDb;
+  let SQLdatabase = req.app.locals.SQLdatabase;
   // do the validation
   var errors = [];
   if (!form.title || !form.image || !form.link || !form.author || !form.date || !form.content){
@@ -108,7 +108,7 @@ router.post('/manageBlog', (req, res, next) => {
     return;
   }
   var params = [ form.title, form.image, form.link, form.author, form.date, form.content, form.id ];
-  blogDb.run(SQL_UPDATE_BLOG, params, function(err, result){
+  SQLdatabase.run(SQL_UPDATE_BLOG, params, function(err, result){
     if (err) {
       res.status(500).send(err.message)
       return;
@@ -263,8 +263,8 @@ router.get('/', function(req, res, next) {
 
 /* GET work SQL page */
 router.get('/blog', (req, res, next) => {
-  let blogDb = req.app.locals.blogDb;
-  blogDb.all(GET_ALL_POSTS, [], (err, rows) => {
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  SQLdatabase.all(GET_ALL_POSTS, [], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;

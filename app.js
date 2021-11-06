@@ -12,8 +12,8 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 
-let blogDb = new sqlite3.Database('./blogDatabase.db');
-app.locals.blogDb = blogDb;
+let SQLdatabase = new sqlite3.Database('./SQLdatabase.db');
+app.locals.SQLdatabase = SQLdatabase;
 
 let db = new sqlite3.Database('./test.db');
 app.locals.db = db;
