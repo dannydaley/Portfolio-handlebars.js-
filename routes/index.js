@@ -84,10 +84,9 @@ router.get('/blogDatabaseSetup', (req, res, next) => {
 })
 
 const GET_ALL_POSTS = "SELECT * FROM blog"; // SQL command
-const SQL_UPDATE_BLOG =  "UPDATE blog SET author = ?, title = ?, image = ?, content = ?, link = ? WHERE id = ?"
+const SQL_UPDATE_BLOG =  "UPDATE blog SET  title = ?, image = ?, link = ?, author = ?, date = ?, content = ? WHERE id = ?" //SQL command
 router.get('/manageBlog', (req, res, next) => {
   let blogDb = req.app.locals.blogDb;
-
   blogDb.all(GET_ALL_POSTS, [], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
@@ -97,11 +96,27 @@ router.get('/manageBlog', (req, res, next) => {
   })
 })
 router.post('/manageBlog', (req, res, next) => {
-  /* THIS POST REQUEST REQUIRES A FORM
-     BUILDING ON MANAGEBLOG.HBS
-    IMPLEMENTATION TO FOLLOW IS BELOW
-      */
+  var form = req.body;
+  let blogDb = req.app.locals.blogDb;
+  // do the validation
+  var errors = [];
+  if (!form.title || !form.image || !form.link || !form.author || !form.date || !form.content){
+    errors.push("Cannot have blank fields");
+  }
+  if (errors.length){
+    res.status(400).send(errors);
+    return;
+  }
+  var params = [ form.title, form.image, form.link, form.author, form.date, form.content, form.id ];
+  blogDb.run(SQL_UPDATE_BLOG, params, function(err, result){
+    if (err) {
+      res.status(500).send(err.message)
+      return;
+    }    
+    res.render("blog-db-done");
+  })
 })
+
 router.get('/setup', (req, res, next) => {
   let db = req.app.locals.db;
   //these queries must run one by one - dont try and delete and create tables at the same time.
@@ -124,7 +139,6 @@ router.get('/setup', (req, res, next) => {
   res.render("test-db-done");
 })
 const SQL_GET_TEST = "SELECT * FROM test"; //sql command
-
 router.get('/test', (req, res, next) => {
   let db = req.app.locals.db;
 
@@ -139,22 +153,15 @@ router.get('/test', (req, res, next) => {
     res.render('test-db', { "rows": rows  });
   })
 })
-
 const SQL_UPDATE_TEST = "UPDATE test SET amount = ? WHERE name = ?";
-
 router.post('/test', (req, res, next) => {
-
 var form = req.body;
 let db= req.app.locals.db;
-
 // do validation
-
 var errors = [];
-
 if (!form.amount || !form.name) {
   errors.push("name or amount missing");
 }
-
 // TODO check that amount is positive
 // TODO check that name is at least 3 chars long
 // TODO (harder) check that name only contains [a-z0-9]
@@ -170,7 +177,6 @@ if (  errors.length ) {
   res.status(400).send(errors);
   return;
 }
-
 // no errors, update database.
 var params = [ form.amount, form.name ];
 db.run(SQL_UPDATE_TEST, params, function(err, result) {
@@ -241,9 +247,21 @@ router.get('/', function(req, res, next) {
   res.render('index', newArray);  
 })
 
-/* GET work page. */
-router.get('/blog', function(req, res, next) {
-  res.render('blog', postData);
+/* GET work SQL page */
+router.get('/blog', (req, res, next) => {
+  let blogDb = req.app.locals.blogDb;
+  blogDb.all(GET_ALL_POSTS, [], (err, rows) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }    
+    res.render('blog', { "rows": rows });
+  })
+})
+
+/* GET workJSON page. */
+router.get('/blogJson', function(req, res, next) {
+  res.render('blogJson', postData);
 });
 
 /* GET workXML page. */
@@ -312,8 +330,6 @@ router.post('/newPost', function (req, res, next) {
 router.get('/register', function (req, res, next) {
   res.render('register')
 })
-
-
 //adds new user to user database
 router.post('/register', function (req, res, next) {
   let { email, username, password1, password2 } = req.body; 

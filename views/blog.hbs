@@ -1,21 +1,21 @@
-<section id="projectsSection">
-    {{#each entries}}
+<section id="projectsSection"> 
+    {{#each rows}}
         <!-- PROJECTS START -->
         <div class="project-slide-container">
-        <div class="project-slide">
-            <div class="projInfo">
-                <a href="{{this.link}}" target="_blank">
-                    <p>{{this.title}}</p>
-                </a>  
-                <p>{{this.content}}</p>
-            </div>
-            <a href="{{this.link}}" target="_blank">
-                <img src="{{this.image}}">
-            </a>
+            <div class="project-slide">
+                <div class="projInfo">
+                    <a href="{{this.link}}" target="_blank">
+                        <p>{{title}}</p>
+                    </a>  
+                    <p>{{content}}</p>
+                </div>
+                <a href="{{link}}" target="_blank">
+                    <img src="{{image}}">
+                </a>
             </div>            
-        <div class="projectTags">
-            <p>posted by <a href="">{{this.author}}</a> on {{this.date}} post id: {{this.id}}</p>
-        </div>
+            <div class="projectTags">
+                <p>posted by <a href="">{{author}}</a> on {{date}} post id: {{id}}</p>
+            </div>
         </div>
     {{/each}}
 </section>
