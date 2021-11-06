@@ -1,50 +1,44 @@
-
-{{!-- <h1>test database</h1>
-{{#each rows}}
-<h2>{{ name }}</h2>
-<p>current amount: {{ amount }}</p>
-<form action="#" method="post">
-<input type="hidden" name="name" value="{{ name }}" />
-<input type="number" name="amount" value="{{ amount }}" />
-<input class="updateButton" type="submit" value="Update" />
-</form>
-<!-- TODO add form for delete here -->
-{{/each}}
-<!-- this form won't function, it's an extention task for you -->
-<h2>add a new thing</h2>
-<form method="post" action="/test-add" formaction="/test-add">
-<label>name</label>
-<input type="text" name="name" value="{{name}}" /><br />
-<label>amount</label>
-<input type="number" name="amount" value="{{ amount }}" />
-<input class="updateButton" type="submit" value="create" />
-</form>
-
-<h2>delete a thing</h2>
-<form method="post" action="/test-delete" formaction="/test-delete">
-<label>name</label>
-<input type="text" name="name" value="{{name}}" /><br />
-<label>confirm</label><input type="checkbox" required>
-<input class="updateButton" type="submit" value="delete" />
-</form>--}}
 <section id="projectsSection"> 
     {{#each rows}}
         <!-- PROJECTS START -->
         <div class="project-slide-container">
-        <div class="project-slide">
-            <div class="projInfo">
-                <a href="{{this.link}}" target="_blank">
-                    <p>{{title}}</p>
-                </a>  
-                <p>{{content}}</p>
-            </div>
-            <a href="{{link}}" target="_blank">
-                <img src="{{image}}">
-            </a>
+            <div class="project-slide">
+                <div class="projInfo">
+                    <a href="{{this.link}}" target="_blank">
+                        <p>{{title}}</p>
+                    </a>  
+                    <p>{{content}}</p>
+                </div>
+                <a href="{{link}}" target="_blank">
+                    <img src="{{image}}">
+                </a>
             </div>            
-        <div class="projectTags">
-            <p>posted by <a href="">{{author}}</a> on {{date}} post id: {{id}}</p>
-        </div>
+            <div class="projectTags">
+                <p>posted by <a href="">{{author}}</a> on {{date}} post id: {{id}}</p>
+            </div>
+            <!-- UPDATE BLOG FORM -->
+            <div class="updateBlogPost">
+                <form action="#" method="post" class="updateForm">
+                    <div class="postDetails">
+                        <label for="title">title</label>
+                        <input type="text" name="title" value="{{title}}" />
+                        <label for="image">image</label>
+                        <input type="text" name="image" value="{{image}}" />
+                        <label for="link">link</label>
+                        <input type="text" name="link" value="{{link}}" />
+                        <label for="author">author</label>
+                        <input type="text" name="author" value="{{author}}" />
+                        <label for="author">date</label>
+                        <input type="date" name="date" value="{{date}}" />                     
+                    </div>
+                    <div class="postContent">
+                        <label for="content">content</label>
+                        <textarea type="text" name="content" rows="10" cols="100">{{this.content}}</textarea>
+                        <input class="updateButton" type="submit" value="Update" />
+                    </div>
+                </form>         
+            </div>
+            <!-- UPDATE BLOG FORM END -->
         </div>
     {{/each}}
 </section>

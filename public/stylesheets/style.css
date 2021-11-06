@@ -663,6 +663,8 @@ textarea {
   font-weight: bold;
   color: aqua;
 }
+
+
 .testDbCard {
   background-color: rgba(82, 82, 82, 0.31);
   /* width: 90vw; */
@@ -682,3 +684,39 @@ textarea {
   padding: 5px;
   font-weight: bold;
 }
+
+
+
+
+/* UPDATE BLOG FORM */
+.updateBlogPost {
+  font-size: 19px;
+  border-top: 5px solid black;
+  background-color: aqua;
+}
+
+.updateForm {
+  color: black;
+  font-weight: bold;
+  padding: 20px;   
+  display: flex;  
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.postDetails {
+  display:flex;
+  flex-direction: column;   
+  width: 250px;  
+  padding: 10px;
+}
+
+.postContent {
+  display: flex;
+  height: 200px;  
+  padding: 10px;  
+}
+.postContent .updateButton {
+  height: 50px;
+}
+/* UPDATE BLOG FORM END*/
