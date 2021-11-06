@@ -191,6 +191,20 @@ db.run(SQL_UPDATE_TEST, params, function(err, result) {
 })
 })
 
+const SQL_ADD_BLOG_POST = "INSERT INTO `blog` VALUES(?,?,?,?,?,?,?)"
+router.post('/newBlogPost', (req, res, next) => {
+  var form = req.body;
+  let blogDb = req.app.locals.blogDb;
+  var params = [ form.title, form.image, form.link, form.author, form.date, form.content, form.id ];
+  blogDb.run(SQL_ADD_BLOG_POST, params, function(err, result) {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }
+    res.render("blog-db-done");
+  })
+})
+
 
 const SQL_ADD_TEST = "INSERT INTO `test` VALUES(?,?)"
 router.post('/test-add', (req, res, next) => {
