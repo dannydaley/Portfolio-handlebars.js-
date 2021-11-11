@@ -47,13 +47,6 @@ function validateLoginData(data) {
 }
 
 
-
-    // if (emailHash(data.email) === userDatabase.users[i].email && passwordHash(data.password) === userDatabase.users[i].password) {      
-    //   found = true;    
-
-
-
-
 /////////////////////////////////////// SQL DATABASE STUFF /////////////////////////////////////////////
 
 const GET_ALL_POSTS = "SELECT * FROM blog"; // SQL command
@@ -326,31 +319,63 @@ router.get('/name', function(req, res, next) {
   res.render('name', { name: req.query.name });
 });
 
-/* POST login data to validate login page */
-router.post('/login', (req, res, next) => {
-  let data = req.body;
-  let SQLdatabase = req.app.locals.SQLdatabase;
+// /* POST login data to validate login page */
+// router.post('/login', (req, res, next) => {
+//   let data = req.body;
+//   let SQLdatabase = req.app.locals.SQLdatabase;
+//   let db = SQLdatabase;
+//   const FIND_USER = "SELECT * FROM users WHERE email = ? AND password = ?"   
+//     db.get(FIND_USER, [data.email, passwordHash(data.password)], (err, rows) => {        
+//       if (err) {        
+//         found = false;
+//         res.status(500).send(err);                 
+//       }    
+//       if (rows !== undefined){    
+//         logInStatus = true;
+//         loggedIn = true;                  
+//         res.render('loggedIn', { title: 'You are logged in!' });  
+//       }
+//       else {
+//         found = false;
+//         res.json("INVALID EMAIL OR PASSWORD");
+//       }       
+//     })   
+// })
+let validateSQLLogin = (request, data) => {
+  let found = false;
+  let SQLdatabase = request.app.locals.SQLdatabase;
   let db = SQLdatabase;
-  const FIND_USER = "SELECT * FROM users WHERE email = ?"   
-    db.get(FIND_USER, [data.email], (err, rows) => {     
-      console.log(rows)  
+  const FIND_USER = "SELECT * FROM users WHERE email = ? AND password = ?"   
+    db.get(FIND_USER, [data.email, passwordHash(data.password)], (err, rows) => {        
       if (err) {        
-        found = false;
+        return found;
         res.status(500).send(err);                 
       }    
       if (rows !== undefined){    
         logInStatus = true;
-        loggedIn = true;                  
-        res.render('loggedIn', { title: 'You are logged in!' });  
+        loggedIn = true;  
+        found = true;
+        return found;                
+          
       }
       else {
-        console.log("Nothing found")
         found = false;
-        res.json("USER NOT FOUND");
-      }       
-    })   
-})
+        res.json("INVALID EMAIL OR PASSWORD");
+      }    
+       
+    })
+    return found;
+}
 
+/* POST login data to validate login page */
+router.post('/login', (req, res, next) => {
+  let request = req;
+  let data = req.body;
+    if (validateSQLLogin(request, data)) {
+      res.render('loggedIn', { title: 'You are logged in!' });
+    }
+    res.json("INVALID EMAIL OR PASSWORD");
+})
 /*GET logged in page (dashboard) */
 router.get('/loggedIn', function(req, res, next) {
   res.render('loggedIn', { title: 'logged in ' });
