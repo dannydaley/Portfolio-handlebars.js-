@@ -46,19 +46,42 @@ function validateLoginData(data) {
   return found
 }
 
-///////////////////////////////////////////
-// "id": "p1",
-// "author": "Danny",
-// "title": "JavaScript Magic 8-ball",
-// "image": "images/eightBall.png",
-// "content": "Had some fun and made a small Magic 8-Ball web app using some basic HTML, CSS shapes and some simple JavaScript switch statement logic.",
-// "link": "https://dannydaley.github.io/eightBall/",
-// "date": "2020, 2, 28"
 
 
-///////////////////// SQL DATABASE STUFF ////////////
+    // if (emailHash(data.email) === userDatabase.users[i].email && passwordHash(data.password) === userDatabase.users[i].password) {      
+    //   found = true;    
+
+
+
+
+/////////////////////////////////////// SQL DATABASE STUFF /////////////////////////////////////////////
+
+const GET_ALL_POSTS = "SELECT * FROM blog"; // SQL command
+const GET_ALL_USERS = "SELECT * FROM users"; // SQL command
+const SQL_ADD_BLOG_POST = "INSERT INTO `blog` VALUES(?,?,?,?,?,?,?)"
+const SQL_UPDATE_BLOG =  "UPDATE blog SET  title = ?, image = ?, link = ?, author = ?, date = ?, content = ? WHERE id = ?" //SQL command
+
 /* Database setup endpoint */
-router.get('/SQLDatabaseSetup', (req, res, next) => {
+router.get('/SQLDatabaseUserSetup', (req, res, next) => {
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  //these queries must run one by one - dont try and delete and create tables at the same time.
+  SQLdatabase.serialize( () => {
+    //delete the table if it exists..
+    SQLdatabase.run('DROP TABLE IF EXISTS `users`');
+
+    SQLdatabase.run('CREATE TABLE `users` ( id int, name varchar(255), email varchar(255), password varchar(255), posts int, joined varchar(255))');
+    //create test rows
+    let rows = [
+      [123, 'Danny', 'dannydaley@outlook.com', '87a3076ac12037bb393584b1bc2497e71c6845c17aa6a9826152d3f69875de9289b30d4df75e844872175cfec1793dd7eccbf3f9669a11b05665ee0246e384d0', '0', 'new Date()'],
+      [124, 'Danny', 'ca4ca4018a5bb026fd90dc28dff30fa348beec21f8a425d061b7dbf3cbc8f5dca9de563f03b37327e076b77dde2acd568a34b5a83795d98913434f6941335e7c', 'bedb5e0ea27c1bcdba8eab671909819673eb0c87bd9c47f61a4163b74f494bfd1f4c4dfef209df4f30f8baa7fd3867f92d706b4dc8b6ee699b021615e0a6e7e7', '0', 'new Date()'],
+    ]
+    rows.forEach( (row) => {
+      SQLdatabase.run('INSERT INTO `users` VALUES(?,?,?,?,?,?)', row);
+    });
+  })
+  res.render("user-db-done");
+})
+router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
   //these queries must run one by one - dont try and delete and create tables at the same time.
   SQLdatabase.serialize( () => {
@@ -82,9 +105,6 @@ router.get('/SQLDatabaseSetup', (req, res, next) => {
   })
   res.render("blog-db-done");
 })
-
-const GET_ALL_POSTS = "SELECT * FROM blog"; // SQL command
-const SQL_UPDATE_BLOG =  "UPDATE blog SET  title = ?, image = ?, link = ?, author = ?, date = ?, content = ? WHERE id = ?" //SQL command
 router.get('/manageBlog', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
   SQLdatabase.all(GET_ALL_POSTS, [], (err, rows) => {
@@ -117,13 +137,13 @@ router.post('/manageBlog', (req, res, next) => {
   })
 })
 
+//////////////////////////////////// WORKSHOP STUFF //////////////////////////////////////////////////////////////
 router.get('/setup', (req, res, next) => {
   let db = req.app.locals.db;
   //these queries must run one by one - dont try and delete and create tables at the same time.
   db.serialize( () => {
     //delete the table if it exists..
     db.run('DROP TABLE IF EXISTS `test`');
-
     db.run('CREATE TABLE `test` ( name varchar(255), amount INT )');
     //create test rows
     let rows = [
@@ -141,14 +161,12 @@ router.get('/setup', (req, res, next) => {
 const SQL_GET_TEST = "SELECT * FROM test"; //sql command
 router.get('/test', (req, res, next) => {
   let db = req.app.locals.db;
-
   db.all(SQL_GET_TEST, [], (err, rows) => {
     if (err) {
       //something went wrong
       res.status(500).send(err.message);
       return;
     }
-
     //everything goes right..
     res.render('test-db', { "rows": rows  });
   })
@@ -190,8 +208,6 @@ db.run(SQL_UPDATE_TEST, params, function(err, result) {
   res.render('test-db-success', {  "params": params, "changes": this.changes })
 })
 })
-
-const SQL_ADD_BLOG_POST = "INSERT INTO `blog` VALUES(?,?,?,?,?,?,?)"
 router.post('/newBlogPost', (req, res, next) => {
   var form = req.body;
   let blogDb = req.app.locals.blogDb;
@@ -204,8 +220,6 @@ router.post('/newBlogPost', (req, res, next) => {
     res.render("blog-db-done");
   })
 })
-
-
 const SQL_ADD_TEST = "INSERT INTO `test` VALUES(?,?)"
 router.post('/test-add', (req, res, next) => {
 
@@ -221,10 +235,8 @@ router.post('/test-add', (req, res, next) => {
     }  
      res.render('test-db-success', {  "params": params, "changes": this.changes })
    })
-  })
-
+})
 const SQL_DELETE_TEST = "DELETE FROM `test` WHERE name = ?";
-
 router.post('/test-delete', (req, res, next) => {
 
   var form = req.body;
@@ -239,7 +251,7 @@ router.post('/test-delete', (req, res, next) => {
     }  
      res.render('test-db-success', {  "params": params, "changes": this.changes })
    })
-  })
+})
 /////////////////////////////////////////////////////
 
 let newArray = {
@@ -270,6 +282,17 @@ router.get('/blog', (req, res, next) => {
       return;
     }    
     res.render('blog', { "rows": rows });
+  })
+})
+/* GET work SQL page */
+router.get('/getAllUsers', (req, res, next) => {
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  SQLdatabase.all(GET_ALL_USERS, [], (err, rows) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }    
+    res.json(rows);
   })
 })
 
@@ -304,14 +327,28 @@ router.get('/name', function(req, res, next) {
 });
 
 /* POST login data to validate login page */
-router.post('/login', function(req, res, next){
-  if (validateLoginData(req.body)) {    
-    logInStatus = true;
-    loggedIn = true;
-    res.render('loggedIn', { title: 'You are logged in!' });
-  } else {
-    res.status(400).json("failed credentials");
-  };
+router.post('/login', (req, res, next) => {
+  let data = req.body;
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  let db = SQLdatabase;
+  const FIND_USER = "SELECT * FROM users WHERE email = ?"   
+    db.get(FIND_USER, [data.email], (err, rows) => {     
+      console.log(rows)  
+      if (err) {        
+        found = false;
+        res.status(500).send(err);                 
+      }    
+      if (rows !== undefined){    
+        logInStatus = true;
+        loggedIn = true;                  
+        res.render('loggedIn', { title: 'You are logged in!' });  
+      }
+      else {
+        console.log("Nothing found")
+        found = false;
+        res.json("USER NOT FOUND");
+      }       
+    })   
 })
 
 /*GET logged in page (dashboard) */
