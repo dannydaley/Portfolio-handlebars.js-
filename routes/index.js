@@ -49,10 +49,13 @@ function validateLoginData(data) {
 
 /////////////////////////////////////// SQL DATABASE STUFF /////////////////////////////////////////////
 
-const GET_ALL_POSTS = "SELECT * FROM blog"; // SQL command
-const GET_ALL_USERS = "SELECT * FROM users"; // SQL command
+const GET_ALL_POSTS = "SELECT * FROM blog ORDER BY id DESC"; // SQL command
+const GET_RECENT_POSTS = "SELECT * FROM blog ORDER BY id DESC LIMIT 5"; // SQL command
 const SQL_ADD_BLOG_POST = "INSERT INTO `blog` VALUES(?,?,?,?,?,?,?)"
 const SQL_UPDATE_BLOG =  "UPDATE blog SET  title = ?, image = ?, link = ?, author = ?, date = ?, content = ? WHERE id = ?" //SQL command
+
+const GET_ALL_USERS = "SELECT * FROM users"; // SQL command
+
 
 /* Database setup endpoint */
 router.get('/SQLDatabaseUserSetup', (req, res, next) => {
@@ -61,7 +64,6 @@ router.get('/SQLDatabaseUserSetup', (req, res, next) => {
   SQLdatabase.serialize( () => {
     //delete the table if it exists..
     SQLdatabase.run('DROP TABLE IF EXISTS `users`');
-
     SQLdatabase.run('CREATE TABLE `users` ( id int, name varchar(255), email varchar(255), password varchar(255), posts int, joined varchar(255))');
     //create test rows
     let rows = [
@@ -262,8 +264,14 @@ function mostRecentFive() {
 
   /* GET home page. */
 router.get('/', function(req, res, next) {    
-  mostRecentFive(); //most recent five necesary as database lives in the air and dumps on refresh currently.
-  res.render('index', newArray);  
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  SQLdatabase.all(GET_RECENT_POSTS, [], (err, rows) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }    
+    res.render('index', { "rows": rows });
+  })
 })
 
 /* GET work SQL page */
@@ -319,28 +327,28 @@ router.get('/name', function(req, res, next) {
   res.render('name', { name: req.query.name });
 });
 
-// /* POST login data to validate login page */
-// router.post('/login', (req, res, next) => {
-//   let data = req.body;
-//   let SQLdatabase = req.app.locals.SQLdatabase;
-//   let db = SQLdatabase;
-//   const FIND_USER = "SELECT * FROM users WHERE email = ? AND password = ?"   
-//     db.get(FIND_USER, [data.email, passwordHash(data.password)], (err, rows) => {        
-//       if (err) {        
-//         found = false;
-//         res.status(500).send(err);                 
-//       }    
-//       if (rows !== undefined){    
-//         logInStatus = true;
-//         loggedIn = true;                  
-//         res.render('loggedIn', { title: 'You are logged in!' });  
-//       }
-//       else {
-//         found = false;
-//         res.json("INVALID EMAIL OR PASSWORD");
-//       }       
-//     })   
-// })
+/* POST login data to validate login page */
+router.post('/login', (req, res, next) => {
+  let data = req.body;
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  let db = SQLdatabase;
+  const FIND_USER = "SELECT * FROM users WHERE email = ? AND password = ?"   
+    db.get(FIND_USER, [data.email, passwordHash(data.password)], (err, rows) => {        
+      if (err) {        
+        found = false;
+        res.status(500).send(err);                 
+      }    
+      if (rows !== undefined){    
+        logInStatus = true;
+        loggedIn = true;                  
+        res.render('loggedIn', { title: 'You are logged in!' });  
+      }
+      else {
+        found = false;
+        res.json("INVALID EMAIL OR PASSWORD");
+      }       
+    })   
+})
 let validateSQLLogin = (request, data) => {
   let found = false;
   let SQLdatabase = request.app.locals.SQLdatabase;
@@ -348,21 +356,18 @@ let validateSQLLogin = (request, data) => {
   const FIND_USER = "SELECT * FROM users WHERE email = ? AND password = ?"   
     db.get(FIND_USER, [data.email, passwordHash(data.password)], (err, rows) => {        
       if (err) {        
-        return found;
-        res.status(500).send(err);                 
+        return found;                         
       }    
       if (rows !== undefined){    
         logInStatus = true;
         loggedIn = true;  
         found = true;
-        return found;                
-          
+        return found;          
       }
       else {
         found = false;
         res.json("INVALID EMAIL OR PASSWORD");
-      }    
-       
+      }   
     })
     return found;
 }
