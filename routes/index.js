@@ -32,9 +32,13 @@ function emailHash(theEmail) {
   return crypto.pbkdf2Sync(theEmail, 'SALTYYY', iterations, hashSize, hashAlgorithm).toString('hex');
 }
 
-function passwordHash(thePassword) {
-return crypto.pbkdf2Sync(thePassword, 'SALTYYY', iterations, hashSize, hashAlgorithm).toString('hex');
-}
+// function passwordHash(thePassword) {
+// return crypto.pbkdf2Sync(thePassword, 'SALTYYY', iterations, hashSize, hashAlgorithm).toString('hex');
+// }
+
+function passwordHash(thePassword, saltGenerator) {
+  return crypto.pbkdf2Sync(thePassword, 'PEPPERRRRR' + saltGenerator, iterations, hashSize, hashAlgorithm).toString('hex');
+  }
 
 function validateLoginData(data) { 
   let found = false;
@@ -64,14 +68,14 @@ router.get('/SQLDatabaseUserSetup', (req, res, next) => {
   SQLdatabase.serialize( () => {
     //delete the table if it exists..
     SQLdatabase.run('DROP TABLE IF EXISTS `users`');
-    SQLdatabase.run('CREATE TABLE `users` ( id int, name varchar(255), email varchar(255), password varchar(255), posts int, joined varchar(255))');
+    SQLdatabase.run('CREATE TABLE `users` ( id int, name varchar(255), email varchar(255), password varchar(255), passwordSalt varchar(255), posts int, joined varchar(255))');
     //create test rows
     let rows = [
       [123, 'Danny', 'dannydaley@outlook.com', '87a3076ac12037bb393584b1bc2497e71c6845c17aa6a9826152d3f69875de9289b30d4df75e844872175cfec1793dd7eccbf3f9669a11b05665ee0246e384d0', '0', 'new Date()'],
       [124, 'Danny', 'ca4ca4018a5bb026fd90dc28dff30fa348beec21f8a425d061b7dbf3cbc8f5dca9de563f03b37327e076b77dde2acd568a34b5a83795d98913434f6941335e7c', 'bedb5e0ea27c1bcdba8eab671909819673eb0c87bd9c47f61a4163b74f494bfd1f4c4dfef209df4f30f8baa7fd3867f92d706b4dc8b6ee699b021615e0a6e7e7', '0', 'new Date()'],
     ]
     rows.forEach( (row) => {
-      SQLdatabase.run('INSERT INTO `users` VALUES(?,?,?,?,?,?)', row);
+      SQLdatabase.run('INSERT INTO `users` VALUES(?,?,?,?,?,?,?)', row);
     });
   })
   res.render("user-db-done");
@@ -354,7 +358,13 @@ let validateSQLLogin = (request, data) => {
   let SQLdatabase = request.app.locals.SQLdatabase;
   let db = SQLdatabase;
   const FIND_USER = "SELECT * FROM users WHERE email = ? AND password = ?"   
-    db.get(FIND_USER, [data.email, passwordHash(data.password)], (err, rows) => {        
+    db.get(FIND_USER, [data.email, passwordHash(data.password, db.get("SELECT passwordSalt FROM users WHERE email = ?", [data.email], (err, row) => {
+      if (err) {
+        console.log("fucked it")
+        return;
+      }
+      return row;
+    }))], (err, rows) => {        
       if (err) {        
         return found;                         
       }    
@@ -434,3 +444,77 @@ router.post('/register', function (req, res, next) {
 });
 
 module.exports = router;
+
+
+//SECURITY STUFF
+
+// let loggedIn = false;
+
+// let crypto = require('crypto');
+// const { debugPort } = require('process');
+
+// const iterations = 1000;
+
+// const hashSize = 64;
+
+// const hashAlgorithm = 'sha256';
+
+// const pepper = crypto.randomBytes(256).toString('hex'); // NOT USED BUT THIS IS HOW A RANDOM PEPPER WOULD WORK.
+
+//need to change the salt
+// function emailHash(theEmail) {
+//   return crypto.pbkdf2Sync(theEmail, 'PEPPERRRRR', iterations, hashSize, hashAlgorithm).toString('hex');
+// }
+
+
+
+// function validateLoginData(data) { 
+//   let found = false;
+//   for (let i = 0; i < userDatabase.users.length; i++) {
+//       console.log(passwordHash(data.password, userDatabase.users[i].passwordSalt));
+//       console.log(userDatabase.users[i].password)                
+//     if (emailHash(data.email) === userDatabase.users[i].email && passwordHash(data.password, userDatabase.users[i].passwordSalt) === userDatabase.users[i].password) {  
+  
+//       found = true;
+//     } 
+//   }
+//   return found
+// }
+
+// ///////////////////////////////////////////
+// /* POST login data to validate login page */
+// router.post('/login', function(req, res, next){
+//   if (validateLoginData(req.body)) {    
+//     logInStatus = true;
+//     loggedIn = true;
+//     res.render('loggedIn', { title: 'You are logged in!' });
+//   } else {
+//     res.status(400).json("failed credentials");
+//   };
+// })
+
+// //adds new user to user database
+// router.post('/register', function (req, res, next) {
+//   let { email, username, password1, password2 } = req.body; 
+//   if (req.body.password1 === req.body.password2){
+//     let storeEmail = emailHash(email);
+//     // gensalt
+//     let generateSalt = crypto.randomBytes(256).toString('hex');
+//     let storePassword = passwordHash(password2, generateSalt);
+    
+//     userDatabase.users.push({
+//     id: userDatabase.users.length,
+//     name: username,
+//     email: storeEmail,
+//     password: storePassword,
+//     passwordSalt: generateSalt,
+//     posts: 0,
+//     joined: new Date()
+//       })
+//       // console.log(JSON.stringify(userDatabase)) FOR PRINTING NEW USER DATA DELETE WHEN FINISHED TESTING!!!!!!!!!!!!
+//       res.render('index');
+//     }
+//     else {
+//       res.render('register');
+//     }
+// });
