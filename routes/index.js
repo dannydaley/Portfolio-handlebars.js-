@@ -37,7 +37,7 @@ return crypto.pbkdf2Sync(thePassword, 'SALTYYY', iterations, hashSize, hashAlgor
 }
 
 // function passwordHash(thePassword, saltGenerator) {
-//   return crypto.pbkdf2Sync(thePassword, 'SALTYYY' + saltGenerator, iterations, hashSize, hashAlgorithm).toString('hex');
+//   return crypto.pbkdf2Sync(thePassword, 'PEPPERRRRR' + saltGenerator, iterations, hashSize, hashAlgorithm).toString('hex');
 //   }
 
 function validateLoginData(data) { 
