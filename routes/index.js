@@ -27,39 +27,16 @@ const hashAlgorithm = 'sha256';
 
 const salt = crypto.randomBytes(256).toString('hex');
 
-//need to change the salt
-function emailHash(theEmail) {
-  return crypto.pbkdf2Sync(theEmail, 'SALTYYY', iterations, hashSize, hashAlgorithm).toString('hex');
-}
-
-// function passwordHash(thePassword) {
-// return crypto.pbkdf2Sync(thePassword, 'SALTYYY', iterations, hashSize, hashAlgorithm).toString('hex');
-// }
-
 function passwordHash(thePassword, theSalt) {
   return crypto.pbkdf2Sync(thePassword, 'PEPPERRRRR' + theSalt, iterations, hashSize, hashAlgorithm).toString('hex');
   }
-
-function validateLoginData(data) { 
-  let found = false;
-  for (let i = 0; i < userDatabase.users.length; i++) {               
-    if (emailHash(data.email) === userDatabase.users[i].email && passwordHash(data.password) === userDatabase.users[i].password) {      
-      found = true;
-    } 
-  }
-  return found
-}
-
-
 /////////////////////////////////////// SQL DATABASE STUFF /////////////////////////////////////////////
 
 const GET_ALL_POSTS = "SELECT * FROM blog ORDER BY id DESC"; // SQL command
 const GET_RECENT_POSTS = "SELECT * FROM blog ORDER BY id DESC LIMIT 5"; // SQL command
 const SQL_ADD_BLOG_POST = "INSERT INTO `blog` VALUES(?,?,?,?,?,?,?)"
 const SQL_UPDATE_BLOG =  "UPDATE blog SET  title = ?, image = ?, link = ?, author = ?, date = ?, content = ? WHERE id = ?" //SQL command
-
 const GET_ALL_USERS = "SELECT * FROM users"; // SQL command
-
 
 /* Database setup endpoint */
 router.get('/SQLDatabaseUserSetup', (req, res, next) => {
@@ -68,10 +45,10 @@ router.get('/SQLDatabaseUserSetup', (req, res, next) => {
   SQLdatabase.serialize( () => {
     //delete the table if it exists..
     SQLdatabase.run('DROP TABLE IF EXISTS `users`');
-    SQLdatabase.run('CREATE TABLE `users` (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(255), email varchar(255), password varchar(255), passwordSalt varchar(512), posts int, joined varchar(255))');
+    SQLdatabase.run('CREATE TABLE `users` (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(255), email varchar(255) UNIQUE, password varchar(255), passwordSalt varchar(512), posts int, joined varchar(255))');
     //create test rows
     let rows = [
-      ['Danny', 'dannydaley@outlook.com', '87a3076ac12037bb393584b1bc2497e71c6845c17aa6a9826152d3f69875de9289b30d4df75e844872175cfec1793dd7eccbf3f9669a11b05665ee0246e384d0','741461f3d0c446c1fde2b9c88df4d27593fad72af347cbd8773bc24971b2490622fae43cc7310d0b226254b70c83550d4c09c387fedd5622deb84e606cc3aa9d9036e27649d2bd9ebdf7e4a5b5c61371b65685fabf87c3838f2dacc7ebaecd7c7748503c1dec6665c54414a182d038ffb3b2dcf957a2397b02d06a97320cdee1db7932779a3a32058b62d796b0aa5a493018fafd4a6bc00f54af1e8fa9af930965249d12dfc906c4dd99626513b9faf12f918c3934c0956843a57d583db22c4fd80e1ae49a5a050422498c73675d64a25da1c1f3e4972e348b96949d989f85410f6141b2bdd4c1ba8f2613b14ab437d6770ae658f8a82f692e45a2df05196ae1', 0, new Date()],
+      ['Danny', 'dannydaley@outlook.com', 'd7f9176e5c2556be83b64910f98b2dcb438d066d5c810f906759dfb78a2b2c774fd5b72f16b882a5f5f21bee14f9c246c670707f2187968895bc712b75b5b28c','ee117eba20cc04f06935a85fd0a742a90964c8091a617f09cf1e941147cecc13a1ef60b2791e334ba6c3c0f45b874a6318cdad11c25aa27e669111f5690e1013e5a7f6823bc150e44894e5fcca29c93410c38b650d1b1a03f04b75341cc66639075758bc17cfb1c0451ce9dc3a6de151dab05d41c7f94696a10f62aa9472672f2318a069f0a45b1f427bfd32c14b2b1844f6e229f31dc599687e9842fcd04ba2a5870a4b2f6b23925d2c7f89619bb4ba63db26a72a2a0e114365462bd85e95dcde740f1289ead64df802e58cbbbd1889598de0c4b65aa3a596e603d9bc8e69d248b872964baedfa7a7d6a5c5330c4a68f4d133ab125d90b23d5f19da32be1e27', 0, new Date()],
       ['Danny', 'dandaley@email.com', 'bedb5e0ea27c1bcdba8eab671909819673eb0c87bd9c47f61a4163b74f494bfd1f4c4dfef209df4f30f8baa7fd3867f92d706b4dc8b6ee699b021615e0a6e7e7','4aae2963b54bdf7aa63fa8a3a8af791ddbd3ee1f8a5f7169ee4cb2c107ddadc3b84310e9761e3bbac1572c7d264026200dcdb6c97e0b24bbe18542bc51a062e6be3deeb39b9a99ec964cba5cfcd340bf4b719d7cbc3ea8dc3c317592ed391771b279427d04c296c5be94c25ac828e6fa5906ac8b820d7611d85c836ac1ee4acd26496e4665bfa711361a13165bbecdb79afc47b70b46e9d05487ac01ad87249042e8d916b59e4231231550bca5e1f0e3b2ffad1d33edbbf10f69a350f6753c9b37665e468a5bfc275ba834474197a91c1dc2b9e1cfc4d4746e912bfd4cf404f9d34b560e3c23fdc56a0d78d3cadbf49b3c727c0fca7ac1a9eb6c7cd2d63a41da', 0, new Date()],
     ]
     rows.forEach( (row) => {
@@ -252,19 +229,6 @@ router.post('/test-delete', (req, res, next) => {
 })
 /////////////////////////////////////////////////////
 
-let newArray = {
-  "entries": [] 
-}
-
-function mostRecentFive() {
-  for (let i = 0; i < 5; i++){
-    newArray.entries.pop()    
-  }
-  for (let i = 0; i < 5; i++){
-    newArray.entries.push(postData.entries[i])    
-  }
-}
-
   /* GET home page. */
 router.get('/', function(req, res, next) {    
   let SQLdatabase = req.app.locals.SQLdatabase;
@@ -335,83 +299,47 @@ router.post('/login', (req, res, next) => {
   let data = req.body;
   let SQLdatabase = req.app.locals.SQLdatabase;
   let db = SQLdatabase;
-  const FIND_USER = "SELECT * FROM users WHERE email = ? AND password = ?"   
-    db.get(FIND_USER, [data.email, passwordHash(data.password, db.get("SELECT passwordSalt FROM users WHERE email = ?", [data.email], (err, row) => {
-            if (err) {
-              console.log("ERRRORRRR")
-              res.status(500).send(err); 
-            }
-            // console.log(row.passwordSalt);
-            return row.passwordSalt;
-          }))], (err, rows) => {  
+  const FIND_USER = "SELECT * FROM users WHERE email = ?"   
+    db.get(FIND_USER, [data.email], (err, rows) => {  
       if (err) {        
         found = false;
-        res.status(500).send(err);                 
-      }    
-      if (rows !== undefined){    
+        res.status(500).send(err);               
+      }      
+      if (rows !== undefined && rows.password === passwordHash(data.password, rows.passwordSalt)){    
         logInStatus = true;
         loggedIn = true;                  
         res.render('loggedIn', { title: 'You are logged in!' });  
       }
       else {
-        found = false;
-        console.log(JSON.stringify(passwordHash(data.password)))
+        found = false;        
         res.json("INVALID EMAIL OR PASSWORD");
       }       
     })   
 })
-// let validateSQLLogin = (request, data) => {
-//   let found = false;
-//   let SQLdatabase = request.app.locals.SQLdatabase;
-//   let db = SQLdatabase;
-//   const FIND_USER = "SELECT * FROM users WHERE email = ? AND password = ?"   
-//     db.get(FIND_USER, [data.email, passwordHash(data.password, db.get("SELECT passwordSalt FROM users WHERE email = ?", [data.email], (err, row) => {
-//       if (err) {
-//         console.log("fucked it")
-//         return;
-//       }
-//       console.log(row);
-//       return row;
-//     }))], (err, rows) => {        
-//       if (err) {        
-//         return found;                         
-//       }    
-//       if (rows !== undefined){    
-//         logInStatus = true;
-//         loggedIn = true;  
-//         found = true;
-//         return found;          
-//       }
-//       else {
-//         found = false;
-//         console.log(passwordHash(data.password, db.get("SELECT passwordSalt FROM users WHERE email = ?", [data.email], (err, row) => {
-//       if (err) {
-//         console.log("fucked it")
-//         return;
-//       }
-//       console.log(row);
-//       return row;
-//     })))
-//         res.json("INVALID EMAIL OR PASSWORD");
-//       }   
-//     })
-//     return found;
-// }
 
-/* POST login data to validate login page */
-// router.post('/login', (req, res, next) => {
-//   let request = req;
-//   let data = req.body;
-//     if (validateSQLLogin(request, data)) {
-//       res.render('loggedIn', { title: 'You are logged in!' });
-//     }
-//     res.json("INVALID EMAIL OR PASSWORD");
-// })
+//adds new user to user database
+router.post('/register', function (req, res, next) {
+  let { email, username, password1, password2 } = req.body; 
+  if (req.body.password1 === req.body.password2){    
+    // gensalt
+    let generateSalt = crypto.randomBytes(256).toString('hex');
+    let storePassword = passwordHash(password2, generateSalt);  
+    let SQLdatabase = req.app.locals.SQLdatabase;
+    let db = SQLdatabase;
+    db.run('INSERT INTO `users` (name, email, password, passwordSalt, posts, joined) VALUES(?, ?, ?, ?, ?, ?)',[username, email, storePassword, generateSalt, 0, new Date()], function(err, result) {
+      if (err) {
+        res.status(500).send(err.message);
+        return;
+      }  
+       res.render('user-db-done', {  "changes": this.changes })     
+    })
+  }
+});
+
 /*GET logged in page (dashboard) */
 router.get('/loggedIn', function(req, res, next) {
   res.render('loggedIn', { title: 'logged in ' });
 });
-
 /*GET new post form page */
 router.get('/newPost', function(req, res){
   res.render('newPost', { title: 'new post!' });
@@ -430,117 +358,11 @@ router.post('/newPost', function (req, res, next) {
   image: image,
   content: content,        
   date: new Date()
-  });
-  console.log(postData.entries.length)
+  });  
   res.render('blog', postData);   
 });
 router.get('/register', function (req, res, next) {
   res.render('register')
 })
-//adds new user to user database
-// router.post('/register', function (req, res, next) {
-//   let { email, username, password1, password2 } = req.body; 
-//   if (req.body.password1 === req.body.password2){
-//     let storeEmail = emailHash(email);
-//     let storePassword = passwordHash(password2);
-//     userDatabase.users.push({
-//     id: userDatabase.users.length,
-//     name: username,
-//     email: storeEmail,
-//     password: storePassword,
-//     posts: 0,
-//     joined: new Date()
-//       })
-//       console.log(userDatabase.users)
-//   res.render('index');
-//     }
-//     else {
-//       res.render('register');
-//     }
-// });
 
 module.exports = router;
-
-
-//SECURITY STUFF
-
-// let loggedIn = false;
-
-// let crypto = require('crypto');
-// const { debugPort } = require('process');
-
-// const iterations = 1000;
-
-// const hashSize = 64;
-
-// const hashAlgorithm = 'sha256';
-
-// const pepper = crypto.randomBytes(256).toString('hex'); // NOT USED BUT THIS IS HOW A RANDOM PEPPER WOULD WORK.
-
-//need to change the salt
-// function emailHash(theEmail) {
-//   return crypto.pbkdf2Sync(theEmail, 'PEPPERRRRR', iterations, hashSize, hashAlgorithm).toString('hex');
-// }
-
-
-
-// function validateLoginData(data) { 
-//   let found = false;
-//   for (let i = 0; i < userDatabase.users.length; i++) {
-//       console.log(passwordHash(data.password, userDatabase.users[i].passwordSalt));
-//       console.log(userDatabase.users[i].password)                
-//     if (emailHash(data.email) === userDatabase.users[i].email && passwordHash(data.password, userDatabase.users[i].passwordSalt) === userDatabase.users[i].password) {  
-  
-//       found = true;
-//     } 
-//   }
-//   return found
-// }
-
-// ///////////////////////////////////////////
-// /* POST login data to validate login page */
-// router.post('/login', function(req, res, next){
-//   if (validateLoginData(req.body)) {    
-//     logInStatus = true;
-//     loggedIn = true;
-//     res.render('loggedIn', { title: 'You are logged in!' });
-//   } else {
-//     res.status(400).json("failed credentials");
-//   };
-// })
-
-//adds new user to user database
-router.post('/register', function (req, res, next) {
-  let { email, username, password1, password2 } = req.body; 
-  if (req.body.password1 === req.body.password2){
-    let storeEmail = emailHash(email);
-    // gensalt
-    let generateSalt = crypto.randomBytes(256).toString('hex');
-    let storePassword = passwordHash(password2, generateSalt);  
-    let SQLdatabase = req.app.locals.SQLdatabase;
-    let db = SQLdatabase;
-    db.run("INSERT INTO users VALUES(?,?,?,?,?,?", [username, email, storePassword, generateSalt, 0, new Date()], function(err, result) {
-      if (err) {
-        res.status(500).send(err.message);
-        return;
-      }  
-       res.render('user-db-done', {  "changes": this.changes })     
-    })}});
-  
-//     userDatabase.users.push({
-//     id: userDatabase.users.length,
-//     name: username,
-//     email: email,
-//     password: storePassword,
-//     passwordSalt: generateSalt,
-//     posts: 0,
-//     joined: new Date()
-//       })
-
-//       console.log(JSON.stringify(userDatabase))
-//       res.render('index');
-//     }
-//     else {
-//       res.render('register');
-//     }
-// });
