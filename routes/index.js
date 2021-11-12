@@ -32,13 +32,13 @@ function emailHash(theEmail) {
   return crypto.pbkdf2Sync(theEmail, 'SALTYYY', iterations, hashSize, hashAlgorithm).toString('hex');
 }
 
-function passwordHash(thePassword) {
-return crypto.pbkdf2Sync(thePassword, 'SALTYYY', iterations, hashSize, hashAlgorithm).toString('hex');
-}
+// function passwordHash(thePassword) {
+// return crypto.pbkdf2Sync(thePassword, 'SALTYYY', iterations, hashSize, hashAlgorithm).toString('hex');
+// }
 
-// function passwordHash(thePassword, saltGenerator) {
-//   return crypto.pbkdf2Sync(thePassword, 'PEPPERRRRR' + saltGenerator, iterations, hashSize, hashAlgorithm).toString('hex');
-//   }
+function passwordHash(thePassword, saltGenerator) {
+  return crypto.pbkdf2Sync(thePassword, 'PEPPERRRRR' + saltGenerator, iterations, hashSize, hashAlgorithm).toString('hex');
+  }
 
 function validateLoginData(data) { 
   let found = false;
@@ -71,7 +71,7 @@ router.get('/SQLDatabaseUserSetup', (req, res, next) => {
     SQLdatabase.run('CREATE TABLE `users` ( id int, name varchar(255), email varchar(255), password varchar(255), passwordSalt varchar(512), posts int, joined varchar(255))');
     //create test rows
     let rows = [
-      [123, 'Danny', 'dannydaley@outlook.com', 'b0e0e29c3056b75cd446cf82fc55140db03e837e03cfa4a2bf03ce328474d2d331d2c0ed5e9c8dbb7d66b56b1b640c4c0e2edc7b392f52d23755b121584474fd','31512aede806f550da4907421501a9d3bd2606e4937ca5e24c28de9d759c63795093785f5e5a41fc40be98aba7058831858377fe8fb1856691ade83b221eefe34405d6f7244858cd1822db38a530001827f6c64cf5528fcec64d28547a4e2f33a808a056bd5ff88b3dbea42559a8625cc7f85593ddd1b912e469f3dabf2c6e07b0e1dfebaf3262a9af4f2b322f3375c5b63fdb2e85a91f3ecc9e592bab761c46f3d38e1dc857407945231d2fa6f11013ee5c97aac45393f230566a07158284ec194171f1d440be45fbf800449e856d6bbadfe37489d3c3e82716ea54cc40d142fc8c43247bc2c6028053c79edd5c52cac8286b506f6b8b8a44120242589df15c', '0', 'new Date()'],
+      [123, 'Danny', 'dannydaley@outlook.com', '87a3076ac12037bb393584b1bc2497e71c6845c17aa6a9826152d3f69875de9289b30d4df75e844872175cfec1793dd7eccbf3f9669a11b05665ee0246e384d0','741461f3d0c446c1fde2b9c88df4d27593fad72af347cbd8773bc24971b2490622fae43cc7310d0b226254b70c83550d4c09c387fedd5622deb84e606cc3aa9d9036e27649d2bd9ebdf7e4a5b5c61371b65685fabf87c3838f2dacc7ebaecd7c7748503c1dec6665c54414a182d038ffb3b2dcf957a2397b02d06a97320cdee1db7932779a3a32058b62d796b0aa5a493018fafd4a6bc00f54af1e8fa9af930965249d12dfc906c4dd99626513b9faf12f918c3934c0956843a57d583db22c4fd80e1ae49a5a050422498c73675d64a25da1c1f3e4972e348b96949d989f85410f6141b2bdd4c1ba8f2613b14ab437d6770ae658f8a82f692e45a2df05196ae1', '0', 'new Date()'],
       [124, 'Danny', 'dandaley@email.com', 'bedb5e0ea27c1bcdba8eab671909819673eb0c87bd9c47f61a4163b74f494bfd1f4c4dfef209df4f30f8baa7fd3867f92d706b4dc8b6ee699b021615e0a6e7e7','4aae2963b54bdf7aa63fa8a3a8af791ddbd3ee1f8a5f7169ee4cb2c107ddadc3b84310e9761e3bbac1572c7d264026200dcdb6c97e0b24bbe18542bc51a062e6be3deeb39b9a99ec964cba5cfcd340bf4b719d7cbc3ea8dc3c317592ed391771b279427d04c296c5be94c25ac828e6fa5906ac8b820d7611d85c836ac1ee4acd26496e4665bfa711361a13165bbecdb79afc47b70b46e9d05487ac01ad87249042e8d916b59e4231231550bca5e1f0e3b2ffad1d33edbbf10f69a350f6753c9b37665e468a5bfc275ba834474197a91c1dc2b9e1cfc4d4746e912bfd4cf404f9d34b560e3c23fdc56a0d78d3cadbf49b3c727c0fca7ac1a9eb6c7cd2d63a41da', '0', 'new Date()'],
     ]
     rows.forEach( (row) => {
@@ -337,7 +337,14 @@ router.post('/login', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
   let db = SQLdatabase;
   const FIND_USER = "SELECT * FROM users WHERE email = ? AND password = ?"   
-    db.get(FIND_USER, [data.email, passwordHash(data.password)], (err, rows) => {        
+    db.get(FIND_USER, [data.email, passwordHash(data.password, db.get("SELECT passwordSalt FROM users WHERE email = ?", [data.email], (err, row) => {
+            if (err) {
+              console.log("ERRRORRRR")
+              res.status(500).send(err); 
+            }
+            // console.log(row.passwordSalt);
+            return row.passwordSalt;
+          }))], (err, rows) => {  
       if (err) {        
         found = false;
         res.status(500).send(err);                 
@@ -521,6 +528,7 @@ router.post('/register', function (req, res, next) {
     posts: 0,
     joined: new Date()
       })
+
       console.log(JSON.stringify(userDatabase))
       res.render('index');
     }
