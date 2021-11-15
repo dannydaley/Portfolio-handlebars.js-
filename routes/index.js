@@ -257,7 +257,6 @@ router.get('/', function(req, res, next) {
     res.render('index', { "rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });  
   })
 })
-
 /* GET work SQL page */
 router.get('/blog', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
@@ -299,8 +298,15 @@ router.get('/login', function(req, res, next) {
   /* GET logOut page. */
 router.get('/logOut', function(req, res, next) {
   isLoggedIn = false;
-  res.render('index', {"rows": rows, loggedIn: changeNavLoginButton(isLoggedIn)});
-});
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  SQLdatabase.all(GET_RECENT_POSTS, [], (err, rows) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }    
+    res.render('index', { "rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });  
+  })
+})
 /* GET name page (comp 280 handlebars variable tutorial) */
 router.get('/name', function(req, res, next) {
   res.render('name', { name: req.query.name, loggedIn: changeNavLoginButton(isLoggedIn) });
