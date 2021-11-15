@@ -134,6 +134,20 @@ router.post('/newBlogPost', (req, res, next) => {
     res.render("blog-db-done");
   })
 })
+
+const BLOG_DELETE_POST = "DELETE FROM `blog` WHERE title = ?";
+router.post('/post-delete', (req, res, next) => {
+  var form = req.body;
+  let db= req.app.locals.SQLdatabase;
+  var postToDelete = form.deleteThisPost;
+  db.run(BLOG_DELETE_POST, postToDelete, function(err, result) {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }  
+     res.render('blog-db-done', { "changes": this.changes })
+   })
+})
 //////////////////////////////////// WORKSHOP STUFF //////////////////////////////////////////////////////////////
 router.get('/setup', (req, res, next) => {
   let db = req.app.locals.db;

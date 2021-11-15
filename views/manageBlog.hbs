@@ -37,7 +37,14 @@
                         <textarea type="text" name="content" rows="10" cols="100">{{this.content}}</textarea>
                         <input class="updateButton" type="submit" value="Update" />
                     </div>
-                </form>         
+                </form>
+                <form action="/post-delete" method="post">
+                    <label for="deleteThisPost">delete this post? write post title to confirm</label>
+                    <input name="deleteThisPost" type="text" pattern="{{title}}" placeholder="post title" />
+                    <label for="confirmDeletePost"></label>
+                    <input type="checkbox" required />
+                    <input type="submit" value="delete post" />
+                </form>
             </div>
             <!-- UPDATE BLOG FORM END -->
         </div>
