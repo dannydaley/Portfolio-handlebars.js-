@@ -8,12 +8,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;  
 }
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
 
 /*NAV START*/
 #navbar {
@@ -24,8 +22,7 @@ code {
   top:0;
   display: flex;
   width: 100%;
-  justify-content: flex-end;
-  
+  justify-content: flex-end;  
 }
 nav ul {
   list-style: none;
@@ -88,19 +85,6 @@ font-size: 32px;
 font-size: 0.5em;
 margin-left: -3%;
 }
-/*
-@media (max-width: 700px) {
-#welcome-section {
-  height: 70vh;
-}
-#welcome-section .title-under{
-  display: block;
-  font-size: 4vw;
-  margin-left: 20%;
-  margin-top: -4%;    
-  }
-}
-*/
 .flashingLight {
  text-shadow: 0px 0px 10px aqua, 0px 0px 30px aqua;
  font-size: 32px;
@@ -225,13 +209,11 @@ margin-left: -3%;
     }
     99% {
       opacity: 0;
-    }
-    
+    }    
     100% {        
       opacity: 1;
     }
 }
-
 @media (max-width: 700px) { /*IPHONE 11*//*
 #welcome-section {
   height: 400px
@@ -269,7 +251,6 @@ margin-left: -3%;
 }
 /* WELCOME END */
 
-
 #projects {
   padding: 30vh 0px 50px 0px;
   background-image: linear-gradient(180deg, black, #303841, black);
@@ -279,8 +260,6 @@ margin-left: -3%;
   flex-wrap: wrap;
   width: 100%;  
 }
-
-
 .seeMore {
     background-color: black;
   color: aqua;
@@ -296,13 +275,12 @@ margin-left: -3%;
 .seeMore a {
   color: aqua;
 }
-
 .seeMore li:hover {
   cursor: pointer;
 }
-
 @media (max-width: 900px) {
-  #projects {
+  #projects {    
+    background-color: green;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -318,7 +296,6 @@ margin-left: -3%;
   padding: 25vh 0 50px 0;
 }
 }
-
 @media (max-width: 500px) {
 #projectsSection {
   padding: 10px;
@@ -351,7 +328,6 @@ margin-left: -3%;
   transform: scale(1.1);
   z-index: 1;
 }
-
 .project-slide {
   /* background-color: rgb(82, 82, 82); */
   padding: 20px;
@@ -368,14 +344,12 @@ margin-left: -3%;
   width: 27vw;
   height: 20vw;
 }
-
 .projInfo p {
   font-size: 25px;
   color: aqua;
   padding: 20px;
   width: 80%;
 }
-
 @media (max-width: 900px) {
   .project-tile {
     width: 60vw;
@@ -384,7 +358,6 @@ margin-left: -3%;
       width: 100%;
     height: 100%;
   }
-
   .project-slide {
     text-align: center;
     flex-direction: column;
@@ -399,8 +372,7 @@ margin-left: -3%;
   }
   .project-slide img {
     width: 60vw;
-    height: auto;
-    
+    height: auto;    
   }
 }  
 @media (max-width: 500px) {
@@ -445,7 +417,6 @@ margin-left: -3%;
 }
 .emailicon {
   margin-right: 10px;
-
 }
 #email_link a {
   color: aqua;
@@ -471,8 +442,7 @@ footer {
   background-color: aqua;
   padding: 10px;
   text-align: center;
-  margin-top: 20vh;
-  
+  margin-top: 20vh;  
   }
 footer a, footer {
   padding: 10px 50px;
@@ -487,47 +457,44 @@ footer a, footer {
 }
 /* FOOTER END */
 
-
-
 /* LOG IN CARD */
-
 .login-card {
   font-size: 30pt;
   color: aqua;
   background-color: rgba(82, 82, 82, 0.31);
-  padding: 30px 100px 30px 170px;
-  margin: 0vh 29vw ;
-  margin-top: 100px;
-  width: 25vw;  
+  width: 45vw;
+  margin: 150px auto 0;
+  padding: 5%;
 }
-
+.login-card-text { 
+  margin-bottom: 25px;
+  }
 .login-card form {  
-  margin: 80px 60px;
+  margin: 0 auto;
+  width: 75%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   text-align: end;
 }
-
 .login-label {
   vertical-align: middle;
   font-size: 22pt;  
-  margin-bottom: 20px;
-  margin-right: 10px;  
+  margin-bottom: 20px;  
 }
-
 .username-container, .password-container  {
-  width: 350px;
+  width: 90%;
   display: flex;    
   justify-content: space-between;
+  margin: 0 auto;
 }
-
 .login-field {
   height: 30px; 
+  width: 50%;
 }
-
 .login-button, .register-button {
-  margin-top: 50px;
-  align-self: end;
+  margin: 20px;
+  /* align-self: end; */
   width: 100px;
   border-radius: 10px;
   border: 3px solid black;
@@ -537,6 +504,72 @@ footer a, footer {
   color: white;
   height:50px;
 }
+.form-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  margin: 0 auto;
+}
+@media (max-width: 950px) {
+  .login-card 
+  {
+    font-size: 30pt;
+    color: aqua;
+    background-color: rgba(82, 82, 82, 0.31);
+    width: 75vw; margin: 150px auto 0;
+    padding: 50px;
+  }
+  .login-card-text { 
+    margin-bottom: 25px;
+    }
+  .login-card form {  
+    margin: 0 auto;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: end;
+  }
+  
+  .login-label {
+    vertical-align: middle;
+    font-size: 22pt;  
+    margin-bottom: 20px;    
+  }
+  
+  .username-container, .password-container  {
+    width: 80%;
+    display: flex;    
+    justify-content: space-between;
+  }
+  .login-field {
+    height: 30px; 
+    width: 50%;
+  }
+  
+  .login-button, .register-button {
+    margin: 20px;
+    /* align-self: end; */
+    width: 100px;
+    border-radius: 10px;
+    border: 3px solid black;
+    background-color: aqua;
+    font-weight: bold;
+    font-size: 16pt;;
+    color: white;
+    height:50px;
+  }
+  .form-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+}
+}
 /* LOG IN PAGE END */
 
 /* LOGGED IN START */
@@ -545,12 +578,11 @@ footer a, footer {
   background-color: rgba(82, 82, 82, 0.31);
   padding: 20px;
   margin: 100px;
+  margin-top: 150px;
 }
-
 .login-welcome h1 {
   margin-left: 2vw;
 }
-
 .post-manager {
   display: flex;
   flex-direction: column;
@@ -559,17 +591,13 @@ footer a, footer {
   margin-left: -22px;
   margin: 50px 0 80px -22px;
 }
-
 .post-manager ul {
   list-style-type: none;  
 }
-
 .post-manager a, .post-manager a:visited {
   color:aqua;
   text-decoration: none;
 }
-
-
 .UI-option {
   background-color: rgba(90, 90, 90, 0.438);
   font-size: 22pt;
@@ -580,13 +608,22 @@ footer a, footer {
   border: 3px solid black;
   width: 400px;  
 }
+@media (max-width: 900px) {
 
+}
+@media (max-width: 600px) {
+
+}
+@media (max-width: 500px) {
+
+}
 /* LOGGED IN PAGE END */
-
 
 .testPage {
   color: aqua;
 }
+
+/* BLOG SECTION STYLING */
 #projectsSection {
   padding: 200px 0 100px;
   display: flex;
@@ -613,6 +650,11 @@ footer a, footer {
 .projectTags a {
   color:black;
 }
+
+/* END BLOG SECTION STYLING */
+
+
+/* NEW POST FORM START */
 .new-post-form {
   margin: 265px auto;
   background-color: rgba(82, 82, 82, 0.31);
@@ -623,7 +665,6 @@ footer a, footer {
   align-content: center;
   justify-content: center;
 }
-
 .content-field {
   display: flex;
   margin: 20px 20px 20px 0px;
@@ -633,60 +674,27 @@ textarea {
   font-weight: bold;
   color: black;
   padding: 3px 5px;
-  margin: 0px 5px;
-  
+  margin: 0px 5px;  
 }
-
-
-.donePage {
-  width: 100%;
-  height: 75.5vh;
-  display:flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 50px;
-}
-.donePage h1 {
-  font-size: 100px;
-}
-.donePage pre {
-  font-weight: bold;
-}
-.donePage a {
-  
-  font-weight: bold;
-  color: aqua
-}
-.donePage a:visited {
-  
-  font-weight: bold;
-  color: aqua;
-}
-
-
-.testDbCard {
-  background-color: rgba(82, 82, 82, 0.31);
-  /* width: 90vw; */
-  margin: 200px 10vw;
-  padding: 50px;
-}
-.testDbCard h1 {
-  font-size: 50px;
-}
-.testDbCard input {
-  padding: 5px;;
-}
-.testDbCard .updateButton {
+.updateButton {
   border-radius: 5px;
   background-color: aqua;
   color: white;
   padding: 5px;
   font-weight: bold;
 }
+@media (max-width: 900px) {
 
+}
+@media (max-width: 600px) {
 
+}
 
+@media (max-width: 500px) {
+
+}
+
+/* NEW POST FORM END */
 
 /* UPDATE BLOG FORM */
 .updateBlogPost {
@@ -719,4 +727,75 @@ textarea {
 .postContent .updateButton {
   height: 50px;
 }
+
+@media (max-width: 900px) {
+
+}
+@media (max-width: 600px) {
+
+}
+
+@media (max-width: 500px) {
+
+}
 /* UPDATE BLOG FORM END*/
+
+/* CONFIRMATION PAGES */
+
+.donePage {
+  width: 100%;
+  height: 75.5vh;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
+}
+.donePage h1 {
+  font-size: 100px;
+}
+.donePage pre {
+  font-weight: bold;
+}
+.donePage a {
+  
+  font-weight: bold;
+  color: aqua
+}
+.donePage a:visited {
+  
+  font-weight: bold;
+  color: aqua;
+}
+
+.testDbCard {
+  background-color: rgba(82, 82, 82, 0.31);
+  /* width: 90vw; */
+  margin: 200px 10vw;
+  padding: 50px;
+}
+.testDbCard h1 {
+  font-size: 50px;
+}
+.testDbCard input {
+  padding: 5px;;
+}
+.testDbCard {
+  border-radius: 5px;
+  background-color: aqua;
+  color: white;
+  padding: 5px;
+  font-weight: bold;
+}
+@media (max-width: 900px) {
+
+}
+@media (max-width: 600px) {
+
+}
+
+@media (max-width: 500px) {
+
+}
+
+/* CONFIRMATION PAGES END */

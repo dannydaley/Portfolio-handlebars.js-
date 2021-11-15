@@ -10,12 +10,6 @@ let userDatabase = require("../userDatabase.json");
 
 let postData = require("../public/posts.json");
 
-
-
-///////////////////////////////////////////
-
-//SECURITY STUFF
-
 let isLoggedIn = false;
 
 let changeNavLoginButton = (loggedInStatus) => {
@@ -25,7 +19,12 @@ let changeNavLoginButton = (loggedInStatus) => {
     return "log in"
   }
 }
+
+///////////////////////////////////////////
+//SECURITY STUFF
+
 let crypto = require('crypto');
+
 const { debugPort } = require('process');
 
 const iterations = 1000;
@@ -34,11 +33,12 @@ const hashSize = 64;
 
 const hashAlgorithm = 'sha256';
 
-const salt = crypto.randomBytes(256).toString('hex');
-
 function passwordHash(thePassword, theSalt) {
-  return crypto.pbkdf2Sync(thePassword, 'PEPPERRRRR' + theSalt, iterations, hashSize, hashAlgorithm).toString('hex');
-  }
+  //generatePepper = crypto.randomBytes(256).toString('hex');
+  const pepper = '6982cdde8310b6e9db3ead1798838ee72373be2a742cf69c17376c753976712e9fba11f4b4f225f82ea3a36afd903603ea96f2434e505ae2441094058d605d201470a388556bbdd5903dd081ba183d06f6fb11de85464f30770a9dd6ecee8e472d56295872692f092f90c835aecd0ae45bc0c0dd7acfa730a65ef9493ea8228d5a870d52488bfa5462d25093926ba7137f63975c71e6fc92851bc99c81f4ffc3c1408e4803f07940f704b942d979d6050f9e9c580b6f8820d992e290104fcdfe813e9cc60a351c2022cb2c9b6cb97c6c44dbac11b75463907817740ab3b312c597bd83ef128525c61495a3656c9ee08bd587c60def2e0d8a2100c1b34dbe7528';
+  return crypto.pbkdf2Sync(thePassword, pepper + theSalt, iterations, hashSize, hashAlgorithm).toString('hex');
+}
+
 /////////////////////////////////////// SQL DATABASE STUFF /////////////////////////////////////////////
 
 const GET_ALL_POSTS = "SELECT * FROM blog ORDER BY id DESC"; // SQL command
@@ -57,7 +57,7 @@ router.get('/SQLDatabaseUserSetup', (req, res, next) => {
     SQLdatabase.run('CREATE TABLE `users` (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(255), email varchar(255) UNIQUE, password varchar(255), passwordSalt varchar(512), posts int, joined varchar(255))');
     //create test rows
     let rows = [
-      ['Danny', 'dannydaley@outlook.com', 'd7f9176e5c2556be83b64910f98b2dcb438d066d5c810f906759dfb78a2b2c774fd5b72f16b882a5f5f21bee14f9c246c670707f2187968895bc712b75b5b28c','ee117eba20cc04f06935a85fd0a742a90964c8091a617f09cf1e941147cecc13a1ef60b2791e334ba6c3c0f45b874a6318cdad11c25aa27e669111f5690e1013e5a7f6823bc150e44894e5fcca29c93410c38b650d1b1a03f04b75341cc66639075758bc17cfb1c0451ce9dc3a6de151dab05d41c7f94696a10f62aa9472672f2318a069f0a45b1f427bfd32c14b2b1844f6e229f31dc599687e9842fcd04ba2a5870a4b2f6b23925d2c7f89619bb4ba63db26a72a2a0e114365462bd85e95dcde740f1289ead64df802e58cbbbd1889598de0c4b65aa3a596e603d9bc8e69d248b872964baedfa7a7d6a5c5330c4a68f4d133ab125d90b23d5f19da32be1e27', 0, new Date()],
+      ['Danny', 'dannydaley@outlook.com', '493509dac1a23de8901b9564acea549d6d9d3ae960062978d90feef9bd77f2b4399a61bc396389119fbb7069f2dac7520497dc8ac733a98b4a734af8e4cf4883','8dc317df7da5cbc21859fe9e3fa07cb9cc81bbd1d58da2747d4282c4d9abbf2f372a8c73f68b7ef323a08b98da1401d8b639b1310f8094c7a1950e4a85300f70f7a92536b4b1a860bf759128ac9632b807100f48af7f906fbf14d27f4a16293eccb024f5182db76f356a3644a4c542ff35a17bd3a7b19a757a2fa318fbd3a45e62129a10fa481503233e9a998518b91430244157e328e7129c84a0d478e7d3c2360f0357d5b1a64d0d70de494436dcb84798bf8b629ee2089683e1b5d4faca23b1c5c43d031928684be00ce96b42a73269ddadf688c6737458642b5100d9db29be6594f327f4b44234786ecd407b2c98e52d766439e7742ac937ca58811b284c', 0, new Date()],
       ['Danny', 'dandaley@email.com', 'bedb5e0ea27c1bcdba8eab671909819673eb0c87bd9c47f61a4163b74f494bfd1f4c4dfef209df4f30f8baa7fd3867f92d706b4dc8b6ee699b021615e0a6e7e7','4aae2963b54bdf7aa63fa8a3a8af791ddbd3ee1f8a5f7169ee4cb2c107ddadc3b84310e9761e3bbac1572c7d264026200dcdb6c97e0b24bbe18542bc51a062e6be3deeb39b9a99ec964cba5cfcd340bf4b719d7cbc3ea8dc3c317592ed391771b279427d04c296c5be94c25ac828e6fa5906ac8b820d7611d85c836ac1ee4acd26496e4665bfa711361a13165bbecdb79afc47b70b46e9d05487ac01ad87249042e8d916b59e4231231550bca5e1f0e3b2ffad1d33edbbf10f69a350f6753c9b37665e468a5bfc275ba834474197a91c1dc2b9e1cfc4d4746e912bfd4cf404f9d34b560e3c23fdc56a0d78d3cadbf49b3c727c0fca7ac1a9eb6c7cd2d63a41da', 0, new Date()],
     ]
     rows.forEach( (row) => {
@@ -254,7 +254,7 @@ router.get('/', function(req, res, next) {
       res.status(500).send(err.message);
       return;
     }    
-    res.render('index', { "rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });
+    res.render('index', { "rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });  
   })
 })
 
@@ -336,6 +336,10 @@ router.post('/register', function (req, res, next) {
     let storePassword = passwordHash(password2, generateSalt);  
     let SQLdatabase = req.app.locals.SQLdatabase;
     let db = SQLdatabase;
+    console.log("STOORREEDDD")
+    console.log(storePassword)
+    console.log("SSAALLTT");
+    console.log(generateSalt);
     db.run('INSERT INTO `users` (name, email, password, passwordSalt, posts, joined) VALUES(?, ?, ?, ?, ?, ?)',[username, email, storePassword, generateSalt, 0, new Date()], function(err, result) {
       if (err) {
         res.status(500).send(err.message);
