@@ -131,7 +131,7 @@ router.post('/newBlogPost', (req, res, next) => {
       res.status(500).send(err.message);
       return;
     }
-    res.render("blog-db-done");
+    res.render("blog-db-done",{ loggedIn: changeNavLoginButton(isLoggedIn) });
   })
 })
 
@@ -145,7 +145,7 @@ router.post('/post-delete', (req, res, next) => {
       res.status(500).send(err.message);
       return;
     }  
-     res.render('blog-db-done', { "changes": this.changes })
+     res.render('blog-db-done', { "changes": this.changes, loggedIn: changeNavLoginButton(isLoggedIn) })
    })
 })
 //////////////////////////////////// WORKSHOP STUFF //////////////////////////////////////////////////////////////
@@ -231,6 +231,8 @@ router.post('/test-add', (req, res, next) => {
      res.render('test-db-success', {  "params": params, "changes": this.changes })
    })
 })
+
+
 const SQL_DELETE_TEST = "DELETE FROM `test` WHERE name = ?";
 router.post('/test-delete', (req, res, next) => {
   var form = req.body;
