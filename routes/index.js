@@ -5,12 +5,16 @@ let express = require('express');
 let { MethodNotAllowed } = require('http-errors');
 
 let router = express.Router();
+var multer  = require('multer');
 
-let userDatabase = require("../userDatabase.json");
+
 
 let postData = require("../public/posts.json");
 
 let isLoggedIn = false;
+let name = 'User';
+
+var fs = require('fs');
 
 let changeNavLoginButton = (loggedInStatus) => {
   if (loggedInStatus) {
@@ -64,7 +68,7 @@ router.get('/SQLDatabaseUserSetup', (req, res, next) => {
       SQLdatabase.run('INSERT INTO `users` (name, email, password, passwordSalt, posts, joined) VALUES(?, ?, ?, ?, ?, ?)', row);
     });
   })
-  res.render("user-db-done");
+  res.render("user-db-done", { loggedIn: changeNavLoginButton(isLoggedIn) });
 })
 router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
@@ -88,8 +92,9 @@ router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
       SQLdatabase.run('INSERT INTO `blog` VALUES(?,?,?,?,?,?,?)', row);
     });
   })
-  res.render("blog-db-done");
+  res.render("blog-db-done", { loggedIn: changeNavLoginButton(isLoggedIn) });
 })
+
 router.get('/manageBlog', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
   SQLdatabase.all(GET_ALL_POSTS, [], (err, rows) => {
@@ -100,6 +105,7 @@ router.get('/manageBlog', (req, res, next) => {
     res.render('manageBlog', { "rows": rows,  loggedIn: changeNavLoginButton(isLoggedIn) });
   })
 })
+
 router.post('/manageBlog', (req, res, next) => {
   var form = req.body;
   let SQLdatabase = req.app.locals.SQLdatabase;
@@ -118,13 +124,15 @@ router.post('/manageBlog', (req, res, next) => {
       res.status(500).send(err.message)
       return;
     }    
-    res.render("blog-db-done");
+    res.render("blog-db-done", { loggedIn: changeNavLoginButton(isLoggedIn) });
   })
 })
 router.post('/newBlogPost', (req, res, next) => {
   var form = req.body;
   let db = req.app.locals.SQLdatabase;
-  var params = [ form.author, form.title, form.image,  form.content, form.link, form.date];
+  let uploadedImage = form.imageUpload;
+  console.log(uploadedImage);
+  var params = [ form.author, form.title, form.image, form.content, form.link, form.date ];
   db.run(SQL_ADD_BLOG_POST, params, function(err, result) {
     console.log(form)
     if (err) {
@@ -167,7 +175,7 @@ router.get('/setup', (req, res, next) => {
       db.run('INSERT INTO `test` VALUES(?,?)', row);
     });
   })
-  res.render("test-db-done");
+  res.render("test-db-done", { loggedIn: changeNavLoginButton(isLoggedIn) });
 })
 const SQL_GET_TEST = "SELECT * FROM test"; //sql command
 router.get('/test', (req, res, next) => {
@@ -283,16 +291,16 @@ router.get('/getAllUsers', (req, res, next) => {
 })
 /* GET workJSON page. */
 router.get('/blogJson', function(req, res, next) {
-  res.render('blogJson', postData);
+  res.render('blogJson', { postData, loggedIn: changeNavLoginButton(isLoggedIn) });
 });
 /* GET workXML page. */
 router.get('/blogXml', function(req, res, next) {
-  res.render('blogXml');
+  res.render('blogXml', { loggedIn: changeNavLoginButton(isLoggedIn) });
 });
 /* GET login page. */
 router.get('/login', function(req, res, next) {
   if (isLoggedIn) {
-    res.render('loggedIn', { title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });
+    res.render('loggedIn', { name: name, title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });
 }
   else {
     res.render('login', { title: 'Log in', loggedIn: changeNavLoginButton(isLoggedIn) });
@@ -309,10 +317,7 @@ router.get('/logOut', function(req, res, next) {
     res.render('index', { "rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });  
   })
 })
-/* GET name page (comp 280 handlebars variable tutorial) */
-router.get('/name', function(req, res, next) {
-  res.render('name', { name: req.query.name, loggedIn: changeNavLoginButton(isLoggedIn) });
-});
+
 /* POST login data to validate login page */
 router.post('/login', (req, res, next) => {
   let data = req.body;
@@ -325,9 +330,10 @@ router.post('/login', (req, res, next) => {
         res.status(500).send(err);               
       }      
       if (rows !== undefined && rows.password === passwordHash(data.password, rows.passwordSalt)){    
+        name = rows.name.toUpperCase()
         logInStatus = true;
         isLoggedIn = true;                  
-        res.render('loggedIn', { title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });  
+        res.render('loggedIn', { name: name, title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });  
       }
       else {
         found = false;        
@@ -365,22 +371,22 @@ router.get('/loggedIn', function(req, res, next) {
 router.get('/newPost', function(req, res){
   res.render('newPost', { title: 'new post!', loggedIn: changeNavLoginButton(isLoggedIn) });
 });
-//adds a new post to posts.json
-router.post('/newPost', function (req, res, next) {
-  let { title, content, author, image } = req.body;
-  if (image === ''){
-    image = '/images/d2.png'
-  }
-  postData.entries.unshift({
-  id: "p" + (postData.entries.length + 1),
-  author: author,
-  title: title,
-  image: image,
-  content: content,        
-  date: new Date()
-  });  
-  res.render('blog', postData);   
-});
+// //adds a new post to posts.json
+// router.post('/newPost', function (req, res, next) {
+//   let { title, content, author, image } = req.body;
+//   if (image === ''){
+//     image = '/images/d2.png'
+//   }
+//   postData.entries.unshift({
+//   id: "p" + (postData.entries.length + 1),
+//   author: author,
+//   title: title,
+//   image: image,
+//   content: content,        
+//   date: new Date()
+//   });  
+//   res.render('blog', postData);   
+// });
 router.get('/register', function (req, res, next) {
   res.render('register',{ loggedIn: changeNavLoginButton(isLoggedIn) })
 })

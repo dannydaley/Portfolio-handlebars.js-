@@ -2,10 +2,11 @@
     <form method="POST" action="/newBlogPost">
         <label for="author">author: </label>
         <input type="text" name="author">
-        <label for="title">title: </label>
+        <label for="title" required >title: </label>
         <input type="text" name="title">
         <label for="title">image: </label>
         <input type="text" name="image">
+        <input type="file" name="imageUpload" accept="image/png, image/jpeg">
         <label for="title">link: </label>
         <input type="text" name="link">
         <input type="date" name="date">
