@@ -99,7 +99,7 @@ router.get('/manageBlog', (req, res, next) => {
       res.status(500).send(err.message);
       return;
     }
-    res.render('manageBlog', { "rows": rows,  loggedIn: changeNavLoginButton(isLoggedIn) });
+    res.render('manageBlog', { title: "manage blog","rows": rows,  loggedIn: changeNavLoginButton(isLoggedIn) });
   })
 })
 
@@ -121,7 +121,7 @@ router.post('/manageBlog', (req, res, next) => {
       res.status(500).send(err.message)
       return;
     }    
-    res.render("blog-db-done", { loggedIn: changeNavLoginButton(isLoggedIn) });
+    res.render("blog-db-done", { title: "blog updated",loggedIn: changeNavLoginButton(isLoggedIn) });
   })
 })
 router.post('/newBlogPost', (req, res, next) => {
@@ -261,7 +261,7 @@ router.get('/', function(req, res, next) {
       res.status(500).send(err.message);
       return;
     }    
-    res.render('index', { "rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });  
+    res.render('index', { title: "dannydaley","rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });  
   })
 })
 /* GET work SQL page */
@@ -272,7 +272,7 @@ router.get('/blog', (req, res, next) => {
       res.status(500).send(err.message);
       return;
     }    
-    res.render('blog', { "rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });
+    res.render('blog', { title: "work", "rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });
   })
 })
 /* GET work SQL page */
@@ -288,11 +288,11 @@ router.get('/getAllUsers', (req, res, next) => {
 })
 /* GET workJSON page. */
 router.get('/blogJson', function(req, res, next) {
-  res.render('blogJson', { postData, loggedIn: changeNavLoginButton(isLoggedIn) });
+  res.render('blogJson', { title: "work.JSON",postData, loggedIn: changeNavLoginButton(isLoggedIn) });
 });
 /* GET workXML page. */
 router.get('/blogXml', function(req, res, next) {
-  res.render('blogXml', { loggedIn: changeNavLoginButton(isLoggedIn) });
+  res.render('blogXml', { title: "work.XML",loggedIn: changeNavLoginButton(isLoggedIn) });
 });
 /* GET login page. */
 router.get('/login', function(req, res, next) {
@@ -311,7 +311,7 @@ router.get('/logOut', function(req, res, next) {
       res.status(500).send(err.message);
       return;
     }    
-    res.render('index', { "rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });  
+    res.render('index', { title: "logged out","rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });  
   })
 })
 
@@ -347,16 +347,12 @@ router.post('/register', function (req, res, next) {
     let storePassword = passwordHash(password2, generateSalt);  
     let SQLdatabase = req.app.locals.SQLdatabase;
     let db = SQLdatabase;
-    console.log("STOORREEDDD")
-    console.log(storePassword)
-    console.log("SSAALLTT");
-    console.log(generateSalt);
     db.run('INSERT INTO `users` (name, email, password, passwordSalt, posts, joined) VALUES(?, ?, ?, ?, ?, ?)',[username, email, storePassword, generateSalt, 0, new Date()], function(err, result) {
       if (err) {
         res.status(500).send(err.message);
         return;
       }  
-       res.render('user-db-done', {  "changes": this.changes, loggedIn: changeNavLoginButton(isLoggedIn) })     
+       res.render('user-db-done', {  title: "registered","changes": this.changes, loggedIn: changeNavLoginButton(isLoggedIn) })     
     })
   }
 });
@@ -366,7 +362,7 @@ router.get('/loggedIn', function(req, res, next) {
 });
 /*GET new post form page */
 router.get('/newPost', function(req, res){
-  res.render('newPost', { title: 'new post!', loggedIn: changeNavLoginButton(isLoggedIn) });
+  res.render('newPost', { title: 'new post', loggedIn: changeNavLoginButton(isLoggedIn) });
 });
 // //adds a new post to posts.json
 // router.post('/newPost', function (req, res, next) {
@@ -385,6 +381,6 @@ router.get('/newPost', function(req, res){
 //   res.render('blog', postData);   
 // });
 router.get('/register', function (req, res, next) {
-  res.render('register',{ loggedIn: changeNavLoginButton(isLoggedIn) })
+  res.render('register',{ title: "register",loggedIn: changeNavLoginButton(isLoggedIn) })
 })
 module.exports = router;
