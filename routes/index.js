@@ -5,9 +5,6 @@ let express = require('express');
 let { MethodNotAllowed } = require('http-errors');
 
 let router = express.Router();
-var multer  = require('multer');
-
-
 
 let postData = require("../public/posts.json");
 
