@@ -17,7 +17,7 @@ const server = new webSocket.Server({
 })
 
 server.on('connection', function(socket){
-  socket.send('Hi User!');
+  socket.send('Welcome to DannyDaley.com');
 
   socket.on('message', function(message){
     console.log(message);
