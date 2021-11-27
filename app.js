@@ -16,13 +16,6 @@ const server = new webSocket.Server({
   port: 8080
 })
 
-server.on('connection', function(socket){
-  socket.send('Welcome to DannyDaley.com');
-
-  socket.on('message', function(message){
-    console.log(message);
-  })
-})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

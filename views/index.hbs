@@ -51,24 +51,3 @@
         <img alt="JavaScript Logo"class="js play" src="images/jslogo.png" height="100px" width="80px" />
     </div>
 </section>
-
-<script>
-    window.onload = function(){
-        let socket = new WebSocket("ws://localhost:8080");
-        socket.onopen = function(evt) {
-            console.log("client happened!");
-            socket.send("hi server!");
-        };
-        socket.onmessage = function(evt) {
-            console.log(evt);
-        };
-    }
-    let socket = new WebSocket("ws://localhost:8080");
-    socket.onopen = function(evt) {
-        console.log("client happened!");
-        socket.send("hi server!");
-    };
-    socket.onmessage = function(evt) {
-        console.log(evt);
-    };
-</script>
