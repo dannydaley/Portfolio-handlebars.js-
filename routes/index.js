@@ -45,7 +45,7 @@ function passwordHash(thePassword, theSalt) {
 const GET_ALL_POSTS = "SELECT * FROM blog ORDER BY id DESC"; // SQL command
 const GET_RECENT_POSTS = "SELECT * FROM blog ORDER BY id DESC LIMIT 5"; // SQL command
 const SQL_ADD_BLOG_POST = "INSERT INTO `blog` (author, title, image, content, link, date) VALUES(?,?,?,?,?,?)"
-const SQL_UPDATE_BLOG =  "UPDATE blog SET  title = ?, image = ?, link = ?, author = ?, date = ?, content = ? WHERE id = ?" //SQL command
+const SQL_UPDATE_BLOG =  "UPDATE `blog` SET title = ?, image = ?, link = ?, author = ?, date = ?, content = ? WHERE id = ?" //SQL command
 const GET_ALL_USERS = "SELECT * FROM users"; // SQL command
 
 /* Database setup endpoint */
@@ -77,13 +77,13 @@ router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
     SQLdatabase.run('CREATE TABLE `blog` ( id INTEGER PRIMARY KEY AUTOINCREMENT, author varchar(255), title varchar(255), image varchar(255), content varchar(2000), link varchar(255), date varchar(255) )');
     //create test rows
     let rows = [
-      [1, 'Danny', 'JavaScript Magic 8-ball', 'images/eightBall.png', 'Had some fun and made a small Magic 8-Ball web app using some basic HTML, CSS shapes and some simple JavaScript switch statement logic.', 'https://dannydaley.github.io/eightBall/', '28-2-2020'],
-      [2, 'Danny', 'Captive Design Studio', 'images/cap.png', 'I had a great time working on the Captive Design Studio site, the use of strong fonts and powerful colors was an absolute must to pull this design off and it came out looking fantastic. Definitely learned a lot about making an impact from this one.', 'https://dannydaley.github.io/captivedesign/', '15-3-2020'],
-      [3, 'Danny', 'Makkio Ikui', "images/makki.png", "Inspired by the Kawaii japanese art style, of course this website was a lot of fun to make, a great use of color in the design really made it pop. It came with its challenges, but its hard to stay frustrated when you're working with these kind of images.", 'https://dannydaley.github.io/makkioikui/', '29-4-2020'],
-      [4, 'Danny', 'Final Fantasy VII:R Product Page', 'images/7.png', 'Being a massive Final Fantasy fan, upon the release of FFVII:Remake I felt it was 100% necessary to make it the theme of my responsive web design submission for freeCodeCamp. I particularly enjoyed making a theme with a darker appeal, and using that very FF7 Mako green.', 'https://codepen.io/dannydaley/full/RwWdVEp', '8-5-2020'],
-      [5, 'Danny', 'SmartBrain - Face Recognition App', 'images/smartbrain.png', 'This face recognition app allows you to scan any image-link for faces within the picture, this is my first project fully leveraging an API, and a fully built back-end, allowing user registration, login and a rank based on how many images that user has entered. The data held within the database is secure, using encryption technologies such as Bcrypt.', 'https://smartbrain902101.herokuapp.com/', '17-9-2020'],
-      [6, 'Danny', 'Version 3 launched!', 'images/v3.png', "Getting well enough ahead on my university work left me with a good amount of time to build version 3 of my portfolio website. After learning the Wordpress content management system and having a reasonable amount of fun with PHP, everything is working better than ever and creating new posts has never been easier! With that out of the way I've already been thinking about getting some user registration involved so users will be able to comment on future posts and lots of cool things that. Stay tuned!",'#', '19-12-2020'],
-      [7, 'Danny', 'Unshore', 'images/unshorelogo2.png', "Unshore was a great game to work on for my first project in Falmouth University’s Games Academy. Taking the role of UI Programmer was a great chance to to have some some fun in the Unity game engine whilst being part of a multifaceted team. The theme we were given was Cornwall and “a famous dead person”, we figured that a dark horror styled game of chasing evil piskies around the island of Saint Michaels Mount while being hunted by King Arthurs ghost was pretty bang on.",'#', '28-2-2021']
+      [1, 'Danny', 'JavaScript Magic 8-ball', 'images/eightBall.png', 'Had some fun and made a small Magic 8-Ball web app using some basic HTML, CSS shapes and some simple JavaScript switch statement logic.', 'https://dannydaley.github.io/eightBall/', '2020-02-28'],
+      [2, 'Danny', 'Captive Design Studio', 'images/cap.png', 'I had a great time working on the Captive Design Studio site, the use of strong fonts and powerful colors was an absolute must to pull this design off and it came out looking fantastic. Definitely learned a lot about making an impact from this one.', 'https://dannydaley.github.io/captivedesign/', '2020-03-15'],
+      [3, 'Danny', 'Makkio Ikui', "images/makki.png", "Inspired by the Kawaii japanese art style, of course this website was a lot of fun to make, a great use of color in the design really made it pop. It came with its challenges, but its hard to stay frustrated when you're working with these kind of images.", 'https://dannydaley.github.io/makkioikui/', '2020-04-29'],
+      [4, 'Danny', 'Final Fantasy VII:R Product Page', 'images/7.png', 'Being a massive Final Fantasy fan, upon the release of FFVII:Remake I felt it was 100% necessary to make it the theme of my responsive web design submission for freeCodeCamp. I particularly enjoyed making a theme with a darker appeal, and using that very FF7 Mako green.', 'https://codepen.io/dannydaley/full/RwWdVEp', '2020-05-08'],
+      [5, 'Danny', 'SmartBrain - Face Recognition App', 'images/smartbrain.png', 'This face recognition app allows you to scan any image-link for faces within the picture, this is my first project fully leveraging an API, and a fully built back-end, allowing user registration, login and a rank based on how many images that user has entered. The data held within the database is secure, using encryption technologies such as Bcrypt.', 'https://smartbrain902101.herokuapp.com/', '2020-09-17'],
+      [6, 'Danny', 'Version 3 launched!', 'images/v3.png', "Getting well enough ahead on my university work left me with a good amount of time to build version 3 of my portfolio website. After learning the Wordpress content management system and having a reasonable amount of fun with PHP, everything is working better than ever and creating new posts has never been easier! With that out of the way I've already been thinking about getting some user registration involved so users will be able to comment on future posts and lots of cool things that. Stay tuned!",'#', '2020-12-19'],
+      [7, 'Danny', 'Unshore', 'images/unshorelogo2.png', "Unshore was a great game to work on for my first project in Falmouth University’s Games Academy. Taking the role of UI Programmer was a great chance to to have some some fun in the Unity game engine whilst being part of a multifaceted team. The theme we were given was Cornwall and “a famous dead person”, we figured that a dark horror styled game of chasing evil piskies around the island of Saint Michaels Mount while being hunted by King Arthurs ghost was pretty bang on.",'#', '2021-02-28']
     ]
     rows.forEach( (row) => {
       SQLdatabase.run('INSERT INTO `blog` VALUES(?,?,?,?,?,?,?)', row);
@@ -108,6 +108,7 @@ router.post('/manageBlog', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
   // do the validation
   var errors = [];
+  console.log(req.body)
   if (!form.title || !form.image || !form.link || !form.author || !form.date || !form.content){
     errors.push("Cannot have blank fields");
   }
@@ -115,7 +116,8 @@ router.post('/manageBlog', (req, res, next) => {
     res.status(400).send(errors);
     return;
   }
-  var params = [ form.id, form.author, form.title, form.image, form.content,form.link, form.date,  ];
+  // "UPDATE `blog` SET title = ?, image = ?, link = ?, author = ?, date = ?, content = ? WHERE id = ?" //SQL command
+  var params = [ form.title, form.image,form.link, form.author,  form.date, form.content, form.id  ];
   SQLdatabase.run(SQL_UPDATE_BLOG, params, function(err, result){
     if (err) {
       res.status(500).send(err.message)
@@ -124,6 +126,8 @@ router.post('/manageBlog', (req, res, next) => {
     res.render("blog-db-done", { title: "blog updated",loggedIn: changeNavLoginButton(isLoggedIn) });
   })
 })
+
+
 router.post('/newBlogPost', (req, res, next) => {
   var form = req.body;
   let db = req.app.locals.SQLdatabase;
@@ -288,7 +292,8 @@ router.get('/getAllUsers', (req, res, next) => {
 })
 /* GET workJSON page. */
 router.get('/blogJson', function(req, res, next) {
-  res.render('blogJson', { title: "work.JSON",postData, loggedIn: changeNavLoginButton(isLoggedIn) });
+  let postData = require("../public/posts.json");  
+  res.render('blogJson', { title: "work.JSON", postData, loggedIn: changeNavLoginButton(isLoggedIn) });
 });
 /* GET workXML page. */
 router.get('/blogXml', function(req, res, next) {
@@ -352,7 +357,7 @@ router.post('/register', function (req, res, next) {
         res.status(500).send(err.message);
         return;
       }  
-       res.render('user-db-done', {  title: "registered","changes": this.changes, loggedIn: changeNavLoginButton(isLoggedIn) })     
+       res.render('user-db-done', {  title: "registered", loggedIn: changeNavLoginButton(isLoggedIn) })     
     })
   }
 });
