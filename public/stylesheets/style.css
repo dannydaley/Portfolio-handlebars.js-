@@ -1,7 +1,9 @@
+
 body {
-  color:aqua;
+   color:aqua;
   background-color: black;
   margin: 0;
+  
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -602,6 +604,7 @@ footer a, footer {
   padding: 20px;
   margin: 100px;
   margin-top: 150px;
+  padding-bottom: 32px;
 }
 /* .login-welcome h1 {
   /* margin-left: 2vw; 
@@ -723,6 +726,7 @@ footer a, footer {
   align-items: center;
   align-content: center;
   justify-content: center;
+  margin-bottom: 274px;
 }
 .content-field {
   display: flex;
