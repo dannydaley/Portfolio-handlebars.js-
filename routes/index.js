@@ -6,7 +6,7 @@ let { MethodNotAllowed } = require('http-errors');
 
 let router = express.Router();
 
-let postData = require("../public/posts.json");
+let postDataJSON = require("../public/posts.json");
 
 let isLoggedIn = false;
 let name = 'User';
@@ -292,8 +292,8 @@ router.get('/getAllUsers', (req, res, next) => {
 })
 /* GET workJSON page. */
 router.get('/blogJson', function(req, res, next) {
-  let postData = require("../public/posts.json");  
-  res.render('blogJson', { title: "work.JSON", postData, loggedIn: changeNavLoginButton(isLoggedIn) });
+  let postDataJSON = require("../public/posts.json");  
+  res.render('blogJson', { title: "work.JSON", postDataJSON, loggedIn: changeNavLoginButton(isLoggedIn) });
 });
 /* GET workXML page. */
 router.get('/blogXml', function(req, res, next) {
