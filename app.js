@@ -12,11 +12,6 @@ var app = express();
 let SQLdatabase = new sqlite3.Database('./SQLdatabase.db');
 app.locals.SQLdatabase = SQLdatabase;
 
-const server = new webSocket.Server({
-  port: 8080
-})
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');

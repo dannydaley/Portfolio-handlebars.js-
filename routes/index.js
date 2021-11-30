@@ -42,7 +42,8 @@ function passwordHash(thePassword, theSalt) {
 
 /////////////////////////////////////// SQL DATABASE STUFF /////////////////////////////////////////////
 
-const GET_ALL_POSTS = "SELECT * FROM blog ORDER BY id DESC"; // SQL command
+const GET_ALL_POSTS = "SELECT * FROM `blog` ORDER BY id DESC"; // SQL command
+const GET_ADMINS_POSTS = "SELECT * FROM `blog` WHERE author = ? ORDER BY id DESC"
 const GET_RECENT_POSTS = "SELECT * FROM blog ORDER BY id DESC LIMIT 5"; // SQL command
 const SQL_ADD_BLOG_POST = "INSERT INTO `blog` (author, title, image, content, link, date) VALUES(?,?,?,?,?,?)"
 const SQL_UPDATE_BLOG =  "UPDATE blog SET  title = ?, image = ?, link = ?, author = ?, date = ?, content = ? WHERE id = ?" //SQL command
@@ -267,7 +268,7 @@ router.get('/', function(req, res, next) {
 /* GET work SQL page */
 router.get('/blog', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
-  SQLdatabase.all(GET_ALL_POSTS, [], (err, rows) => {
+  SQLdatabase.all(GET_ADMINS_POSTS, [ "Danny" ], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -327,10 +328,10 @@ router.post('/login', (req, res, next) => {
         res.status(500).send(err);               
       }      
       if (rows !== undefined && rows.password === passwordHash(data.password, rows.passwordSalt)){    
-        name = rows.name.toUpperCase()
+        name = rows.name;
         logInStatus = true;
         isLoggedIn = true;                  
-        res.render('loggedIn', { name: name, title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });  
+        res.render('loggedIn', { name: name.toUpperCase(), title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });  
       }
       else {
         found = false;        
@@ -362,7 +363,7 @@ router.get('/loggedIn', function(req, res, next) {
 });
 /*GET new post form page */
 router.get('/newPost', function(req, res){
-  res.render('newPost', { title: 'new post', loggedIn: changeNavLoginButton(isLoggedIn) });
+  res.render('newPost', { title: 'new post', loggedIn: changeNavLoginButton(isLoggedIn), name: name });
 });
 // //adds a new post to posts.json
 // router.post('/newPost', function (req, res, next) {
