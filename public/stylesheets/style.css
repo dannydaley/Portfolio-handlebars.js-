@@ -17,6 +17,7 @@ code {
 /* width */
 ::-webkit-scrollbar {
   width: 15px;
+
 }
 
 /* Track */
@@ -26,7 +27,8 @@ code {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {  
-  background: aqua;
+  background: aqua;  border:2px solid aqua;
+  border-radius: 30px 0;;
 }
 
 /* Handle on hover */
@@ -686,8 +688,49 @@ footer a, footer {
 }
 
 /* BLOG SECTION STYLING */
+
+.filter-links {  
+  margin-bottom: 30px;
+}
+.filter-list{  
+  display: flex;  
+  list-style-type: none;
+}
+.filter-list a {
+  text-decoration: none;
+  color:white;
+}
+.filter-list a:visited {
+  text-decoration: none;
+  color:white;
+}
+.filter-list li {
+  color: white;
+  margin: 0 50px;
+  font-weight: bold;
+}
+.left a {
+  padding: 0 7px;
+  border: 9px solid rgb(48, 48, 48);
+  border-radius: 30px 0;
+  background-color: rgb(48, 48, 48);;
+}
+.left a:hover {
+  background-color: aqua;
+  border-color: aqua;
+}
+.right a {
+  border: 9px solid rgb(48, 48, 48);
+  border-radius: 0px 30px;
+  background-color: rgb(48, 48, 48);
+}
+.right a:hover {
+  background-color: aqua;
+  border-color: aqua;
+}
+
 #projectsSection {
-  padding: 200px 0 100px;
+  padding: 150px 0 100px;
   display: flex;
   flex-direction: column;
 

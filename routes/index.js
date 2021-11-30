@@ -43,8 +43,9 @@ function passwordHash(thePassword, theSalt) {
 /////////////////////////////////////// SQL DATABASE STUFF /////////////////////////////////////////////
 
 const GET_ALL_POSTS = "SELECT * FROM `blog` ORDER BY id DESC"; // SQL command
-const GET_ADMINS_POSTS = "SELECT * FROM `blog` WHERE author = ? ORDER BY id DESC"
 const GET_RECENT_POSTS = "SELECT * FROM blog ORDER BY id DESC LIMIT 5"; // SQL command
+const GET_POSTS_BY_AUTHOR = "SELECT * FROM `blog` WHERE author = ? ORDER BY id DESC"
+const GET_RECENT_POSTS_BY_AUTHOR = "SELECT * FROM blog WHERE author = ? ORDER BY id DESC LIMIT 5"; // SQL command
 const SQL_ADD_BLOG_POST = "INSERT INTO `blog` (author, title, image, content, link, date) VALUES(?,?,?,?,?,?)"
 const SQL_UPDATE_BLOG =  "UPDATE `blog` SET title = ?, image = ?, link = ?, author = ?, date = ?, content = ? WHERE id = ?" //SQL command
 const GET_ALL_USERS = "SELECT * FROM users"; // SQL command
@@ -75,7 +76,7 @@ router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
     //delete the table if it exists..
     SQLdatabase.run('DROP TABLE IF EXISTS `blog`');
 
-    SQLdatabase.run('CREATE TABLE `blog` ( id INTEGER PRIMARY KEY AUTOINCREMENT, author varchar(255), title varchar(255), image varchar(255), content varchar(2000), link varchar(255), date varchar(255) )');
+    SQLdatabase.run('CREATE TABLE `blog` ( id INTEGER PRIMARY KEY AUTOINCREMENT, author varchar(255), title varchar(255), image varchar(255), content blob, link varchar(255), date varchar(255) )');
     //create test rows
     let rows = [
       [1, 'Danny', 'JavaScript Magic 8-ball', 'images/eightBall.png', 'Had some fun and made a small Magic 8-Ball web app using some basic HTML, CSS shapes and some simple JavaScript switch statement logic.', 'https://dannydaley.github.io/eightBall/', '2020-02-28'],
@@ -95,7 +96,7 @@ router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
 
 router.get('/manageBlog', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
-  SQLdatabase.all(GET_ALL_POSTS, [], (err, rows) => {
+  SQLdatabase.all(GET_POSTS_BY_AUTHOR, [name], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -135,7 +136,11 @@ router.post('/newBlogPost', (req, res, next) => {
   if (req.body.image === ""){
     //defaults the image field is left blank
     req.body.image = "/images/d2.png"
-  }  
+  }
+  if (req.body.link === ""){
+    //defaults the link to go nowhere
+    req.body.link = "#"
+  } 
   var params = [ form.author, form.title, form.image, form.content, form.link, form.date ];
   db.run(SQL_ADD_BLOG_POST, params, function(err, result) {
     console.log(form)
@@ -256,7 +261,7 @@ router.post('/test-delete', (req, res, next) => {
   /* GET home page. */
 router.get('/', function(req, res, next) {    
   let SQLdatabase = req.app.locals.SQLdatabase;
-  SQLdatabase.all(GET_RECENT_POSTS, [], (err, rows) => {
+  SQLdatabase.all(GET_RECENT_POSTS_BY_AUTHOR, ["Danny"], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -267,12 +272,24 @@ router.get('/', function(req, res, next) {
 /* GET work SQL page */
 router.get('/blog', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
-  SQLdatabase.all(GET_ADMINS_POSTS, [ "Danny" ], (err, rows) => {
+  SQLdatabase.all(GET_POSTS_BY_AUTHOR, [ "Danny" ], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;
     }    
     res.render('blog', { title: "work", "rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });
+  })
+})
+
+/* GET work SQL page */
+router.get('/community-blog', (req, res, next) => {
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  SQLdatabase.all(GET_ALL_POSTS, [], (err, rows) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }    
+    res.render('blog', { title: "community blog", "rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });
   })
 })
 /* GET work SQL page */
