@@ -131,9 +131,11 @@ router.post('/manageBlog', (req, res, next) => {
 
 router.post('/newBlogPost', (req, res, next) => {
   var form = req.body;
-  let db = req.app.locals.SQLdatabase;
-  let uploadedImage = form.imageUpload;
-  console.log(uploadedImage);
+  let db = req.app.locals.SQLdatabase;  
+  if (req.body.image === ""){
+    //defaults the image field is left blank
+    req.body.image = "/images/d2.png"
+  }  
   var params = [ form.author, form.title, form.image, form.content, form.link, form.date ];
   db.run(SQL_ADD_BLOG_POST, params, function(err, result) {
     console.log(form)
@@ -201,17 +203,10 @@ var errors = [];
 if (!form.amount || !form.name) {
   errors.push("name or amount missing");
 }
-// TODO check that amount is positive
-// TODO check that name is at least 3 chars long
-// TODO (harder) check that name only contains [a-z0-9]
-// Just incase Warwick doesn't get the regex ( sorry Warwick :) )
-// that means numbers and letters only.
 
 // are there errors?
 if (  errors.length ) {
-  // TODO we should handle this better
-  // maybe display a form with the errors
-  // and the user submitted data, prefilled in.
+
 
   res.status(400).send(errors);
   return;
@@ -303,7 +298,7 @@ router.get('/blogXml', function(req, res, next) {
 /* GET login page. */
 router.get('/login', function(req, res, next) {
   if (isLoggedIn) {
-    res.render('loggedIn', { name: name, title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });
+    res.render('loggedIn', { name: name.toUpperCase(), title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });
 }
   else {
     res.render('login', { title: 'Log in', loggedIn: changeNavLoginButton(isLoggedIn) });
