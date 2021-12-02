@@ -305,7 +305,6 @@ router.get('/getAllUsers', (req, res, next) => {
 })
 /* GET workJSON page. */
 router.get('/blogJson', function(req, res, next) {
-  let postDataJSON = require("../public/posts.json");  
   res.render('blogJson', { title: "work.JSON", postDataJSON, loggedIn: changeNavLoginButton(isLoggedIn) });
 });
 /* GET workXML page. */
