@@ -296,7 +296,7 @@ router.post('/register', function (req, res, next) {
     let storePassword = passwordHash(password2, generateSalt);  
     let SQLdatabase = req.app.locals.SQLdatabase;
     let db = SQLdatabase;
-    db.run('INSERT INTO `users` (name, email, password, passwordSalt, posts, joined) VALUES(?, ?, ?, ?, ?, ?)',[username, email, storePassword, generateSalt, 0, new Date()], function(err, result) {
+    db.run('INSERT INTO `users` (name, email, password, passwordSalt, posts, joined) VALUES(?, ?, ?, ?, ?, ?)',[username, email, storePassword, generateSalt, 0, new Date().getDay() + "," + new Date().getMonth() + "," +  new Date().getFullYear()], function(err, result) {
       if (err) {
         res.status(500).send(err.message);
         return;
