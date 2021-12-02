@@ -8,11 +8,15 @@ let router = express.Router();
 
 let postDataJSON = require("../public/posts.json");
 
-let isLoggedIn = false;
-let name = 'User';
-
 var fs = require('fs');
 
+// variable responsible for greeting user on login
+let name = 'User';
+
+// variable that changes "login" to "dashboard" on nav
+let isLoggedIn = false;
+
+// switch nav link according to isLoggedIn status
 let changeNavLoginButton = (loggedInStatus) => {
   if (loggedInStatus) {
     return "dashboard";
@@ -94,6 +98,264 @@ router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
   res.render("blog-db-done", { loggedIn: changeNavLoginButton(isLoggedIn) });
 })
 
+/*========================DEBUGGING AND TESTING ENDPOINTS========================*/
+/* GET all users */
+router.get('/getAllUsers', (req, res, next) => {
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  SQLdatabase.all(GET_ALL_USERS, [], (err, rows) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }    
+    res.json(rows);
+  })
+})
+
+/* GET all blog posts */
+router.get('/getAllPosts', (req, res, next) => {
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  SQLdatabase.all(GET_ALL_POSTS, [], (err, rows) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }    
+    res.json(rows);
+  })
+})
+/*==================END OF DEBUGGING AND TESTING ENDPOINTS========================*/
+
+
+
+//////////////////////////////////// WORKSHOP STUFF //////////////////////////////////////////////////////////////
+// router.get('/setup', (req, res, next) => {
+//   let db = req.app.locals.db;
+//   //these queries must run one by one - dont try and delete and create tables at the same time.
+//   db.serialize( () => {
+//     //delete the table if it exists..
+//     db.run('DROP TABLE IF EXISTS `test`');
+//     db.run('CREATE TABLE `test` ( name varchar(255), amount INT )');
+//     //create test rows
+//     let rows = [
+//       ['test', 42],
+//       ['gold', 1337],
+//       ['bread', 42],
+//       ['ready meal', 42],
+//     ];
+//     rows.forEach( (row) => {
+//       db.run('INSERT INTO `test` VALUES(?,?)', row);
+//     });
+//   })
+//   res.render("test-db-done", { loggedIn: changeNavLoginButton(isLoggedIn) });
+// })
+// const SQL_GET_TEST = "SELECT * FROM test"; //sql command
+// router.get('/test', (req, res, next) => {
+//   let db = req.app.locals.db;
+//   db.all(SQL_GET_TEST, [], (err, rows) => {
+//     if (err) {
+//       //something went wrong
+//       res.status(500).send(err.message);
+//       return;
+//     }
+//     //everything goes right..
+//     res.render('test-db', { "rows": rows  });
+//   })
+// })
+// const SQL_UPDATE_TEST = "UPDATE test SET amount = ? WHERE name = ?";
+// router.post('/test', (req, res, next) => {
+// var form = req.body;
+// let db= req.app.locals.db;
+// // do validation
+// var errors = [];
+// if (!form.amount || !form.name) {
+//   errors.push("name or amount missing");
+// }
+
+// // are there errors?
+// if (  errors.length ) {
+
+
+//   res.status(400).send(errors);
+//   return;
+// }
+// // no errors, update database.
+// var params = [ form.amount, form.name ];
+// db.run(SQL_UPDATE_TEST, params, function(err, result) {
+//   if (err) {
+//     //TODO we should handle this better, maybe a pretty error page.
+//     res.status(500).send(err.message);
+//     return;
+//   }
+//   // show the page telling the user it worked.
+//   res.render('test-db-success', {  "params": params, "changes": this.changes })
+//   })
+// })
+// const SQL_ADD_TEST = "INSERT INTO `test` VALUES(?,?)"
+// router.post('/test-add', (req, res, next) => {
+//   var form = req.body;
+//   let db= req.app.locals.db;
+//   var params = [ form.name, form.amount ];
+//   db.run(SQL_ADD_TEST, params, function(err, result) {
+//     if (err) {
+//       res.status(500).send(err.message);
+//       return;
+//     }  
+//      res.render('test-db-success', {  "params": params, "changes": this.changes })
+//    })
+// })
+
+
+// const SQL_DELETE_TEST = "DELETE FROM `test` WHERE name = ?";
+// router.post('/test-delete', (req, res, next) => {
+//   var form = req.body;
+//   let db= req.app.locals.db;
+//   var params = [ form.name ];
+//   db.run(SQL_DELETE_TEST, params, function(err, result) {
+//     if (err) {
+//       res.status(500).send(err.message);
+//       return;
+//     }  
+//      res.render('test-db-success', {  "params": params, "changes": this.changes })
+//    })
+// })
+
+/////////////////////////////////////////////////////
+
+/* GET home page. */
+router.get('/', function(req, res, next) {    
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  SQLdatabase.all(GET_RECENT_POSTS_BY_AUTHOR, ["Danny"], (err, rows) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }    
+    res.render('index', { title: "dannydaley","rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });  
+  })
+})
+
+/* GET work SQL page */
+router.get('/blog', (req, res, next) => {
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  SQLdatabase.all(GET_POSTS_BY_AUTHOR, [ "Danny" ], (err, rows) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }    
+    res.render('blog', { title: "work", "rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });
+  })
+})
+
+/* GET community work SQL page */
+router.get('/community-blog', (req, res, next) => {
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  SQLdatabase.all(GET_ALL_POSTS, [], (err, rows) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }    
+    res.render('blog', { title: "community blog", "rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });
+  })
+})
+
+/* GET workJSON page. */
+router.get('/blogJson', function(req, res, next) {
+  res.render('blogJson', { title: "work.JSON", postDataJSON, loggedIn: changeNavLoginButton(isLoggedIn) });
+});
+// //adds a new post to posts.json
+// router.post('/newPost', function (req, res, next) {
+//   let { title, content, author, image } = req.body;
+//   if (image === ''){
+//     image = '/images/d2.png'
+//   }
+//   postData.entries.unshift({
+//   id: "p" + (postData.entries.length + 1),
+//   author: author,
+//   title: title,
+//   image: image,
+//   content: content,        
+//   date: new Date()
+//   });  
+//   res.render('blog', postData);   
+// });
+
+/* GET workXML page. */
+router.get('/blogXml', function(req, res, next) {
+  res.render('blogXml', { title: "work.XML",loggedIn: changeNavLoginButton(isLoggedIn) });
+});
+
+
+
+router.get('/register', function (req, res, next) {
+  res.render('register',{ title: "register",loggedIn: changeNavLoginButton(isLoggedIn) })
+})
+//adds new user to user database
+router.post('/register', function (req, res, next) {
+  let { email, username, password1, password2 } = req.body; 
+  if (req.body.password1 === req.body.password2){    
+    // gensalt
+    let generateSalt = crypto.randomBytes(256).toString('hex');
+    let storePassword = passwordHash(password2, generateSalt);  
+    let SQLdatabase = req.app.locals.SQLdatabase;
+    let db = SQLdatabase;
+    db.run('INSERT INTO `users` (name, email, password, passwordSalt, posts, joined) VALUES(?, ?, ?, ?, ?, ?)',[username, email, storePassword, generateSalt, 0, new Date()], function(err, result) {
+      if (err) {
+        res.status(500).send(err.message);
+        return;
+      }  
+       res.render('user-db-done', {  title: "registered", loggedIn: changeNavLoginButton(isLoggedIn) })     
+    })
+  }
+});
+
+/* GET login page. */
+router.get('/login', function(req, res, next) {
+  if (isLoggedIn) {
+    res.render('loggedIn', { name: name.toUpperCase(), title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });
+}
+  else {
+    res.render('login', { title: 'Log in', loggedIn: changeNavLoginButton(isLoggedIn) });
+  }
+})
+
+/* POST login data to validate login page */
+router.post('/login', (req, res, next) => {
+  let data = req.body;
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  let db = SQLdatabase;
+  const FIND_USER = "SELECT * FROM users WHERE email = ?"   
+    db.get(FIND_USER, [data.email], (err, rows) => {  
+      if (err) {        
+        found = false;
+        res.status(500).send(err);               
+      }      
+      if (rows !== undefined && rows.password === passwordHash(data.password, rows.passwordSalt)){    
+        name = rows.name;
+        logInStatus = true;
+        isLoggedIn = true;                  
+        res.render('loggedIn', { name: name.toUpperCase(), title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });  
+      }
+      else {
+        found = false;        
+        res.json("INVALID EMAIL OR PASSWORD");
+      }       
+    })   
+})
+/*GET logged in page (dashboard) */
+router.get('/loggedIn', function(req, res, next) {
+  res.render('loggedIn', { title: 'logged in ', loggedIn: changeNavLoginButton(isLoggedIn) });
+});
+  /* GET logOut page. */
+router.get('/logOut', function(req, res, next) {
+  isLoggedIn = false;
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  SQLdatabase.all(GET_RECENT_POSTS, [], (err, rows) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }    
+    res.render('index', { title: "logged out","rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });  
+  })
+})
+
 router.get('/manageBlog', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
   SQLdatabase.all(GET_POSTS_BY_AUTHOR, [name], (err, rows) => {
@@ -109,8 +371,7 @@ router.post('/manageBlog', (req, res, next) => {
   var form = req.body;
   let SQLdatabase = req.app.locals.SQLdatabase;
   // do the validation
-  var errors = [];
-  console.log(req.body)
+  var errors = [];  
   if (!form.title || !form.image || !form.link || !form.author || !form.date || !form.content){
     errors.push("Cannot have blank fields");
   }
@@ -118,7 +379,6 @@ router.post('/manageBlog', (req, res, next) => {
     res.status(400).send(errors);
     return;
   }
-  // "UPDATE `blog` SET title = ?, image = ?, link = ?, author = ?, date = ?, content = ? WHERE id = ?" //SQL command
   var params = [ form.title, form.image,form.link, form.author,  form.date, form.content, form.id  ];
   SQLdatabase.run(SQL_UPDATE_BLOG, params, function(err, result){
     if (err) {
@@ -129,6 +389,10 @@ router.post('/manageBlog', (req, res, next) => {
   })
 })
 
+/*GET new post form page */
+router.get('/newPost', function(req, res){
+  res.render('newPost', { title: 'new post', loggedIn: changeNavLoginButton(isLoggedIn), name: name });
+});
 
 router.post('/newBlogPost', (req, res, next) => {
   var form = req.body;
@@ -165,239 +429,6 @@ router.post('/post-delete', (req, res, next) => {
      res.render('blog-db-done', { "changes": this.changes, loggedIn: changeNavLoginButton(isLoggedIn) })
    })
 })
-//////////////////////////////////// WORKSHOP STUFF //////////////////////////////////////////////////////////////
-router.get('/setup', (req, res, next) => {
-  let db = req.app.locals.db;
-  //these queries must run one by one - dont try and delete and create tables at the same time.
-  db.serialize( () => {
-    //delete the table if it exists..
-    db.run('DROP TABLE IF EXISTS `test`');
-    db.run('CREATE TABLE `test` ( name varchar(255), amount INT )');
-    //create test rows
-    let rows = [
-      ['test', 42],
-      ['gold', 1337],
-      ['bread', 42],
-      ['ready meal', 42],
-    ];
-    rows.forEach( (row) => {
-      db.run('INSERT INTO `test` VALUES(?,?)', row);
-    });
-  })
-  res.render("test-db-done", { loggedIn: changeNavLoginButton(isLoggedIn) });
-})
-const SQL_GET_TEST = "SELECT * FROM test"; //sql command
-router.get('/test', (req, res, next) => {
-  let db = req.app.locals.db;
-  db.all(SQL_GET_TEST, [], (err, rows) => {
-    if (err) {
-      //something went wrong
-      res.status(500).send(err.message);
-      return;
-    }
-    //everything goes right..
-    res.render('test-db', { "rows": rows  });
-  })
-})
-const SQL_UPDATE_TEST = "UPDATE test SET amount = ? WHERE name = ?";
-router.post('/test', (req, res, next) => {
-var form = req.body;
-let db= req.app.locals.db;
-// do validation
-var errors = [];
-if (!form.amount || !form.name) {
-  errors.push("name or amount missing");
-}
-
-// are there errors?
-if (  errors.length ) {
 
 
-  res.status(400).send(errors);
-  return;
-}
-// no errors, update database.
-var params = [ form.amount, form.name ];
-db.run(SQL_UPDATE_TEST, params, function(err, result) {
-  if (err) {
-    //TODO we should handle this better, maybe a pretty error page.
-    res.status(500).send(err.message);
-    return;
-  }
-  // show the page telling the user it worked.
-  res.render('test-db-success', {  "params": params, "changes": this.changes })
-  })
-})
-const SQL_ADD_TEST = "INSERT INTO `test` VALUES(?,?)"
-router.post('/test-add', (req, res, next) => {
-  var form = req.body;
-  let db= req.app.locals.db;
-  var params = [ form.name, form.amount ];
-  db.run(SQL_ADD_TEST, params, function(err, result) {
-    if (err) {
-      res.status(500).send(err.message);
-      return;
-    }  
-     res.render('test-db-success', {  "params": params, "changes": this.changes })
-   })
-})
-
-
-const SQL_DELETE_TEST = "DELETE FROM `test` WHERE name = ?";
-router.post('/test-delete', (req, res, next) => {
-  var form = req.body;
-  let db= req.app.locals.db;
-  var params = [ form.name ];
-  db.run(SQL_DELETE_TEST, params, function(err, result) {
-    if (err) {
-      res.status(500).send(err.message);
-      return;
-    }  
-     res.render('test-db-success', {  "params": params, "changes": this.changes })
-   })
-})
-
-/////////////////////////////////////////////////////
-  /* GET home page. */
-router.get('/', function(req, res, next) {    
-  let SQLdatabase = req.app.locals.SQLdatabase;
-  SQLdatabase.all(GET_RECENT_POSTS_BY_AUTHOR, ["Danny"], (err, rows) => {
-    if (err) {
-      res.status(500).send(err.message);
-      return;
-    }    
-    res.render('index', { title: "dannydaley","rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });  
-  })
-})
-/* GET work SQL page */
-router.get('/blog', (req, res, next) => {
-  let SQLdatabase = req.app.locals.SQLdatabase;
-  SQLdatabase.all(GET_POSTS_BY_AUTHOR, [ "Danny" ], (err, rows) => {
-    if (err) {
-      res.status(500).send(err.message);
-      return;
-    }    
-    res.render('blog', { title: "work", "rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });
-  })
-})
-
-/* GET work SQL page */
-router.get('/community-blog', (req, res, next) => {
-  let SQLdatabase = req.app.locals.SQLdatabase;
-  SQLdatabase.all(GET_ALL_POSTS, [], (err, rows) => {
-    if (err) {
-      res.status(500).send(err.message);
-      return;
-    }    
-    res.render('blog', { title: "community blog", "rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });
-  })
-})
-/* GET work SQL page */
-router.get('/getAllUsers', (req, res, next) => {
-  let SQLdatabase = req.app.locals.SQLdatabase;
-  SQLdatabase.all(GET_ALL_USERS, [], (err, rows) => {
-    if (err) {
-      res.status(500).send(err.message);
-      return;
-    }    
-    res.json(rows);
-  })
-})
-/* GET workJSON page. */
-router.get('/blogJson', function(req, res, next) {
-  res.render('blogJson', { title: "work.JSON", postDataJSON, loggedIn: changeNavLoginButton(isLoggedIn) });
-});
-/* GET workXML page. */
-router.get('/blogXml', function(req, res, next) {
-  res.render('blogXml', { title: "work.XML",loggedIn: changeNavLoginButton(isLoggedIn) });
-});
-/* GET login page. */
-router.get('/login', function(req, res, next) {
-  if (isLoggedIn) {
-    res.render('loggedIn', { name: name.toUpperCase(), title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });
-}
-  else {
-    res.render('login', { title: 'Log in', loggedIn: changeNavLoginButton(isLoggedIn) });
-  }})
-  /* GET logOut page. */
-router.get('/logOut', function(req, res, next) {
-  isLoggedIn = false;
-  let SQLdatabase = req.app.locals.SQLdatabase;
-  SQLdatabase.all(GET_RECENT_POSTS, [], (err, rows) => {
-    if (err) {
-      res.status(500).send(err.message);
-      return;
-    }    
-    res.render('index', { title: "logged out","rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });  
-  })
-})
-
-/* POST login data to validate login page */
-router.post('/login', (req, res, next) => {
-  let data = req.body;
-  let SQLdatabase = req.app.locals.SQLdatabase;
-  let db = SQLdatabase;
-  const FIND_USER = "SELECT * FROM users WHERE email = ?"   
-    db.get(FIND_USER, [data.email], (err, rows) => {  
-      if (err) {        
-        found = false;
-        res.status(500).send(err);               
-      }      
-      if (rows !== undefined && rows.password === passwordHash(data.password, rows.passwordSalt)){    
-        name = rows.name;
-        logInStatus = true;
-        isLoggedIn = true;                  
-        res.render('loggedIn', { name: name.toUpperCase(), title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });  
-      }
-      else {
-        found = false;        
-        res.json("INVALID EMAIL OR PASSWORD");
-      }       
-    })   
-})
-//adds new user to user database
-router.post('/register', function (req, res, next) {
-  let { email, username, password1, password2 } = req.body; 
-  if (req.body.password1 === req.body.password2){    
-    // gensalt
-    let generateSalt = crypto.randomBytes(256).toString('hex');
-    let storePassword = passwordHash(password2, generateSalt);  
-    let SQLdatabase = req.app.locals.SQLdatabase;
-    let db = SQLdatabase;
-    db.run('INSERT INTO `users` (name, email, password, passwordSalt, posts, joined) VALUES(?, ?, ?, ?, ?, ?)',[username, email, storePassword, generateSalt, 0, new Date()], function(err, result) {
-      if (err) {
-        res.status(500).send(err.message);
-        return;
-      }  
-       res.render('user-db-done', {  title: "registered", loggedIn: changeNavLoginButton(isLoggedIn) })     
-    })
-  }
-});
-/*GET logged in page (dashboard) */
-router.get('/loggedIn', function(req, res, next) {
-  res.render('loggedIn', { title: 'logged in ', loggedIn: changeNavLoginButton(isLoggedIn) });
-});
-/*GET new post form page */
-router.get('/newPost', function(req, res){
-  res.render('newPost', { title: 'new post', loggedIn: changeNavLoginButton(isLoggedIn), name: name });
-});
-// //adds a new post to posts.json
-// router.post('/newPost', function (req, res, next) {
-//   let { title, content, author, image } = req.body;
-//   if (image === ''){
-//     image = '/images/d2.png'
-//   }
-//   postData.entries.unshift({
-//   id: "p" + (postData.entries.length + 1),
-//   author: author,
-//   title: title,
-//   image: image,
-//   content: content,        
-//   date: new Date()
-//   });  
-//   res.render('blog', postData);   
-// });
-router.get('/register', function (req, res, next) {
-  res.render('register',{ title: "register",loggedIn: changeNavLoginButton(isLoggedIn) })
-})
 module.exports = router;
