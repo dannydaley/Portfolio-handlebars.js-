@@ -3,6 +3,10 @@
 --------------------------------------------------------------------
                             JSON DATABASE
 
+The original storage solution for blog posts. I preferred this model over an XML solution as I preferred the readability.
+The solution became redundant as I moved things over to the SQL database, as I needed a storage solution that was more dynamic
+than a static data structure.
+
 FILE: "posts.json"
 
 TABLE: `entries`
@@ -22,13 +26,18 @@ TABLE: `entries`
     ]
 }
 
-The original storage solution for blog posts. I preferred this model over an XML solution as I preferred the readability.
-The solution became redundant as I moved things over to the SQL database, as I needed a storage solution that was more dynamic
-than a static data structure.
+
 --------------------------------------------------------------------
 ====================================================================
 --------------------------------------------------------------------
                             XML DATABASE
+
+Implemented as a second option for a static blog post storage solution, 
+the solution worked well in terms of display purposes but lost out to JSON as I preferred
+the readability.
+Still active for demonstration purposes and can be accessed via the work (XML) link in the navbar if
+the link is active (uncommented) in layout.hbs.
+Could be used towards some form of RSS feed.
 
 FILE: "posts.xml"
 
@@ -48,17 +57,17 @@ FIELDS & DATA TYPES :
     ...
 </entries>
 
-Implemented as a second option for a static blog post storage solution, 
-the solution worked well in terms of display purposes but lost out to JSON as I preferred
-the readability.
-Still active for demonstration purposes and can be accessed via the work (XML) link in the navbar if
-the link is active (uncommented) in layout.hbs.
-Could be used towards some form of RSS feed.
+
 --------------------------------------------------------------------
 ====================================================================
 --------------------------------------------------------------------
 
                             SQL DATABASE
+
+My preferred choice for a storage solution. As the SQL database allows for multiple tables within a single space
+and holds data continuously between server restarts, so it felt like a good fit for the main storage solution for my portfolio.
+The added benefit of being able to use the tables relationally was another great plus over the previous iterations of storage solution
+attempts such as the XML and JSON alternatives.
 
 FILE: "SQLdatabase"
 
@@ -84,6 +93,8 @@ FIELDS & DATA TYPES :
 |`image` VARCHAR(255)|,
 |`content` BLOB|,
 |`link` VARCHAR(255)|
+
+
 --------------------------------------------------------------------
 ====================================================================
 --------------------------------------------------------------------
