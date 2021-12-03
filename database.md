@@ -69,6 +69,9 @@ and holds data continuously between server restarts, so it felt like a good fit 
 The added benefit of being able to use the tables relationally was another great plus over the previous iterations of storage solution
 attempts such as the XML and JSON alternatives.
 
+SQLite3 database set up in App.js under the variable `SQLdatabase`, table setup is performed from the endpoints '/SQLDatabaseUserSetup' and '/SQLDatabaseBlogSetup'.
+Each deleting the existing table and recreating it with dummy/base data.
+
 FILE: "SQLdatabase"
 
 TABLE: `users`
