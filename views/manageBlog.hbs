@@ -50,6 +50,8 @@
                         <div class="deleteTextField">
                             <label for="deleteThisPost">confirm post title</label>
                             <input name="deleteThisPost" type="text" pattern="{{title}}" placeholder="post title" required />
+                            <input type="hidden" name="author" value="{{author}}">
+                            <input type="hidden" name="postId" value="{{id}}">
                         </div>
                         <div class="deleteCheckboxField">
                             <label for="confirmDeletePost">tick to confirm</label>

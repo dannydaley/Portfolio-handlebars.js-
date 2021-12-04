@@ -21,7 +21,8 @@
                 </a>
             </div>            
             <div class="projectTags">
-                <p>posted by <a href="<!--filter for authors -->">{{author}}</a> on {{date}} post id: {{id}}</p>
+                <form method="POST" action="/filter">
+                <p>posted by <button type="submit" value="{{author}}">{{author}}</button> on <button type="submit" value="{{date}}">{{date}}</button> post id: {{id}}</p></form>
             </div>
         </div>
     {{/each}}
