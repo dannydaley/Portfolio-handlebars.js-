@@ -455,6 +455,7 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
   //upload.single(req.image);
   var params = [ form.author, form.title, form.image, form.content, form.link, generateDate()];
 
+  //create the JSON object to add to posts.json
   postDataJSON.entries.unshift({
     id: postDataJSON.entries.length + 1,
     author: req.body.author,
@@ -464,10 +465,12 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
     link: req.body.link,
     date: generateDate()
   })
+
+  // RE-WRITE the posts.json file with the new posts added to the top,
+  // JSON.stringify has extra arguments to handle formatting  
+  fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON, null, 2)); 
   
-  fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON, null, 2)); //updates file
-
-
+  //Add to SQL database.
   db.run(SQL_ADD_BLOG_POST, params, function(err, result) {
     console.log(form)
     if (err) {

@@ -1,6 +1,24 @@
 {
   "entries": [
     {
+      "id": 9,
+      "author": "Danny",
+      "title": "This is another test post",
+      "image": "/images/uploads/Danny-image-1638642608656-668530132.png",
+      "content": "Truth betold I was expecting that last post to log me out as the server refreshed (due to the posts.json file being resaved and Nodemon picking up on file changes) either way we shall see if i have to log back in..",
+      "link": "#",
+      "date": "6-11-2021"
+    },
+    {
+      "id": 8,
+      "author": "Danny",
+      "title": "Double safe posting",
+      "image": "/images/uploads/Danny-image-1638641992344-949150908.png",
+      "content": "Now when users make new posts, as well as being stored in the regular SQL database, they are also sent to an updated JSON file. This JSON file is used to reinitialize the SQL database should anything bad happen. So now things are kept up to date and relevant in case of database crashes",
+      "link": "#",
+      "date": "6-11-2021"
+    },
+    {
       "id": 7,
       "author": "Danny",
       "image": "images/unshorelogo2.png",
