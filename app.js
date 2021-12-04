@@ -8,7 +8,7 @@ var sqlite3 = require('sqlite3').verbose();
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var app = express();
-
+var multer  = require('multer');
 let SQLdatabase = new sqlite3.Database('./SQLdatabase.db');
 app.locals.SQLdatabase = SQLdatabase;
 
@@ -27,6 +27,8 @@ app.use('/users', usersRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+upload = multer({ dest: 'uploads/' });
 
 // error handler
 app.use(function(err, req, res, next) {

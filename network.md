@@ -62,13 +62,15 @@ Serves the user the newPost.hbs page where they can find the form to create a ne
 
 '/newBlogPost' => POST
 
+
+
 Adds new blog post data taken from the new post form in newPost.hbs to the blog table. User is taken to blog-db-done.hbs on completion.
 
 author is a string representing the author of the new post (read only)
 
 title is a string representing the title of the new post.
 
-image is a string representing the location of the image in the local project files (defaults to dummy image /images/d2.png if field is left blank)
+image is a file upload field that stores the image locally in 'public/images/uploads', the name and location of the image is then applied back to req.body.image and passed into the database query for storage.
 
 link is a string representing the link to working project (defaults to '#' if the field is left blank)
 
@@ -76,6 +78,8 @@ date is a selectable date object to represent the date attached to the new blog 
 
 content is a string that represents the main body of content for the blog post
 
+
+//needs update
 FORMAT (URL ENCODED FORMAT) = "author=POST+AUTHOR&title=POST+TITLE+CONTENT&image=POST-IMAGE-LOCATION&link=POST-LINK&date=2021-12-02&content=POST+CONTENT+BODY"
 
 -----------------------------------------------------------------

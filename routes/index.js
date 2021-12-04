@@ -6,6 +6,46 @@ let { MethodNotAllowed } = require('http-errors');
 
 let router = express.Router();
 
+/* DATE HANDLING */
+
+let generateDate = "" + new Date().getDay() + "-" + new Date().getMonth() + "-" +  new Date().getFullYear() + ""
+
+const dateFormatSwitcher = (oldDate) => {
+  //let oldDate = "2021-01-28";
+  let day = oldDate.slice(8, 10)
+  let year = oldDate.slice(0, 4)
+  let month = oldDate.slice(5, 7)
+  let newYear = "" + day + "-" + month + "-" + year + ""
+  return newYear;
+}
+
+/* END OF DATE HANDLING */
+
+
+
+/* IMAGE UPLOAD HANDLING */
+
+var multer  = require('multer');
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/images/uploads')
+  },
+  filename: function (req, file, cb) {
+    if (file.fieldname !== undefined) {
+          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    cb(null, req.body.author + '-' + file.fieldname + '-' + uniqueSuffix + '.png')
+    req.body.image = "/images/uploads/" + req.body.author + '-' + file.fieldname + '-' + uniqueSuffix + '.png'
+    }
+    else {
+      return
+    }
+  }
+})
+const upload = multer({ storage: storage });
+
+/* END OF IMAGE UPLOAD HANDLING */
+
 let postDataJSON = require("../public/posts.json");
 
 var fs = require('fs');
@@ -64,8 +104,8 @@ router.get('/SQLDatabaseUserSetup', (req, res, next) => {
     SQLdatabase.run('CREATE TABLE `users` (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(255), email varchar(255) UNIQUE, password varchar(255), passwordSalt varchar(512), posts int, joined varchar(255))');
     //create test rows
     let rows = [
-      ['Danny', 'dannydaley@outlook.com', '493509dac1a23de8901b9564acea549d6d9d3ae960062978d90feef9bd77f2b4399a61bc396389119fbb7069f2dac7520497dc8ac733a98b4a734af8e4cf4883','8dc317df7da5cbc21859fe9e3fa07cb9cc81bbd1d58da2747d4282c4d9abbf2f372a8c73f68b7ef323a08b98da1401d8b639b1310f8094c7a1950e4a85300f70f7a92536b4b1a860bf759128ac9632b807100f48af7f906fbf14d27f4a16293eccb024f5182db76f356a3644a4c542ff35a17bd3a7b19a757a2fa318fbd3a45e62129a10fa481503233e9a998518b91430244157e328e7129c84a0d478e7d3c2360f0357d5b1a64d0d70de494436dcb84798bf8b629ee2089683e1b5d4faca23b1c5c43d031928684be00ce96b42a73269ddadf688c6737458642b5100d9db29be6594f327f4b44234786ecd407b2c98e52d766439e7742ac937ca58811b284c', 0, new Date().getDay() + "," + new Date().getMonth() + "," +  new Date().getFullYear()],
-      ['Danny', 'dandaley@email.com', 'bedb5e0ea27c1bcdba8eab671909819673eb0c87bd9c47f61a4163b74f494bfd1f4c4dfef209df4f30f8baa7fd3867f92d706b4dc8b6ee699b021615e0a6e7e7','4aae2963b54bdf7aa63fa8a3a8af791ddbd3ee1f8a5f7169ee4cb2c107ddadc3b84310e9761e3bbac1572c7d264026200dcdb6c97e0b24bbe18542bc51a062e6be3deeb39b9a99ec964cba5cfcd340bf4b719d7cbc3ea8dc3c317592ed391771b279427d04c296c5be94c25ac828e6fa5906ac8b820d7611d85c836ac1ee4acd26496e4665bfa711361a13165bbecdb79afc47b70b46e9d05487ac01ad87249042e8d916b59e4231231550bca5e1f0e3b2ffad1d33edbbf10f69a350f6753c9b37665e468a5bfc275ba834474197a91c1dc2b9e1cfc4d4746e912bfd4cf404f9d34b560e3c23fdc56a0d78d3cadbf49b3c727c0fca7ac1a9eb6c7cd2d63a41da', 0, new Date().getDay() + "," + new Date().getMonth() + "," +  new Date().getFullYear()],
+      ['Danny', 'dannydaley@outlook.com', '493509dac1a23de8901b9564acea549d6d9d3ae960062978d90feef9bd77f2b4399a61bc396389119fbb7069f2dac7520497dc8ac733a98b4a734af8e4cf4883','8dc317df7da5cbc21859fe9e3fa07cb9cc81bbd1d58da2747d4282c4d9abbf2f372a8c73f68b7ef323a08b98da1401d8b639b1310f8094c7a1950e4a85300f70f7a92536b4b1a860bf759128ac9632b807100f48af7f906fbf14d27f4a16293eccb024f5182db76f356a3644a4c542ff35a17bd3a7b19a757a2fa318fbd3a45e62129a10fa481503233e9a998518b91430244157e328e7129c84a0d478e7d3c2360f0357d5b1a64d0d70de494436dcb84798bf8b629ee2089683e1b5d4faca23b1c5c43d031928684be00ce96b42a73269ddadf688c6737458642b5100d9db29be6594f327f4b44234786ecd407b2c98e52d766439e7742ac937ca58811b284c', 0, generateDate],
+      ['Danny', 'dandaley@email.com', 'bedb5e0ea27c1bcdba8eab671909819673eb0c87bd9c47f61a4163b74f494bfd1f4c4dfef209df4f30f8baa7fd3867f92d706b4dc8b6ee699b021615e0a6e7e7','4aae2963b54bdf7aa63fa8a3a8af791ddbd3ee1f8a5f7169ee4cb2c107ddadc3b84310e9761e3bbac1572c7d264026200dcdb6c97e0b24bbe18542bc51a062e6be3deeb39b9a99ec964cba5cfcd340bf4b719d7cbc3ea8dc3c317592ed391771b279427d04c296c5be94c25ac828e6fa5906ac8b820d7611d85c836ac1ee4acd26496e4665bfa711361a13165bbecdb79afc47b70b46e9d05487ac01ad87249042e8d916b59e4231231550bca5e1f0e3b2ffad1d33edbbf10f69a350f6753c9b37665e468a5bfc275ba834474197a91c1dc2b9e1cfc4d4746e912bfd4cf404f9d34b560e3c23fdc56a0d78d3cadbf49b3c727c0fca7ac1a9eb6c7cd2d63a41da', 0, generateDate],
     ]
     rows.forEach( (row) => {
       SQLdatabase.run('INSERT INTO `users` (name, email, password, passwordSalt, posts, joined) VALUES(?, ?, ?, ?, ?, ?)', row);
@@ -372,14 +412,16 @@ router.post('/manageBlog', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
   // do the validation
   var errors = [];  
-  if (!form.title || !form.image || !form.link || !form.author || !form.date || !form.content){
+  console.log(form)
+  if (!form.title || !form.image || !form.link || !form.author || !form.content){
     errors.push("Cannot have blank fields");
   }
   if (errors.length){
     res.status(400).send(errors);
     return;
   }
-  var params = [ form.title, form.image,form.link, form.author,  form.date, form.content, form.id  ];
+  
+  var params = [ form.title, form.image,form.link, form.author, dateFormatSwitcher(form.date), form.content, form.id  ];console.log(params)
   SQLdatabase.run(SQL_UPDATE_BLOG, params, function(err, result){
     if (err) {
       res.status(500).send(err.message)
@@ -394,10 +436,11 @@ router.get('/newPost', function(req, res){
   res.render('newPost', { title: 'new post', loggedIn: changeNavLoginButton(isLoggedIn), name: name });
 });
 
-router.post('/newBlogPost', (req, res, next) => {
+router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
   var form = req.body;
-  let db = req.app.locals.SQLdatabase;  
-  if (req.body.image === ""){
+  let db = req.app.locals.SQLdatabase; 
+  console.log(req.body.image) 
+  if (req.body.image === undefined){
     //defaults the image field is left blank
     req.body.image = "/images/d2.png"
   }
@@ -405,14 +448,16 @@ router.post('/newBlogPost', (req, res, next) => {
     //defaults the link to go nowhere
     req.body.link = "#"
   } 
-  var params = [ form.author, form.title, form.image, form.content, form.link, form.date ];
+  //upload.single(req.image);
+  var params = [ form.author, form.title, form.image, form.content, form.link, generateDate];
+  console.log(req.body);
   db.run(SQL_ADD_BLOG_POST, params, function(err, result) {
     console.log(form)
     if (err) {
       res.status(500).send(err.message);
       return;
     }
-    res.render("blog-db-done",{ loggedIn: changeNavLoginButton(isLoggedIn) });
+      res.render("blog-db-done",{ loggedIn: changeNavLoginButton(isLoggedIn) });
   })
 })
 
