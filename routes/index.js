@@ -8,10 +8,16 @@ let router = express.Router();
 
 /* DATE HANDLING */
 
-let generateDate = "" + new Date().getDay() + "-" + new Date().getMonth() + "-" +  new Date().getFullYear() + ""
+let generateDate = () => { 
+  let day = new Date().getDay()
+  let month = new Date().getMonth();
+  let year = new Date().getFullYear();
+  let dateString = day + "-" + month + "-" + year; 
+  return dateString;
+}
+
 
 const dateFormatSwitcher = (oldDate) => {
-  //let oldDate = "2021-01-28";
   let day = oldDate.slice(8, 10)
   let year = oldDate.slice(0, 4)
   let month = oldDate.slice(5, 7)
@@ -91,7 +97,7 @@ const GET_RECENT_POSTS = "SELECT * FROM blog ORDER BY id DESC LIMIT 5"; // SQL c
 const GET_POSTS_BY_AUTHOR = "SELECT * FROM `blog` WHERE author = ? ORDER BY id DESC"
 const GET_RECENT_POSTS_BY_AUTHOR = "SELECT * FROM blog WHERE author = ? ORDER BY id DESC LIMIT 5"; // SQL command
 const SQL_ADD_BLOG_POST = "INSERT INTO `blog` (author, title, image, content, link, date) VALUES(?,?,?,?,?,?)"
-const SQL_UPDATE_BLOG =  "UPDATE `blog` SET title = ?, image = ?, link = ?, author = ?, date = ?, content = ? WHERE id = ?" //SQL command
+const SQL_UPDATE_BLOG =  "UPDATE `blog` SET title = ?, image = ?, link = ?, author = ?, content = ? WHERE id = ?" //SQL command
 const GET_ALL_USERS = "SELECT * FROM users"; // SQL command
 
 /* Database setup endpoint */
@@ -113,6 +119,7 @@ router.get('/SQLDatabaseUserSetup', (req, res, next) => {
   })
   res.render("user-db-done", { loggedIn: changeNavLoginButton(isLoggedIn) });
 })
+
 router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
   //these queries must run one by one - dont try and delete and create tables at the same time.
@@ -121,16 +128,13 @@ router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
     SQLdatabase.run('DROP TABLE IF EXISTS `blog`');
 
     SQLdatabase.run('CREATE TABLE `blog` ( id INTEGER PRIMARY KEY AUTOINCREMENT, author varchar(255), title varchar(255), image varchar(255), content blob, link varchar(255), date varchar(255) )');
-    //create test rows
-    let rows = [
-      [1, 'Danny', 'JavaScript Magic 8-ball', 'images/eightBall.png', 'Had some fun and made a small Magic 8-Ball web app using some basic HTML, CSS shapes and some simple JavaScript switch statement logic.', 'https://dannydaley.github.io/eightBall/', '2020-02-28'],
-      [2, 'Danny', 'Captive Design Studio', 'images/cap.png', 'I had a great time working on the Captive Design Studio site, the use of strong fonts and powerful colors was an absolute must to pull this design off and it came out looking fantastic. Definitely learned a lot about making an impact from this one.', 'https://dannydaley.github.io/captivedesign/', '2020-03-15'],
-      [3, 'Danny', 'Makkio Ikui', "images/makki.png", "Inspired by the Kawaii japanese art style, of course this website was a lot of fun to make, a great use of color in the design really made it pop. It came with its challenges, but its hard to stay frustrated when you're working with these kind of images.", 'https://dannydaley.github.io/makkioikui/', '2020-04-29'],
-      [4, 'Danny', 'Final Fantasy VII:R Product Page', 'images/7.png', 'Being a massive Final Fantasy fan, upon the release of FFVII:Remake I felt it was 100% necessary to make it the theme of my responsive web design submission for freeCodeCamp. I particularly enjoyed making a theme with a darker appeal, and using that very FF7 Mako green.', 'https://codepen.io/dannydaley/full/RwWdVEp', '2020-05-08'],
-      [5, 'Danny', 'SmartBrain - Face Recognition App', 'images/smartbrain.png', 'This face recognition app allows you to scan any image-link for faces within the picture, this is my first project fully leveraging an API, and a fully built back-end, allowing user registration, login and a rank based on how many images that user has entered. The data held within the database is secure, using encryption technologies such as Bcrypt.', 'https://smartbrain902101.herokuapp.com/', '2020-09-17'],
-      [6, 'Danny', 'Version 3 launched!', 'images/v3.png', "Getting well enough ahead on my university work left me with a good amount of time to build version 3 of my portfolio website. After learning the Wordpress content management system and having a reasonable amount of fun with PHP, everything is working better than ever and creating new posts has never been easier! With that out of the way I've already been thinking about getting some user registration involved so users will be able to comment on future posts and lots of cool things that. Stay tuned!",'#', '2020-12-19'],
-      [7, 'Danny', 'Unshore', 'images/unshorelogo2.png', "Unshore was a great game to work on for my first project in Falmouth University’s Games Academy. Taking the role of UI Programmer was a great chance to to have some some fun in the Unity game engine whilst being part of a multifaceted team. The theme we were given was Cornwall and “a famous dead person”, we figured that a dark horror styled game of chasing evil piskies around the island of Saint Michaels Mount while being hunted by King Arthurs ghost was pretty bang on.",'#', '2021-02-28']
-    ]
+    //create base rows
+    let rows = [];
+    //loop through posts.json to populate rows array
+    for (let i = 0; i < postDataJSON.entries.length; i++) {
+      rows[i] = [postDataJSON.entries[i].id, postDataJSON.entries[i].author, postDataJSON.entries[i].title, postDataJSON.entries[i].image, postDataJSON.entries[i].content, postDataJSON.entries[i].link, postDataJSON.entries[i].date]
+    }
+    // populate SQL command with rows array populated from posts.json
     rows.forEach( (row) => {
       SQLdatabase.run('INSERT INTO `blog` VALUES(?,?,?,?,?,?,?)', row);
     });
@@ -413,15 +417,15 @@ router.post('/manageBlog', (req, res, next) => {
   // do the validation
   var errors = [];  
   console.log(form)
-  if (!form.title || !form.image || !form.link || !form.author || !form.content){
-    errors.push("Cannot have blank fields");
-  }
-  if (errors.length){
-    res.status(400).send(errors);
-    return;
-  }
+    if (!form.title || !form.image || !form.link || !form.author || !form.content){
+      errors.push("Cannot have blank fields");
+    }
+    if (errors.length){
+      res.status(400).send(errors);
+      return;
+    }
   
-  var params = [ form.title, form.image,form.link, form.author, dateFormatSwitcher(form.date), form.content, form.id  ];console.log(params)
+  var params = [ form.title, form.image,form.link, form.author, form.content, form.id  ];console.log(params)
   SQLdatabase.run(SQL_UPDATE_BLOG, params, function(err, result){
     if (err) {
       res.status(500).send(err.message)
@@ -449,8 +453,21 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
     req.body.link = "#"
   } 
   //upload.single(req.image);
-  var params = [ form.author, form.title, form.image, form.content, form.link, generateDate];
-  console.log(req.body);
+  var params = [ form.author, form.title, form.image, form.content, form.link, generateDate()];
+
+  postDataJSON.entries.unshift({
+    id: postDataJSON.entries.length + 1,
+    author: req.body.author,
+    title: req.body.title,
+    image: req.body.image,
+    content: req.body.content,
+    link: req.body.link,
+    date: generateDate()
+  })
+  
+  fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON, null, 2)); //updates file
+
+
   db.run(SQL_ADD_BLOG_POST, params, function(err, result) {
     console.log(form)
     if (err) {
