@@ -415,7 +415,7 @@ router.get('/manageBlog', (req, res, next) => {
   })
 })
 
-router.post('/manageBlog', (req, res, next) => {
+router.post('/manageBlog', upload.single('change-image'), function (req, res, next) {
   var form = req.body;
   let SQLdatabase = req.app.locals.SQLdatabase;
   // do the validation
@@ -429,7 +429,7 @@ router.post('/manageBlog', (req, res, next) => {
       return;
     }
   
-  var params = [ form.title, form.image,form.link, form.author, form.content, form.id  ];console.log(params)
+  var params = [ form.title, req.body.image,form.link, form.author, form.content, form.id  ];console.log(params)
   SQLdatabase.run(SQL_UPDATE_BLOG, params, function(err, result){
     if (err) {
       res.status(500).send(err.message)

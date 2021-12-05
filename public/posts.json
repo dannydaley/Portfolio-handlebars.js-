@@ -3,11 +3,11 @@
     {
       "id": 9,
       "author": "Danny",
-      "title": "This is another test post",
-      "image": "/images/uploads/Danny-image-1638642608656-668530132.png",
-      "content": "Truth betold I was expecting that last post to log me out as the server refreshed (due to the posts.json file being resaved and Nodemon picking up on file changes) either way we shall see if i have to log back in..",
+      "title": "my new post",
+      "image": "/images/uploads/Danny-image-1638662421764-322164103.png",
+      "content": "my new content",
       "link": "#",
-      "date": "6-11-2021"
+      "date": "0-11-2021"
     },
     {
       "id": 8,
