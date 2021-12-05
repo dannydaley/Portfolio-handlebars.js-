@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": 9,
-      "author": "Danny",
-      "title": "my new post",
-      "image": "/images/uploads/Danny-image-1638662421764-322164103.png",
-      "content": "my new content",
-      "link": "#",
-      "date": "0-11-2021"
-    },
-    {
       "id": 8,
       "author": "Danny",
       "title": "Double safe posting",

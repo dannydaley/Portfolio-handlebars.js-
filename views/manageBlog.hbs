@@ -27,15 +27,12 @@
                             <input class="contentField" type="text" name="title" value="{{title}}" />
                             <label for="image">change image</label>
                             <input class="contentField" type="hidden" name="image" value="{{image}}" />
-                            <input type="file" accept="image/png, image/jpeg" name="change-image">
+                            <input class="contentField" type="hidden" name="author" value="{{author}}" />
+                            <input type="file" accept="image/png, image/jpeg" name="change-image">     
                         </div>
                         <div class="postDetails">
                             <label for="link">link</label>
                             <input class="contentField" type="text" name="link" value="{{link}}" />
-                            <label for="author">author</label>
-                            <input class="contentField" type="text" name="author" value="{{author}}" readonly/>
-                            {{!-- <label for="date">date</label>
-                            <input class="contentField" type="date" name="date" value="{{date}}" />                      --}}
                         </div>
                     </div>                
                     <div class="postContent">
