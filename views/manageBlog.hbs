@@ -28,20 +28,17 @@
                             <label for="image">change image</label>
                             <input class="contentField" type="hidden" name="image" value="{{image}}" />
                             <input class="contentField" type="hidden" name="author" value="{{author}}" />
-                            <input type="file" accept="image/png, image/jpeg" name="change-image">     
-                        </div>
-                        <div class="postDetails">
+                            <input class="updateButton" type="file" accept="image/png, image/jpeg" name="change-image"> 
                             <label for="link">link</label>
-                            <input class="contentField" type="text" name="link" value="{{link}}" />
-                        </div>
+                            <input class="contentField" type="text" name="link" value="{{link}}" />    
+                        </div>    
                     </div>                
                     <div class="postContent">
                         <label for="content">content</label>
                         <textarea type="text" name="content" rows="10" cols="50">{{this.content}}</textarea>
                         <input class="updateButton" type="submit" value="Update" />
                     </div>
-                </form>
-            </div>                
+                </form>                
                 <div class="deletePost">
                     <form action="/post-delete" method="post">
                         <h1>delete this post?</h1>
@@ -58,6 +55,7 @@
                         <input class="updateButton" type="submit" value="delete" />
                     </form>
                 </div>
+            </div>
             </div>
             <!-- UPDATE BLOG FORM END -->
         </div>

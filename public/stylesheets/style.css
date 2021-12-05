@@ -753,7 +753,8 @@ footer a, footer {
   height:30px;
 }
 .projectTags button {
-  padding: 0;  
+  padding: 0;
+  
   font-size: medium;
   border: none;
   background-color: aqua;
@@ -807,6 +808,7 @@ textarea {
   padding: 5px;
   font-weight: bold;
 }
+
 @media (max-width: 900px) {
 
 }
