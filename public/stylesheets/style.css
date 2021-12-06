@@ -871,7 +871,7 @@ textarea {
   background-color: aqua;
   width: 50%;
   border-radius: 0px 0px 30px 30px;
-  padding: 20px 20px 20px 7%;
+  padding: 0px 20px 20px 7%;
   color: black;
   font-weight: bold;
   display: flex;  
@@ -883,8 +883,11 @@ textarea {
 @media (max-width: 900px) {
 
 }
-@media (max-width: 600px) {
-
+@media (max-width: 900px) {
+  .updateBlogPost {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 500px) {
