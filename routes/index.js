@@ -33,27 +33,41 @@ const dateFormatSwitcher = (oldDate) => {
 
 var multer  = require('multer');
 
+//set up storage location
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'public/images/uploads')
-  },
+  }, //set up filename
   filename: function (req, file, cb) {
     if (file.fieldname !== undefined) {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+      // delete the attached image
+      fs.unlink('public' + req.body.image, (err) => {
+      //console.log error if error
+      if (err) {
+        console.log("error deleting image")
+      }  
+    });
+    //create unique suffix for naming
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    // create filename (author + filename + unique suffix + filetype)
     cb(null, req.body.author + '-' + file.fieldname + '-' + uniqueSuffix + '.png')
+    // reset the request.body.image field with the image location + new filename to be put in the database as a link
     req.body.image = "/images/uploads/" + req.body.author + '-' + file.fieldname + '-' + uniqueSuffix + '.png'
     }
+    // if upload image field on form is left blank..
     else {
       return
     }
   }
 })
+
 const upload = multer({ storage: storage });
 
 /* END OF IMAGE UPLOAD HANDLING */
 
 let postDataJSON = require("../public/posts.json");
 
+// fs is needed for writing/deleting files
 var fs = require('fs');
 
 // variable responsible for greeting user on login
@@ -489,7 +503,26 @@ const BLOG_DELETE_POST = "DELETE FROM `blog` WHERE title = ? AND id = ?";
 router.post('/post-delete', (req, res, next) => {
   var form = req.body;
   let db= req.app.locals.SQLdatabase;
-  var postToDelete = form.deleteThisPost;
+  var postToDelete = form.deleteThisPost;  
+  //reinitialized postDataJSON to make sure weve got an up to date version..
+  let postDataJSON2 = require("../public/posts.json");    
+  // new entries array to populate
+  let newEntries = [];
+  //loop through the entries
+    for (let i = 0; i < postDataJSON2.entries.length; i++) {
+      // search for a match
+      if (postDataJSON2.entries[i].id.toString() === form.postId.toString() && postDataJSON2.entries[i].author === form.author) {
+          //delete matching entry
+          delete postDataJSON2.entries[i];
+      } else {
+        // push all non-matching posts to the new entries list
+      newEntries.push(postDataJSON2.entries[i]);
+      }
+    }    
+    // apply the new entries array to the up to date postDataJSON2.entries
+    postDataJSON2.entries = newEntries;    
+    //overwrite posts.json with the latest data
+    fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON2, null, 2));
   // decrement the users posts count.
   db.run('UPDATE `users` SET `posts` = posts-1 WHERE name = ?',  form.author)
   // delete the post
@@ -497,10 +530,16 @@ router.post('/post-delete', (req, res, next) => {
     if (err) {
       res.status(500).send(err.message);
       return;
+    }
+    // delete the attached image
+    fs.unlink('public' + form.image, (err) => {
+      //console.log error if error
+    if (err) {
+      console.log("error deleting image")
     }  
+  });
      res.render('blog-db-done', { "changes": this.changes, loggedIn: changeNavLoginButton(isLoggedIn) })
    })
 })
-
 
 module.exports = router;
