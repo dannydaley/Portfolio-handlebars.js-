@@ -1,6 +1,6 @@
 ================================================================
 
-ENDPOINT => METHOD
+### ENDPOINT => METHOD
 
 EXPLANATION
 
@@ -10,49 +10,52 @@ FORMAT
 
 =================================================================
 
-'/SQLDatabaseUserSetup' => GET 
+### '/SQLDatabaseUserSetup' => GET 
 
 Sets up the users table in the SQL database.
 
 -----------------------------------------------------------------
 
-'/getAllUsers' => GET    
+### '/getAllUsers' => GET    
 
 (FOR TESTING PURPOSES ONLY) Serves the user with all user data from the users table.
 
 -----------------------------------------------------------------
 
-'/SQLDatabaseBlogSetup' => GET
+### '/SQLDatabaseBlogSetup' => GET
 
 Sets up the initial blog table in the SQL database.
 
 -----------------------------------------------------------------
 
-'/manageBlog' => GET 
+### '/manageBlog' => GET 
 
 Gets the manageBlog hbs template and displays blog posts authored by the logged in user.
 
 -----------------------------------------------------------------
 
-'/manageBlog' => POST
+### '/manageBlog' => POST
 
 Updates the edited blog post through the form appended to the selected post. User is taken to the success page "blog-db-done" on completion
 
-post ID is an integer that represents the ID number of the post (read only)
+post ID is an integer that represents the ID number of the post (read only and hidden)
 
 title is a string that represents the title of the blog post
 
-author is a string that represents the author of the blog post (read only)
+author is a string that represents the author of the blog post (read only and hidden)
 
-image is a string that represents the image attached to the blog post, input should represent the image location in the local project files.
+image is a file upload input, on change, the upload is processed and given a unique filename, the contents of the request.body.image field
+is then changed to a string representing the location of the image in the local files, which is then used to display the image. If field is left blank the original image location string remains unchanged.
 
 link represents the url of a working demo of the blog post (if about a project) Defaulyts to # if left blank
 
-date represents the date object attached to the blog post.
+date is a string that represents the date object attached to the blog post and is generated automatically.
+
+FORMAT (MULTIPART/FORM-DATA)
 
 FORMAT (URL ENCODED FORMAT) = "id=11&title=POST+TITLE+CONTENT&image=POST-IMAGE-LOCATION&link=POST-LINK&author=POST-AUTHOR&date=2021-12-02&content=POST+CONTENT+BODY"
 
------------------------------------------------------------------
+### -----------------------------------------------------------------
 
 '/newPost' => GET
 
@@ -60,31 +63,32 @@ Serves the user the newPost.hbs page where they can find the form to create a ne
 
 -----------------------------------------------------------------
 
-'/newBlogPost' => POST
-
+### '/newBlogPost' => POST
 
 
 Adds new blog post data taken from the new post form in newPost.hbs to the blog table. User is taken to blog-db-done.hbs on completion.
 
-author is a string representing the author of the new post (read only)
+Author is a string representing the author of the new post (read only and hidden)
 
-title is a string representing the title of the new post.
+Title is a string representing the title of the new post.
 
-image is a file upload field that stores the image locally in 'public/images/uploads', the name and location of the image is then applied back to req.body.image and passed into the database query for storage.
+Image is a file upload input, the upload is processed and given a unique filename, the contents of the request.body.image field
+is then changed to a string representing the location of the image in the local files, which is then used to display the image. If field is left blank, the default image location string gets passed in.
 
-link is a string representing the link to working project (defaults to '#' if the field is left blank)
+Link is a string representing the link to working project (defaults to '#' if the field is left blank)
 
-date is a selectable date object to represent the date attached to the new blog post.
+Date is a string that represents the date of the post. This is applied automatically.
 
-content is a string that represents the main body of content for the blog post
+Content is a string that represents the main body of content for the blog post
 
 
+FORMAT (MULTIPART/FORM-DATA)
 //needs update
 FORMAT (URL ENCODED FORMAT) = "author=POST+AUTHOR&title=POST+TITLE+CONTENT&image=POST-IMAGE-LOCATION&link=POST-LINK&date=2021-12-02&content=POST+CONTENT+BODY"
 
 -----------------------------------------------------------------
 
-'/post-delete' => POST
+### '/post-delete' => POST
 
 Deletes the post that the "delete form" is attached to from the blog table, post title and tick box must be checked for delete to happen,
 User is taken to blog-db-done.hbs on completion
@@ -97,44 +101,44 @@ FORMAT (URL ENCODED FORMAT) = "deleteThisPost=POST+TITLE+CONTENT"
 
 -----------------------------------------------------------------
 
-'/' => GET
+### '/' => GET
 
 Serves the user the index.hbs file
 
 -----------------------------------------------------------------
 
-'/blog' => GET
+### '/blog' => GET
 
 Serves the user the blog.hbs file with data from the blog table in the SQL databse, authored by site admin
 
 -----------------------------------------------------------------
 
-'/community-blog' => GET
+### '/community-blog' => GET
 
 Serves the user the blog.hbs file with all data from the blog table in the SQL database.
 
 -----------------------------------------------------------------
 
-/blogJson' => GET
+### /blogJson' => GET
 
 Serves the user a replicated copy of the blog page but with data coming from a noSQL JSON database.
 
 -----------------------------------------------------------------
 
 
-'/blogXml' => GET
+### '/blogXml' => GET
 
 Serves the user a replicated copy of the blog page but with data coming from a noSQL XML database.
 
 -----------------------------------------------------------------
 
-'/login' => GET
+### '/login' => GET
 
 Serves the user with the login.hbs page
 
 -----------------------------------------------------------------
 
-'/login' => POST
+### '/login' => POST
 
 email is a string that represents the users registered email address
 
@@ -144,25 +148,25 @@ FORMAT (URL ENCODED FORMAT) = "email=USER%40EMAIL.com&password=PASSWORD"
 
 -----------------------------------------------------------------
 
-'/loggedIn' => GET
+### '/loggedIn' => GET
 
 Serves the user the loggedIn.hbs page to display the users dashboard after successful login.
 
 -----------------------------------------------------------------
 
-'/logOut' => GET 
+### '/logOut' => GET 
 
 Serves the user with the index.hbs page after logging the user out.
 
 -----------------------------------------------------------------
 
-'/register' => GET
+### '/register' => GET
 
 Serves the user the register.hbs page, where users can register a new account.
 
 -----------------------------------------------------------------
 
-'/register' => POST
+### '/register' => POST
 
 email is a string that represents the users email address they are registering with.
 
