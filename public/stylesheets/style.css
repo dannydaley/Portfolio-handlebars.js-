@@ -1,4 +1,18 @@
+:root {
+  /*  PLATFORM COLORS */
+  --main-text-color: aqua;
+  --second-text-color: white;
+  --card-background-color: aqua;
+  --background-color: black;
+  --second-background-color: #303841;
+  --dashboard-ui-color: rgba(82, 82, 82, 0.31);
+  --dashboard-ui-option-color: rgba(90, 90, 90, 0.438);
 
+  /* PLATFORM FONTS */
+  --main-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+}
 body {
    color:aqua;
   background-color: black;
@@ -303,8 +317,7 @@ margin-left: -3%;
 }
 @media (max-width: 900px) {
   #projects {    
-    background-color: green;
-    flex-direction: column;
+   flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 25vh 0 50px 0;
