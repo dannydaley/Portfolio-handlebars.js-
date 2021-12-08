@@ -435,7 +435,7 @@ router.post('/manageBlog', upload.single('change-image'), function (req, res, ne
   // do the validation
   var errors = [];  
   console.log(form)
-    if (!form.title || !form.image || !form.link || !form.author || !form.content){
+    if (!form.title || !form.image || !form.author || !form.content){
       errors.push("Cannot have blank fields");
     }
     if (errors.length){
@@ -468,7 +468,7 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
   }
   if (req.body.link === ""){
     //defaults the link to go nowhere
-    req.body.link = "#"
+    req.body.link = ""
   } 
   //upload.single(req.image);
   var params = [ form.author, form.title, form.image, form.content, form.link, generateDate()];

@@ -1,6 +1,15 @@
 {
   "entries": [
     {
+      "id": 9,
+      "author": "Danny",
+      "title": "The issue with 'Double safe posting..'",
+      "image": "/images/uploads/Danny-image-1638970284179-995219945.png",
+      "content": "A problem that presented itself when adding posts to the JSON file was that they weren't really all that easy to delete. With a reasonable amount of effort I managed to get the job done. Creating a new instance of the posts entries array populated with every post object apart from the one we're trying to delete, then re-writing the local file with the new object array. Hopefully now I'll run into less issues when rebooting the database as it reads from the initial JSON file, and when I do, I can be sure to be just getting up-to-date and relevant data.",
+      "link": "#",
+      "date": "3-11-2021"
+    },
+    {
       "id": 8,
       "author": "Danny",
       "title": "Double safe posting",
