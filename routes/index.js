@@ -8,7 +8,6 @@ let router = express.Router();
 
 /* DATE HANDLING */
 
-
 const getDate = () => {
   let date = new Date()
   let dateDay = date.getDate();
@@ -18,8 +17,6 @@ const getDate = () => {
 }
 
 /* END OF DATE HANDLING */
-
-
 
 /* IMAGE UPLOAD HANDLING */
 
@@ -80,8 +77,8 @@ let changeNavLoginButton = (loggedInStatus) => {
   }
 }
 
-///////////////////////////////////////////
-//SECURITY STUFF
+
+///////////////////////////////////////    SECURITY    /////////////////////////////////////////////
 
 let crypto = require('crypto');
 
@@ -101,9 +98,11 @@ function passwordHash(thePassword, theSalt) {
 
 /////////////////////////////////////// SQL DATABASE STUFF /////////////////////////////////////////////
 
+
 const GET_ALL_POSTS = "SELECT * FROM `blog` ORDER BY id DESC"; // SQL command
 const GET_RECENT_POSTS = "SELECT * FROM blog ORDER BY id DESC LIMIT 5"; // SQL command
-const GET_POSTS_BY_AUTHOR = "SELECT * FROM `blog` WHERE author = ? ORDER BY id DESC"
+const BLOG_DELETE_POST = "DELETE FROM `blog` WHERE title = ? AND id = ?"; //SQL command
+const GET_POSTS_BY_AUTHOR = "SELECT * FROM `blog` WHERE author = ? ORDER BY id DESC" //SQL command
 const GET_RECENT_POSTS_BY_AUTHOR = "SELECT * FROM blog WHERE author = ? ORDER BY id DESC LIMIT 5"; // SQL command
 const SQL_ADD_BLOG_POST = "INSERT INTO `blog` (author, title, image, content, link, date) VALUES(?,?,?,?,?,?)"
 const SQL_UPDATE_BLOG =  "UPDATE `blog` SET title = ?, image = ?, link = ?, author = ?, content = ? WHERE id = ?" //SQL command
@@ -155,7 +154,7 @@ router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
   res.render("blog-db-done", { loggedIn: changeNavLoginButton(isLoggedIn) });
 })
 
-/*========================DEBUGGING AND TESTING ENDPOINTS========================*/
+/*==============================DEBUGGING AND TESTING ENDPOINTS========================*/
 /* GET all users */
 router.get('/getAllUsers', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
@@ -179,108 +178,13 @@ router.get('/getAllPosts', (req, res, next) => {
     res.json(rows);
   })
 })
-/*==================END OF DEBUGGING AND TESTING ENDPOINTS========================*/
+/*========================END OF DEBUGGING AND TESTING ENDPOINTS========================*/
 
 
-
-//////////////////////////////////// WORKSHOP STUFF //////////////////////////////////////////////////////////////
-// router.get('/setup', (req, res, next) => {
-//   let db = req.app.locals.db;
-//   //these queries must run one by one - dont try and delete and create tables at the same time.
-//   db.serialize( () => {
-//     //delete the table if it exists..
-//     db.run('DROP TABLE IF EXISTS `test`');
-//     db.run('CREATE TABLE `test` ( name varchar(255), amount INT )');
-//     //create test rows
-//     let rows = [
-//       ['test', 42],
-//       ['gold', 1337],
-//       ['bread', 42],
-//       ['ready meal', 42],
-//     ];
-//     rows.forEach( (row) => {
-//       db.run('INSERT INTO `test` VALUES(?,?)', row);
-//     });
-//   })
-//   res.render("test-db-done", { loggedIn: changeNavLoginButton(isLoggedIn) });
-// })
-// const SQL_GET_TEST = "SELECT * FROM test"; //sql command
-// router.get('/test', (req, res, next) => {
-//   let db = req.app.locals.db;
-//   db.all(SQL_GET_TEST, [], (err, rows) => {
-//     if (err) {
-//       //something went wrong
-//       res.status(500).send(err.message);
-//       return;
-//     }
-//     //everything goes right..
-//     res.render('test-db', { "rows": rows  });
-//   })
-// })
-// const SQL_UPDATE_TEST = "UPDATE test SET amount = ? WHERE name = ?";
-// router.post('/test', (req, res, next) => {
-// var form = req.body;
-// let db= req.app.locals.db;
-// // do validation
-// var errors = [];
-// if (!form.amount || !form.name) {
-//   errors.push("name or amount missing");
-// }
-
-// // are there errors?
-// if (  errors.length ) {
-
-
-//   res.status(400).send(errors);
-//   return;
-// }
-// // no errors, update database.
-// var params = [ form.amount, form.name ];
-// db.run(SQL_UPDATE_TEST, params, function(err, result) {
-//   if (err) {
-//     //TODO we should handle this better, maybe a pretty error page.
-//     res.status(500).send(err.message);
-//     return;
-//   }
-//   // show the page telling the user it worked.
-//   res.render('test-db-success', {  "params": params, "changes": this.changes })
-//   })
-// })
-// const SQL_ADD_TEST = "INSERT INTO `test` VALUES(?,?)"
-// router.post('/test-add', (req, res, next) => {
-//   var form = req.body;
-//   let db= req.app.locals.db;
-//   var params = [ form.name, form.amount ];
-//   db.run(SQL_ADD_TEST, params, function(err, result) {
-//     if (err) {
-//       res.status(500).send(err.message);
-//       return;
-//     }  
-//      res.render('test-db-success', {  "params": params, "changes": this.changes })
-//    })
-// })
-
-
-// const SQL_DELETE_TEST = "DELETE FROM `test` WHERE name = ?";
-// router.post('/test-delete', (req, res, next) => {
-//   var form = req.body;
-//   let db= req.app.locals.db;
-//   var params = [ form.name ];
-//   db.run(SQL_DELETE_TEST, params, function(err, result) {
-//     if (err) {
-//       res.status(500).send(err.message);
-//       return;
-//     }  
-//      res.render('test-db-success', {  "params": params, "changes": this.changes })
-//    })
-// })
-
-/////////////////////////////////////////////////////
+///////////////////////////////////////    ENDPOINTS    /////////////////////////////////////////////
 
 /* GET home page. */
-router.get('/', function(req, res, next) {    
-
-
+router.get('/', function(req, res, next) {   
   let SQLdatabase = req.app.locals.SQLdatabase;
   SQLdatabase.all(GET_RECENT_POSTS_BY_AUTHOR, ["Danny"], (err, rows) => {
     if (err) {
@@ -319,33 +223,17 @@ router.get('/community-blog', (req, res, next) => {
 router.get('/blogJson', function(req, res, next) {
   res.render('blogJson', { title: "work.JSON", postDataJSON, loggedIn: changeNavLoginButton(isLoggedIn) });
 });
-// //adds a new post to posts.json
-// router.post('/newPost', function (req, res, next) {
-//   let { title, content, author, image } = req.body;
-//   if (image === ''){
-//     image = '/images/default-post-image.png'
-//   }
-//   postData.entries.unshift({
-//   id: "p" + (postData.entries.length + 1),
-//   author: author,
-//   title: title,
-//   image: image,
-//   content: content,        
-//   date: new Date()
-//   });  
-//   res.render('blog', postData);   
-// });
 
 /* GET workXML page. */
 router.get('/blogXml', function(req, res, next) {
   res.render('blogXml', { title: "work.XML",loggedIn: changeNavLoginButton(isLoggedIn) });
 });
 
-
-
+/* GET user registration page. */
 router.get('/register', function (req, res, next) {
   res.render('register',{ title: "register",loggedIn: changeNavLoginButton(isLoggedIn) })
 })
+
 //adds new user to user database
 router.post('/register', function (req, res, next) {
   let { email, username, password1, password2 } = req.body; 
@@ -369,7 +257,7 @@ router.post('/register', function (req, res, next) {
 router.get('/login', function(req, res, next) {
   if (isLoggedIn) {
     res.render('loggedIn', { name: name.toUpperCase(), title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });
-}
+  }
   else {
     res.render('login', { title: 'Log in', loggedIn: changeNavLoginButton(isLoggedIn) });
   }
@@ -398,6 +286,7 @@ router.post('/login', (req, res, next) => {
       }       
     })   
 })
+
 /*GET logged in page (dashboard) */
 router.get('/loggedIn', function(req, res, next) {
   res.render('loggedIn', { title: 'logged in ', loggedIn: changeNavLoginButton(isLoggedIn) });
@@ -415,6 +304,7 @@ router.get('/logOut', function(req, res, next) {
   })
 })
 
+/* GET manage blog page */
 router.get('/manageBlog', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
   SQLdatabase.all(GET_POSTS_BY_AUTHOR, [name], (err, rows) => {
@@ -426,20 +316,20 @@ router.get('/manageBlog', (req, res, next) => {
   })
 })
 
+/* POST manageblog form */
 router.post('/manageBlog', upload.single('change-image'), function (req, res, next) {
   var form = req.body;
   let SQLdatabase = req.app.locals.SQLdatabase;
   // do the validation
   var errors = [];  
   console.log(form)
-    if (!form.title || !form.image || !form.author || !form.content){
-      errors.push("Cannot have blank fields");
-    }
-    if (errors.length){
-      res.status(400).send(errors);
-      return;
-    }
-  
+  if (!form.title || !form.image || !form.author || !form.content){
+    errors.push("Cannot have blank fields");
+  }
+  if (errors.length){
+    res.status(400).send(errors);
+    return;
+  }
   var params = [ form.title, req.body.image,form.link, form.author, form.content, form.id  ];console.log(params)
   SQLdatabase.run(SQL_UPDATE_BLOG, params, function(err, result){
     if (err) {
@@ -455,6 +345,7 @@ router.get('/newPost', function(req, res){
   res.render('newPost', { title: 'new post', loggedIn: changeNavLoginButton(isLoggedIn), name: name });
 });
 
+/* POST new blog post form */
 router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
   var form = req.body;
   let db = req.app.locals.SQLdatabase; 
@@ -469,7 +360,6 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
   } 
   //upload.single(req.image);
   var params = [ form.author, form.title, form.image, form.content, form.link, getDate()];
-
   //create the JSON object to add to posts.json
   postDataJSON.entries.unshift({
     id: postDataJSON.entries.length + 1,
@@ -480,7 +370,6 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
     link: req.body.link,
     date: getDate()
   })
-
   // RE-WRITE the posts.json file with the new posts added to the top,
   // JSON.stringify has extra arguments to handle formatting  
   fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON, null, 2)); 
@@ -496,7 +385,7 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
   })
 })
 
-const BLOG_DELETE_POST = "DELETE FROM `blog` WHERE title = ? AND id = ?";
+/* POST delete blog post form */
 router.post('/post-delete', (req, res, next) => {
   var form = req.body;
   let db= req.app.locals.SQLdatabase;
@@ -537,8 +426,7 @@ router.post('/post-delete', (req, res, next) => {
     }  
   });
     }
-
-     res.render('blog-db-done', { "changes": this.changes, loggedIn: changeNavLoginButton(isLoggedIn) })
+    res.render('blog-db-done', { "changes": this.changes, loggedIn: changeNavLoginButton(isLoggedIn) })
    })
 })
 

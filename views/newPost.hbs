@@ -1,17 +1,22 @@
 <div class="new-post-form">
     <form method="POST" action="/newBlogPost" enctype="multipart/form-data">
-        <label for="author">author: </label>
-        <input type="text" name="author" value="{{name}}" readonly>
-        <label for="title" required >title: </label>
-        <input type="text" name="title">
-        <label for="title">image: </label>
-        <input type="file" accept="image/png, image/jpeg" name="image">
-        <label for="title">link: </label>
-        <input type="text" name="link">
+        <label for="author">author: 
+            <input type="text" name="author" value="{{name}}" readonly>
+        </label>
+        <label for="title" required >title: 
+            <input type="text" name="title">
+        </label>
+        <label for="title">image: 
+            <input type="file" accept="image/png, image/jpeg" name="image">
+        </label>
+        <label for="title">link: 
+            <input type="text" name="link">
+        </label>
         {{!-- <input type="date" name="date"> --}}
         <div class="content-field">
-            <label for="content">content:  </label>
-            <textarea type="text" name="content" rows="10" cols="70"></textarea>
+            <label for="content">content:  
+                <textarea type="text" name="content" rows="10" cols="70"></textarea>
+            </label>
         </div>
         <button type="submit">POST</button>
     </form>

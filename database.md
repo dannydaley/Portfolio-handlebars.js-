@@ -3,9 +3,11 @@
 --------------------------------------------------------------------
                             JSON DATABASE
 
-The original storage solution for blog posts. I preferred this model over an XML solution as I preferred the readability.
-The solution became redundant as I moved things over to the SQL database, as I needed a storage solution that was more dynamic
-than a static data structure.
+The original storage solution for blog posts. I preferred this model over an XML solution as I preferred
+the readability. Whereas this solution became redundant with the implementation of the SQL database, it is
+now referenced on initialization of the SQL database to avoid hardcoded values in the local files. This file
+is rewritten when posts are created and deleted in the SQL database so that the held data stays upto date and
+relevant.
 
 FILE: "posts.json"
 
@@ -70,7 +72,7 @@ The added benefit of being able to use the tables relationally was another great
 attempts such as the XML and JSON alternatives.
 
 SQLite3 database set up in App.js under the variable `SQLdatabase`, table setup is performed from the endpoints '/SQLDatabaseUserSetup' and '/SQLDatabaseBlogSetup'.
-Each deleting the existing table and recreating it with dummy/base data.
+Each deleting the existing table and recreating it with data pulled from the 'posts.json' file.
 
 FILE: "SQLdatabase"
 

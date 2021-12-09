@@ -4,11 +4,11 @@
         <div class="project-slide-container">
             <div class="project-slide">
                 <div class="projInfo">
-                    <p><a href="{{this.link}}" target="_blank">{{title}}</a></p>
-                    <p>{{content}}</p>
+                    <p><a href="{{this.link}}" target="_blank" rel="noopener">{{title}}</a></p>
+                    <p>{{{content}}}</p>
                 </div>
-                <a href="{{link}}" target="_blank">
-                    <img src="{{image}}">
+                <a href="{{link}}" target="_blank" rel="noopener">
+                    <img src="{{image}}" alt="project thumbnail image">
                 </a>
             </div>            
             <div class="projectTags">
@@ -19,21 +19,25 @@
                 <form action="/manageBlog" method="post" class="updateForm" enctype="multipart/form-data">
                     <div class="updateInputs">
                         <div class="postDetails">
-                            <label for="id">post ID</label>
-                            <input type="number" name="id" value="{{id}}" readonly />
-                            <label for="title">title</label>                        
-                            <input class="contentField" type="text" name="title" value="{{title}}" />
-                            <label for="image">change image</label>
+                            <label for="id">post ID
+                                <input type="number" name="id" value="{{id}}" readonly /></label>
+                            <label for="title">title                        
+                                <input class="contentField" type="text" name="title" value="{{title}}" />
+                            </label>
+                            <label for="image">change image
+                                <input class="updateButton" type="file" accept=".png" name="change-image" />
+                            </label>
                             <input class="contentField" type="hidden" name="image" value="{{image}}" />
-                            <input class="contentField" type="hidden" name="author" value="{{author}}" />
-                            <input class="updateButton" type="file" accept=".png" name="change-image" /> 
-                            <label for="link">link</label>
-                            <input class="contentField" type="text" name="link" value="{{link}}" />    
+                            <input class="contentField" type="hidden" name="author" value="{{author}}" />                            
+                            <label for="link">link
+                                <input class="contentField" type="text" name="link" value="{{link}}" />
+                            </label>    
                         </div>    
                     </div>                
                     <div class="postContent">
-                        <label for="content">content</label>
-                        <textarea type="text" name="content" rows="10" cols="50">{{this.content}}</textarea>
+                        <label for="content">content
+                            <textarea type="text" name="content" rows="10" cols="50">{{this.content}}</textarea>
+                        </label>
                         <input class="updateButton" type="submit" value="Update" />
                     </div>
                 </form>                
@@ -41,15 +45,17 @@
                     <form action="/post-delete" method="post">
                         <h1>delete this post?</h1>
                         <div class="deleteTextField">
-                            <label for="deleteThisPost">confirm post title</label>
-                            <input name="deleteThisPost" type="text" pattern="{{title}}" placeholder="post title" required />
+                            <label for="deleteThisPost">confirm post title
+                                <input name="deleteThisPost" type="text" pattern="{{title}}" placeholder="post title" required />
+                            </label>
                             <input type="hidden" name="author" value="{{author}}">
                             <input type="hidden" name="postId" value="{{id}}">
                             <input type="hidden" name="image" value="{{image}}">
                         </div>
                         <div class="deleteCheckboxField">
-                            <label for="confirmDeletePost">tick to confirm</label>
-                            <input type="checkbox" required />
+                            <label for="confirmDeletePost">tick to confirm
+                                <input type="checkbox" required />
+                            </label>
                         </div>
                         <input class="updateButton" type="submit" value="delete" />
                     </form>

@@ -482,7 +482,7 @@ footer {
   }
 footer a, footer {
   padding: 10px 50px;
-  color: white;
+  color: rgb(49, 45, 45);
   text-decoration: none;
   font-weight: bold;
 }
@@ -621,21 +621,16 @@ footer a, footer {
   margin-top: 150px;
   padding-bottom: 32px;
 }
-/* .login-welcome h1 {
-  /* margin-left: 2vw; 
-} */
+
 .post-manager {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* margin-left: -22px; */
-  /* margin: 50px 0 80px -22px; */
 }
 .post-manager ul {
   margin: 0 auto;
   list-style-type: none; 
-  /* margin-left: -10%;  */
 }
 .post-manager a, .post-manager a:visited {
   color:aqua;
@@ -785,9 +780,6 @@ footer a, footer {
 .projectTags a {
   color:black;
 }
-
-
-
 /* END BLOG SECTION STYLING */
 
 
@@ -937,8 +929,7 @@ textarea {
 }
 
 .testDbCard {
-  background-color: rgba(82, 82, 82, 0.31);
-  /* width: 90vw; */
+  background-color: rgba(82, 82, 82, 0.31); 
   margin: 200px 10vw;
   padding: 50px;
 }

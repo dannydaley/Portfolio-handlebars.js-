@@ -53,8 +53,6 @@ date is a string that represents the date object attached to the blog post and i
 
 FORMAT (MULTIPART/FORM-DATA)
 
-FORMAT (URL ENCODED FORMAT) = "id=11&title=POST+TITLE+CONTENT&image=POST-IMAGE-LOCATION&link=POST-LINK&author=POST-AUTHOR&date=2021-12-02&content=POST+CONTENT+BODY"
-
 ### -----------------------------------------------------------------
 
 '/newPost' => GET
@@ -83,8 +81,6 @@ Content is a string that represents the main body of content for the blog post
 
 
 FORMAT (MULTIPART/FORM-DATA)
-//needs update
-FORMAT (URL ENCODED FORMAT) = "author=POST+AUTHOR&title=POST+TITLE+CONTENT&image=POST-IMAGE-LOCATION&link=POST-LINK&date=2021-12-02&content=POST+CONTENT+BODY"
 
 -----------------------------------------------------------------
 
