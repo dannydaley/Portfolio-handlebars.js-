@@ -1,6 +1,15 @@
 {
   "entries": [
     {
+      "id": 11,
+      "author": "Danny",
+      "title": "my new post",
+      "image": "/images/default-post-image.png",
+      "content": "this is the content of my new post",
+      "link": "",
+      "date": "10-12-2021"
+    },
+    {
       "id": 10,
       "author": "Danny",
       "title": "Posts now support HTML embeds",

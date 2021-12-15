@@ -385,6 +385,8 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
   })
 })
 
+
+
 /* POST delete blog post form */
 router.post('/post-delete', (req, res, next) => {
   var form = req.body;
@@ -428,6 +430,14 @@ router.post('/post-delete', (req, res, next) => {
     }
     res.render('blog-db-done', { "changes": this.changes, loggedIn: changeNavLoginButton(isLoggedIn) })
    })
+})
+
+router.get('/my-profile', (req, res, next) => {
+  res.render("myProfile", { name: name.toLocaleUpperCase(), loggedIn: changeNavLoginButton(isLoggedIn) })
+})
+
+router.get('/user-Profile', (req, res, next) => {
+  res.render("user-profile", { name: name.toLocaleUpperCase(), loggedIn: changeNavLoginButton(isLoggedIn) })
 })
 
 module.exports = router;
