@@ -402,6 +402,7 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
   // RE-WRITE the posts.json file with the new posts added to the top,
   // JSON.stringify has extra arguments to handle formatting  
   fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON, null, 2)); 
+  posts++;
   db.run('UPDATE `users` SET `posts` = posts+1 WHERE name = ?',  form.author), function(err, result) {
     if (err){
       console.log(err)
@@ -446,6 +447,7 @@ router.post('/post-delete', (req, res, next) => {
     //overwrite posts.json with the latest data
     fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON2, null, 2));
   // decrement the users posts count.
+  posts--;
   db.run('UPDATE `users` SET `posts` = posts-1 WHERE name = ?',  form.author)
   // delete the post
   db.run(BLOG_DELETE_POST, [ postToDelete, form.postId ], function(err, result) {

@@ -1,6 +1,42 @@
 {
   "entries": [
     {
+      "id": 19,
+      "author": "TheOtherNewUser",
+      "title": "new guy, new post",
+      "image": "/images/default-post-image.png",
+      "content": "Wondering if this will fix the post incrementor, being a new user and there not currently being a way to delete existing users from that database, deleting posts when the counts already at 0 could just result in negative figures.. and .. well, you know how that goes.\r\n\r\nlets see how a freshy works",
+      "link": "",
+      "date": "21-12-2021"
+    },
+    {
+      "id": 18,
+      "author": "newUser123",
+      "title": "Post count..",
+      "image": "/images/default-post-image.png",
+      "content": "seems like the post incrementor was working.. definitely my second post but says my count is currently 0?",
+      "link": "",
+      "date": "21-12-2021"
+    },
+    {
+      "id": 17,
+      "author": "Danny",
+      "title": "another one",
+      "image": "/images/default-post-image.png",
+      "content": "another post",
+      "link": "",
+      "date": "21-12-2021"
+    },
+    {
+      "id": 16,
+      "author": "Danny",
+      "title": "new one",
+      "image": "/images/default-post-image.png",
+      "content": "my new post",
+      "link": "",
+      "date": "21-12-2021"
+    },
+    {
       "id": 15,
       "author": "Danny",
       "title": "User Profiles!",
