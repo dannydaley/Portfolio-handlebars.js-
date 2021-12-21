@@ -1,13 +1,49 @@
 {
   "entries": [
     {
-      "id": 11,
+      "id": 15,
       "author": "Danny",
-      "title": "my new post",
-      "image": "/images/default-post-image.png",
-      "content": "this is the content of my new post",
+      "title": "User Profiles!",
+      "image": "/images/uploads/Danny-image-1640098101994-522892773.png",
+      "content": "User profiles are now fully supported, offering users an area for visitors to come and check out all of their posts place. Coming next is the User's Space where visitors can leave comments, start discussions or share projects directly with you and vice versa!",
       "link": "",
-      "date": "10-12-2021"
+      "date": "21-12-2021"
+    },
+    {
+      "id": 15,
+      "author": "Danny",
+      "title": "new one",
+      "image": "/images/uploads/Danny-image-1640097769318-154083677.png",
+      "content": "asasasa",
+      "link": "",
+      "date": "21-12-2021"
+    },
+    {
+      "id": 14,
+      "author": "Danny",
+      "title": "new pme",
+      "image": "/images/uploads/Danny-image-1640097727184-827629652.png",
+      "content": "dsasdasads",
+      "link": "",
+      "date": "21-12-2021"
+    },
+    {
+      "id": 13,
+      "author": "newUser123",
+      "title": "my second post",
+      "image": "/images/uploads/newUser123-image-1640097514633-418365478.png",
+      "content": "seems to be an issue with my post count not incrementing..",
+      "link": "",
+      "date": "21-12-2021"
+    },
+    {
+      "id": 12,
+      "author": "newUser123",
+      "title": "My first post!",
+      "image": "/images/default-post-image.png",
+      "content": "Hey there! This is my first blog post!",
+      "link": "",
+      "date": "21-12-2021"
     },
     {
       "id": 10,

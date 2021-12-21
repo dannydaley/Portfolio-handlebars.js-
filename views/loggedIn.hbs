@@ -10,7 +10,11 @@
                 <h3>date joined: {{dateJoined}}</h3>
                 <h3>post count : {{posts}}</h3>
                 <div class="profile-card-links">
-                    <a href="/">view</a>|<a href="/my-profile">edit</a>   
+                    <form method="POST" action="/userProfile">
+                        <button type="submit" name="username" value="{{name}}">view</button> 
+                    </form>|<a href="/editProfile">edit</a>   
+                    {{!-- <a href="/userProfile">view</a> --}}
+                    
                 </div>                
             </div>
         </div>

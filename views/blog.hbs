@@ -19,8 +19,8 @@
                 </a>
             </div>            
             <div class="projectTags">
-                <form method="POST" action="/filter">
-                <p>posted by <button type="submit" value="{{author}}">{{author}}</button> on <button type="submit" value="{{date}}">{{date}}</button> post id: {{id}}</p></form>
+                <form method="POST" action="/userProfile">
+                <p>posted by <button type="submit" name="username" value="{{author}}">{{author}}</button> on <button type="submit" value="{{date}}">{{date}}</button> post id: {{id}}</p></form>
             </div>
         </div>
     {{/each}}
