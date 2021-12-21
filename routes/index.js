@@ -41,7 +41,7 @@ const storage = multer.diskStorage({
     if (file.fieldname !== undefined || req.body.image !== "i") {
       console.log(req.body)
       // delete the attached image
-      if (req.body.image !== "images/default-post-image.png" || req.body.image !== "images/defaultUser.png"){        
+      if (req.body.image !== "images/default-post-image.png" && req.body.image !== "images/defaultUser.png"){        
         fs.unlink('public/' + req.body.image, (err) => {
       //console.log error if error
         if (err) {
@@ -62,8 +62,7 @@ const storage = multer.diskStorage({
       // create filename (author + filename + unique suffix + filetype)
       cb(null, name + '-' + file.fieldname + '-' + uniqueSuffix + '.png')
       // reset the request.body.image field with the image location + new filename to be put in the database as a link
-      req.body.image = "images/profilePictures/" + name + '-' + file.fieldname + '-' + uniqueSuffix + '.png'
-      console.log("MMMUKLLLLLLLLTTWEEERRRRRRR");
+      req.body.image = "images/profilePictures/" + name + '-' + file.fieldname + '-' + uniqueSuffix + '.png'      
       console.log(req.body.image)
       }
     }
@@ -98,7 +97,7 @@ const getUserData = (req) => {
     dateJoined = rows.joined;
     profilePicture = rows.profilePicture;
     aboutMe = rows.aboutMe;
-  })}
+})}
 
 
 // variable that changes "login" to "dashboard" on nav
