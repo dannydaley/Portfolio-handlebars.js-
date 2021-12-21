@@ -682,7 +682,9 @@ footer a, footer {
   justify-content: space-around;
   align-items: center;
 }
-
+.profile-card .nameTag {
+  text-align: center;
+}
 .profile-card-links button {
   text-decoration: underline;
   padding: 0;    

@@ -19,12 +19,13 @@
                 <form action="/manageBlog" method="post" class="updateForm" enctype="multipart/form-data">
                     <div class="updateInputs">
                         <div class="postDetails">
+                            <input type="hidden" name="context" value="blogPost" readonly />
                             <label for="id">post ID
                                 <input type="number" name="id" value="{{id}}" readonly /></label>
                             <label for="title">title                       
                                 <input class="contentField" type="text" name="title" value="{{title}}" /></label>                             
                             <label for="image">change image
-                                <input class="contentField" type="hidden" name="image" value="{{image}}" readonly/>
+                                <input class="contentField" type="hidden" name="image" value="{{image}}" readonly />
                                 <input class="contentField" type="hidden" name="author" value="{{author}}" readonly />
                                 <input class="updateButton" type="file" accept=".png" name="change-image" /></label>                                             
                             <label for="link">link

@@ -1,19 +1,20 @@
 <div class="login-welcome">
-    <h1>{{name}}, YOU ARE LOGGED IN</h1>
+    <h1>{{name}} in the place!</h1>
     <div class="options-container">    
         <div class="profile-card">
             <div class="profile-card-image">
                 <img class="dashboard-profile-image" src="{{profilePicture}}" width="100px" height="100px">
             </div>
             <div class="profile-card-info">
-                <h3>{{name}}</h3>
-                <h3>date joined: {{dateJoined}}</h3>
-                <h3>post count : {{posts}}</h3>
+                <h2 class="nameTag">{{name}}</h2>
+
                 <div class="profile-card-links">
                     <form method="POST" action="/userProfile">
-                        <button type="submit" name="username" value="{{name}}">view</button> 
-                    </form>|<a href="/editProfile">edit</a>                   
-                </div>                
+                        <button type="submit" name="username" value="{{name}}">view profile</button> 
+                    </form>|<a href="/editProfile">edit profile</a>                   
+                </div>
+                                <h3>date joined: {{dateJoined}}</h3>
+                <h3>post count : {{posts}}</h3>                
             </div>
         </div>
         <div class="post-manager">

@@ -19,47 +19,11 @@
       "date": "21-12-2021"
     },
     {
-      "id": 17,
-      "author": "Danny",
-      "title": "another one",
-      "image": "/images/default-post-image.png",
-      "content": "another post",
-      "link": "",
-      "date": "21-12-2021"
-    },
-    {
-      "id": 16,
-      "author": "Danny",
-      "title": "new one",
-      "image": "/images/default-post-image.png",
-      "content": "my new post",
-      "link": "",
-      "date": "21-12-2021"
-    },
-    {
       "id": 15,
-      "author": "Danny",
+      "author": "Daley",
       "title": "User Profiles!",
       "image": "/images/uploads/Danny-image-1640098101994-522892773.png",
       "content": "User profiles are now fully supported, offering users an area for visitors to come and check out all of their posts place. Coming next is the User's Space where visitors can leave comments, start discussions or share projects directly with you and vice versa!",
-      "link": "",
-      "date": "21-12-2021"
-    },
-    {
-      "id": 15,
-      "author": "Danny",
-      "title": "new one",
-      "image": "/images/uploads/Danny-image-1640097769318-154083677.png",
-      "content": "asasasa",
-      "link": "",
-      "date": "21-12-2021"
-    },
-    {
-      "id": 14,
-      "author": "Danny",
-      "title": "new pme",
-      "image": "/images/uploads/Danny-image-1640097727184-827629652.png",
-      "content": "dsasdasads",
       "link": "",
       "date": "21-12-2021"
     },
@@ -83,7 +47,7 @@
     },
     {
       "id": 10,
-      "author": "Danny",
+      "author": "Daley",
       "title": "Posts now support HTML embeds",
       "image": "/images/uploads/Danny-image-1639060285439-207398755.png",
       "content": "Posts now offer the functionality to embed content such as iframes so users can get really creative with what they post (within reason)\r\n\r\n</p><iframe width=\"100%\" height=\"300\" scrolling=\"no\" frameborder=\"no\" allow=\"autoplay\" src=\"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1106070253&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true\"></iframe><div style=\"font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;\"><a href=\"https://soundcloud.com/dannytdaley\" title=\"DannyDaley\" target=\"_blank\" style=\"color: #cccccc; text-decoration: none;\">DannyDaley</a> · <a href=\"https://soundcloud.com/dannytdaley/in-a-hurry\" title=\"In a Hurry\" target=\"_blank\" style=\"color: #cccccc; text-decoration: none;\">In a Hurry</a></div><p>",
@@ -92,7 +56,7 @@
     },
     {
       "id": 9,
-      "author": "Danny",
+      "author": "Daley",
       "title": "The issue with 'Double safe posting..'",
       "image": "/images/uploads/Danny-image-1638970284179-995219945.png",
       "content": "A problem that presented itself when adding posts to the JSON file was that they weren't really all that easy to delete. With a reasonable amount of effort I managed to get the job done. Creating a new instance of the posts entries array populated with every post object apart from the one we're trying to delete, then re-writing the local file with the new object array. Hopefully now I'll run into less issues when rebooting the database as it reads from the initial JSON file, and when I do, I can be sure to be just getting up-to-date and relevant data.",
@@ -101,7 +65,7 @@
     },
     {
       "id": 8,
-      "author": "Danny",
+      "author": "Daley",
       "title": "Double safe posting",
       "image": "/images/uploads/Danny-image-1638641992344-949150908.png",
       "content": "Now when users make new posts, as well as being stored in the regular SQL database, they are also sent to an updated JSON file. This JSON file is used to reinitialize the SQL database should anything bad happen. So now things are kept up to date and relevant in case of database crashes",
@@ -110,7 +74,7 @@
     },
     {
       "id": 7,
-      "author": "Danny",
+      "author": "Daley",
       "image": "images/unshorelogo2.png",
       "title": "Unshore",
       "content": "Unshore was a great game to work on for my first project in Falmouth University’s Games Academy. Taking the role of UI Programmer was a great chance to to have some some fun in the Unity game engine whilst being part of a multifaceted team. The theme we were given was Cornwall and “a famous dead person”, we figured that a dark horror styled game of chasing evil piskies around the island of Saint Michaels Mount while being hunted by King Arthurs ghost was pretty bang on.",
@@ -119,7 +83,7 @@
     },
     {
       "id": 6,
-      "author": "Danny",
+      "author": "Daley",
       "title": "Version 3 launched!",
       "image": "images/v3.png",
       "content": "Getting well enough ahead on my university work left me with a good amount of time to build version 3 of my portfolio website. After learning the Wordpress content management system and having a reasonable amount of fun with PHP, everything is working better than ever and creating new posts has never been easier! With that out of the way I've already been thinking about getting some user registration involved so users will be able to comment on future posts and lots of cool things that. Stay tuned!",
@@ -128,7 +92,7 @@
     },
     {
       "id": 5,
-      "author": "Danny",
+      "author": "Daley",
       "title": "SmartBrain - Face Recognition App",
       "image": "images/smartbrain.png",
       "content": "This face recognition app allows you to scan any image-link for faces within the picture, this is my first project fully leveraging an API, and a fully built back-end, allowing user registration, login and a rank based on how many images that user has entered. The data held within the database is secure, using encryption technologies such as Bcrypt.",
@@ -137,7 +101,7 @@
     },
     {
       "id": 4,
-      "author": "Danny",
+      "author": "Daley",
       "title": "Final Fantasy VII:R Product Page",
       "image": "images/7.png",
       "link": "https://codepen.io/dannydaley/full/RwWdVEp",
@@ -146,7 +110,7 @@
     },
     {
       "id": 3,
-      "author": "Danny",
+      "author": "Daley",
       "title": "Makkio Ikui",
       "image": "images/makki.png",
       "content": "Inspired by the Kawaii japanese art style, of course this website was a lot of fun to make, a great use of color in the design really made it pop. It came with its challenges, but its hard to stay frustrated when you're working with these kind of images.",
@@ -155,7 +119,7 @@
     },
     {
       "id": 2,
-      "author": "Danny",
+      "author": "Daley",
       "title": "Captive Design Studio",
       "image": "images/cap.png",
       "content": "I had a great time working on the Captive Design Studio site, the use of strong fonts and powerful colors was an absolute must to pull this design off and it came out looking fantastic. Definitely learned a lot about making an impact from this one.",
@@ -164,7 +128,7 @@
     },
     {
       "id": 1,
-      "author": "Danny",
+      "author": "Daley",
       "title": "JavaScript Magic 8-ball",
       "image": "images/eightBall.png",
       "content": "Had some fun and made a small Magic 8-Ball web app using some basic HTML, CSS shapes and some simple JavaScript switch statement logic.",

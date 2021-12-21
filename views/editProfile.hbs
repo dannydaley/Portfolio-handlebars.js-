@@ -3,19 +3,28 @@
         <div class="profile-container">
             <div class="profile-picture">
                 <img class="dashboard-profile-image" src="{{profilePicture}}" width="100px" height="100px">
-                <form class="update-profile-picture" enctype="multipart/form-data">
-                    <label for="update-profile-picture">change profile picture</label>
-                    <input type="file" name="update-profile-picture" />
-                </form>
+
+                <form action="/editProfile" method="post" class="update-profile-picture" enctype="multipart/form-data">              
+                    <input type="hidden" name="context" value="profile" readonly />                        
+                    <label for="update-profile-picture">change profile picture
+                    <input type="hidden" value="{{profilePicture}}" name="image" readonly />
+                    <input class="updateButton" type="file" accept=".png" name="update-profile-picture" /></label>          
+                    <label for="about-me">about me     
+                    <textarea type="text" name="aboutMe" rows="5" cols="50">{{aboutMe}}</textarea></label>    
+                    <input class="updateButton" type="submit" value="Update" />
+                </form> 
+
+
+
             </div>
             <div class="profile-info">
                 <h2>{{name}}</h2>
-                <form>
-                    <label for="about-me">about me</label>
-                    <textarea name="about-me" id="" cols="50" rows="5">{{aboutMe}}</textarea>
-                </form>
+                
                 <h3>post count: {{posts}}</h3>
                 <h3>date joined: {{dateJoined}}</h3>
+                
+       
+
             </div>
         </div>
     </div>
