@@ -1001,6 +1001,9 @@ textarea {
   display: flex;
   flex-direction: column;
 }
+.profile-info .about-me {
+  white-space: pre-line;
+}
 
 /* USER PROFILE END */
 

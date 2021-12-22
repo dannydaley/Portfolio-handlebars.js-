@@ -76,26 +76,14 @@ let postDataJSON = require("../public/posts.json");
 var fs = require('fs');
 
 // variable responsible for greeting user on login
+/*  SESSION STUFF   */
 let name = 'User';
 let posts = 0;
 let dateJoined = ""
 let profilePicture = ""
 let aboutMe = ""
-
-const getUserData = (req) => {
-  let SQLdatabase = req.app.locals.SQLdatabase;
-  let db = SQLdatabase;
-  db.get(GET_USER_PROFILE_INFO, name, (err, rows) => {
-    posts = rows.posts;
-    dateJoined = rows.joined;
-    profilePicture = rows.profilePicture;
-    aboutMe = rows.aboutMe;
-})}
-
-
 // variable that changes "login" to "dashboard" on nav
 let isLoggedIn = false;
-
 // switch nav link according to isLoggedIn status
 let changeNavLoginButton = (loggedInStatus) => {
   if (loggedInStatus) {
@@ -104,6 +92,8 @@ let changeNavLoginButton = (loggedInStatus) => {
     return "log in"
   }
 }
+/* END OF SESSION STUFF */
+
 
 
 ///////////////////////////////////////    SECURITY    /////////////////////////////////////////////
