@@ -25,21 +25,15 @@ var multer  = require('multer');
 //set up storage location
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {   
-    console.log(req.body.context)
-    console.log("HEREEEEEEE")     
     if (req.body.context === "profile"){
-      console.log("PRRROOFFFILLEEE LOCATION")
       cb(null, 'public/images/profilePictures')
     }  
     if (req.body.context === "blogPost"){
-      console.log("BLOGPOST LOCATION")
      cb(null, 'public/images/uploads') 
     }
-
   }, //set up filename
   filename: function (req, file, cb) {
-    if (file.fieldname !== undefined || req.body.image !== "i") {
-      console.log(req.body)
+    if (file.fieldname !== undefined) {
       // delete the attached image
       if (req.body.image !== "images/default-post-image.png" && req.body.image !== "images/defaultUser.png"){        
         fs.unlink('public/' + req.body.image, (err) => {
@@ -62,8 +56,7 @@ const storage = multer.diskStorage({
       // create filename (author + filename + unique suffix + filetype)
       cb(null, name + '-' + file.fieldname + '-' + uniqueSuffix + '.png')
       // reset the request.body.image field with the image location + new filename to be put in the database as a link
-      req.body.image = "images/profilePictures/" + name + '-' + file.fieldname + '-' + uniqueSuffix + '.png'      
-      console.log(req.body.image)
+      req.body.image = "images/profilePictures/" + name + '-' + file.fieldname + '-' + uniqueSuffix + '.png';
       }
     }
     // if upload image field on form is left blank..
@@ -181,8 +174,6 @@ router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
     }
     // populate SQL command with rows array populated from posts.json
     rows.forEach( (row) => {
-      console.log(row.author)
-      let posts = 1
       SQLdatabase.run('INSERT INTO `blog` VALUES(?,?,?,?,?,?,?)', row);
       SQLdatabase.run('UPDATE `users` SET `posts` = posts+1 WHERE name = ?',  row[1])
     });
@@ -390,8 +381,7 @@ router.post('/manageBlog', upload.single('change-image'), function (req, res, ne
   var form = req.body;
   let SQLdatabase = req.app.locals.SQLdatabase;
   // do the validation
-  var errors = [];  
-  console.log(form)
+  var errors = []; 
   if (!form.title || !form.image || !form.author || !form.content){
     errors.push("Cannot have blank fields");
   }
@@ -404,7 +394,30 @@ router.post('/manageBlog', upload.single('change-image'), function (req, res, ne
     if (err) {
       res.status(500).send(err.message)
       return;
-    }    
+    }  
+    SQLdatabase.all(GET_ALL_POSTS, [], (err, rows) => {
+      if (err) {
+        res.status(500).send(err.message);
+        return;
+      }    
+      // a new blank version of postData JSON ready to re-write the local file
+      let postDataJSON3 = {
+        "entries": []
+      }
+      //for each row gathered from the sql query, push it as a JSON object to the empty JSON array
+      rows.forEach(row => postDataJSON3.entries.push(
+        {
+        "id": row.id,
+        "author": row.author,
+        "title": row.title,
+        "image": row.image,
+        "content": row.content,
+        "link": row.link,
+        "date": row.date
+        },))
+        // re-write the posts.json file
+     fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON3, null, 2));       
+    })
     res.render("blog-db-done", { title: "blog updated",loggedIn: changeNavLoginButton(isLoggedIn) });
   })
 })
@@ -417,8 +430,7 @@ router.get('/newPost', function(req, res){
 /* POST new blog post form */
 router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
   var form = req.body;
-  let db = req.app.locals.SQLdatabase; 
-  console.log(req.body.image) 
+  let db = req.app.locals.SQLdatabase;
   if (req.body.image === undefined){
     //defaults the image field is left blank
     req.body.image = "/images/default-post-image.png"
@@ -447,11 +459,9 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
     if (err){
       console.log(err)
     }
-    console.log(result)
   }
   //Add to SQL database.
   db.run(SQL_ADD_BLOG_POST, params, function(err, result) {
-    console.log(form)
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -512,25 +522,17 @@ router.get('/editProfile', (req, res, next) => {
   res.render("editProfile", { name: name, posts: posts, dateJoined: dateJoined, profilePicture: profilePicture, aboutMe: aboutMe, loggedIn: changeNavLoginButton(isLoggedIn) })
 })
 
-router.post('/editProfile', upload.single('update-profile-picture'), function (req, res, next) {
-  
+router.post('/editProfile', upload.single('update-profile-picture'), function (req, res, next) {  
   var form = req.body;
   let SQLdatabase = req.app.locals.SQLdatabase;
-  // do the validation
-  var errors = [];  
-  
+  var errors = [];    
   if (errors.length){
     res.status(400).send(errors);
     return;
   }
-  console.log("EEENNNDDDPPOOIINNTT")
-  console.log(req.body.image)
   var params = [ req.body.image, form.aboutMe, name ];
-  let newProfilePicture = "";
-  let newAboutMe = "";
   SQLdatabase.run(SQL_UPDATE_USER_PROFILE, params, function(err, result){
     if (err) {
-      console.log(req)
       res.status(500).send(err.message)
       return;
     }   
@@ -538,13 +540,13 @@ router.post('/editProfile', upload.single('update-profile-picture'), function (r
       profilePicture = rows.profilePicture;
       aboutMe = rows.aboutMe;
       posts = rows.posts;
-      res.render("editProfile", { name: name, posts: rows.posts, dateJoined: rows.dateJoined, profilePicture: rows.profilePicture, aboutMe: rows.aboutMe, loggedIn: changeNavLoginButton(isLoggedIn) })
+      res.render("editProfile", { name: name, posts: rows.posts, dateJoined: rows.joined, profilePicture: rows.profilePicture, aboutMe: rows.aboutMe, loggedIn: changeNavLoginButton(isLoggedIn) })
     })
-})
+  })
 })
 
 router.post('/userProfile', (req, res, next) => {
-  let SQLdatabase = req.app.locals.SQLdatabase;console.log(req.body)
+  let SQLdatabase = req.app.locals.SQLdatabase;
   SQLdatabase.all(GET_USER_PROFILE_INFO, [ req.body.username ], (err, userInfo) => {
     if (err) {
       res.status(500).send(err.message);
@@ -555,7 +557,7 @@ router.post('/userProfile', (req, res, next) => {
         res.status(500).send(err.message);
         return;        
       } 
-      if (userInfo[0] === undefined){
+      if (userInfo === undefined){
         res.render("404")
       }
       else {
