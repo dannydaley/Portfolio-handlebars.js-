@@ -1,0 +1,41 @@
+<div class="login-welcome">
+    <h1>{{name}}'s profile</h1>
+        <div class="profile-container">
+            <div class="profile-picture">
+                <img class="dashboard-profile-image" src="{{profilePicture}}" width="100px" height="100px">
+            </div>
+            <div class="profile-info">
+                <h2>{{name}}</h2>
+                <p class="about-me">{{aboutMe}}</p>  
+                <h3>post count: {{posts}}</h3>
+                <h3>date joined: {{dateJoined}}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<section id="projectsSection">
+    <div class="filter-links">
+        <ul class="filter-list">
+            <li class="left"><a href="">{{name}}'s Posts</a></li>
+            <li class="right"><a href="">{{name}}'s Space</a></li>
+        </ul>
+    </div>
+    {{#each rows}}
+        <!-- PROJECTS START -->
+        <div class="project-slide-container" id="{{title}}">
+            <div class="project-slide">
+                <div class="projInfo">
+                    <p><a href="{{link}}" rel="noopener"  target="_blank">{{title}}</a></p>      
+                    <p>{{{content}}}</p>
+                </div>
+                <a href="{{link}}" rel="noopener" target="_blank">
+                    <img src="{{image}}" alt="project thumbnail image">
+                </a>
+            </div>            
+            <div class="projectTags">
+                <form method="POST" action="/userProfile">
+                <p>posted by <button type="submit" value="{{author}}">{{author}}</button> on <button type="submit" value="{{date}}">{{date}}</button> post id: {{id}}</p></form>
+            </div>
+        </div>
+    {{/each}}
+</section>
