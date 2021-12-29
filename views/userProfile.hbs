@@ -16,8 +16,13 @@
 <section id="projectsSection">
     <div class="filter-links">
         <ul class="filter-list">
-            <li class="left"><a href="">{{name}}'s Posts</a></li>
-            <li class="right"><a href="">{{name}}'s Space</a></li>
+                <form method="POST" action="/userProfile">
+                    <button class="leftButton" type="submit" name="username" value="{{name}}">{{name}}'s Posts</button>
+                </form>
+                <form method="POST" action="/getUserSpace">
+                    <button class="rightButton" type="submit" name="username" value="{{name}}">{{name}}'s Posts</button>
+                </form> 
+      
         </ul>
     </div>
     {{#each rows}}

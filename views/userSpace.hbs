@@ -13,13 +13,43 @@
         </div>
     </div>
 </div>
+    <div class="new-post-form">
+    <form method="POST" action="/newUserSpacePost" enctype="multipart/form-data">
+       
+        <input type="hidden" name="author" value="{{visitor}}" readonly/>
+        <input type="hidden" name="recipient" value="{{name}}" readonly/>
+        
+        <label for="title" required >title: 
+            <input type="text" name="title">
+        </label>
+        <label for="title">image: 
+            <input type="file" accept="image/png, image/jpeg" name="image">
+        </label>
+        <label for="title">link: 
+            <input type="text" name="link">
+        </label>
+        {{!-- <input type="date" name="date"> --}}
+        <div class="content-field">
+            <label for="content">content:  
+                <textarea type="text" name="content" rows="10" cols="70"></textarea>
+            </label>
+        </div>
+        <button type="submit">POST</button>
+    </form>
+</div>
 <section id="projectsSection">
     <div class="filter-links">
         <ul class="filter-list">
-            <li class="left"><a href="">{{name}}'s Posts</a></li>
-            <li class="right"><a href="">{{name}}'s Space</a></li>
+                <form method="POST" action="/userProfile">
+                    <button class="leftButton" type="submit" name="username" value="{{name}}">{{name}}'s Posts</button>
+                </form>
+                <form method="POST" action="/getUserSpace">
+                    <button class="rightButton" type="submit" name="username" value="{{name}}">{{name}}'s Posts</button>
+                </form> 
+      
         </ul>
     </div>
+
     {{#each rows}}
         <!-- PROJECTS START -->
         <div class="project-slide-container" id="{{title}}">

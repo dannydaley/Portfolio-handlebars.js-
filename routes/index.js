@@ -1,3 +1,5 @@
+
+
 const { json } = require('express');
 
 let express = require('express');
@@ -117,12 +119,13 @@ function passwordHash(thePassword, theSalt) {
 /////////////////////////////////////// SQL DATABASE STUFF /////////////////////////////////////////////
 
 const GET_USER_PROFILE_INFO = "SELECT name, joined, posts, profilePicture, aboutMe FROM users WHERE name = ?"
-const GET_ALL_POSTS = "SELECT * FROM `blog` ORDER BY id DESC"; // SQL command
-const GET_RECENT_POSTS = "SELECT * FROM blog ORDER BY id DESC LIMIT 5"; // SQL command
+const GET_ALL_POSTS = "SELECT * FROM `blog` WHERE recipient = ? ORDER BY id DESC"; // SQL command
+const GET_RECENT_POSTS = "SELECT * FROM blog WHERE recipient = ? ORDER BY id DESC LIMIT 5"; // SQL command
 const BLOG_DELETE_POST = "DELETE FROM `blog` WHERE title = ? AND id = ?"; //SQL command
-const GET_POSTS_BY_AUTHOR = "SELECT * FROM `blog` WHERE author = ? ORDER BY id DESC" //SQL command
-const GET_RECENT_POSTS_BY_AUTHOR = "SELECT * FROM blog WHERE author = ? ORDER BY id DESC LIMIT 5"; // SQL command
-const SQL_ADD_BLOG_POST = "INSERT INTO `blog` (author, title, image, content, link, date) VALUES(?,?,?,?,?,?)"
+
+const GET_POSTS_BY_AUTHOR = "SELECT * FROM `blog` WHERE author = ? AND recipient = ? ORDER BY id DESC" //SQL command
+const GET_RECENT_POSTS_BY_AUTHOR = "SELECT * FROM blog WHERE author = ? AND recipient = ? ORDER BY id DESC LIMIT 5"; // SQL command
+const SQL_ADD_BLOG_POST = "INSERT INTO `blog` (author, title, image, content, link, date, recipient) VALUES(?,?,?,?,?,?,?)"
 const SQL_UPDATE_BLOG =  "UPDATE `blog` SET title = ?, image = ?, link = ?, author = ?, content = ? WHERE id = ?" //SQL command
 const SQL_UPDATE_USER_PROFILE = "UPDATE users SET profilePicture = ?, aboutMe = ? WHERE name = ?"
 const GET_ALL_USERS = "SELECT * FROM users"; // SQL command
@@ -155,16 +158,16 @@ router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
     //delete the table if it exists..
     SQLdatabase.run('DROP TABLE IF EXISTS `blog`');
 
-    SQLdatabase.run('CREATE TABLE `blog` ( id INTEGER PRIMARY KEY AUTOINCREMENT, author varchar(255) COLLATE NOCASE, title varchar(255), image varchar(255), content blob, link varchar(255), date varchar(255) )');
+    SQLdatabase.run('CREATE TABLE `blog` ( id INTEGER PRIMARY KEY AUTOINCREMENT, author varchar(255) COLLATE NOCASE, title varchar(255), image varchar(255), content blob, link varchar(255), date varchar(255), recipient varchar(255) )');
     //create base rows
     let rows = [];
     //loop through posts.json to populate rows array
     for (let i = 0; i < postDataJSON.entries.length; i++) {
-      rows[i] = [postDataJSON.entries[i].id, postDataJSON.entries[i].author, postDataJSON.entries[i].title, postDataJSON.entries[i].image, postDataJSON.entries[i].content, postDataJSON.entries[i].link, postDataJSON.entries[i].date]
+      rows[i] = [postDataJSON.entries[i].id, postDataJSON.entries[i].author, postDataJSON.entries[i].title, postDataJSON.entries[i].image, postDataJSON.entries[i].content, postDataJSON.entries[i].link, postDataJSON.entries[i].date, postDataJSON.entries[i].recipient]
     }
     // populate SQL command with rows array populated from posts.json
     rows.forEach( (row) => {
-      SQLdatabase.run('INSERT INTO `blog` VALUES(?,?,?,?,?,?,?)', row);
+      SQLdatabase.run('INSERT INTO `blog` VALUES(?,?,?,?,?,?,?,?)', row);
       SQLdatabase.run('UPDATE `users` SET `posts` = posts+1 WHERE name = ?',  row[1])
     });
   })
@@ -187,7 +190,7 @@ router.get('/getAllUsers', (req, res, next) => {
 /* GET all blog posts */
 router.get('/getAllPosts', (req, res, next) => {  
   let SQLdatabase = req.app.locals.SQLdatabase;
-  SQLdatabase.all(GET_ALL_POSTS, [], (err, rows) => {
+  SQLdatabase.all(GET_ALL_POSTS, ["blogPost"], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -203,7 +206,7 @@ router.get('/getAllPosts', (req, res, next) => {
 /* GET home page. */
 router.get('/', function(req, res, next) {   
   let SQLdatabase = req.app.locals.SQLdatabase;
-  SQLdatabase.all(GET_RECENT_POSTS_BY_AUTHOR, ["Daley"], (err, rows) => {
+  SQLdatabase.all(GET_RECENT_POSTS_BY_AUTHOR, ["Daley", "blogPost"], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -215,7 +218,7 @@ router.get('/', function(req, res, next) {
 /* GET work SQL page */
 router.get('/blog', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
-  SQLdatabase.all(GET_POSTS_BY_AUTHOR, [ "Daley" ], (err, rows) => {
+  SQLdatabase.all(GET_POSTS_BY_AUTHOR, [ "Daley", "blogPost" ], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -345,7 +348,7 @@ router.get('/loggedIn', function(req, res, next) {
 router.get('/logOut', function(req, res, next) {
   isLoggedIn = false;
   let SQLdatabase = req.app.locals.SQLdatabase;
-  SQLdatabase.all(GET_RECENT_POSTS, [], (err, rows) => {
+  SQLdatabase.all(GET_RECENT_POSTS, [ "blogPost"], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -357,7 +360,7 @@ router.get('/logOut', function(req, res, next) {
 /* GET manage blog page */
 router.get('/manageBlog', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
-  SQLdatabase.all(GET_POSTS_BY_AUTHOR, [name], (err, rows) => {
+  SQLdatabase.all(GET_POSTS_BY_AUTHOR, [name, "blogPost"], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -430,7 +433,7 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
     req.body.link = ""
   } 
   //upload.single(req.image);
-  var params = [ form.author, form.title, form.image, form.content, form.link, getDate()];
+  var params = [ form.author, form.title, form.image, form.content, form.link, getDate(), "blogPost"];
   //create the JSON object to add to posts.json
   postDataJSON.entries.unshift({
     id: postDataJSON.entries.length + 1,
@@ -439,7 +442,8 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
     image: req.body.image,
     content: req.body.content,
     link: req.body.link,
-    date: getDate()
+    date: getDate(),
+    recipient: "blogPost"
   })
   // RE-WRITE the posts.json file with the new posts added to the top,
   // JSON.stringify has extra arguments to handle formatting  
@@ -542,7 +546,7 @@ router.post('/userProfile', (req, res, next) => {
       res.status(500).send(err.message);
       return;
     }   
-    SQLdatabase.all(GET_POSTS_BY_AUTHOR, [ req.body.username ], (err, blogRows) => {
+    SQLdatabase.all(GET_POSTS_BY_AUTHOR, [ req.body.username, "blogPost" ], (err, blogRows) => {
       if (err) {
         res.status(500).send(err.message);
         return;        
@@ -557,5 +561,69 @@ router.post('/userProfile', (req, res, next) => {
   })
 })
 
+router.post('/getUserSpace', (req, res, next) => {
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  SQLdatabase.all(GET_USER_PROFILE_INFO, [ req.body.username ], (err, userInfo) => {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }   
+    SQLdatabase.all(GET_ALL_POSTS, [ req.body.username ], (err, blogRows) => {
+      if (err) {
+        res.status(500).send(err.message);
+        return;        
+      } 
+      if (userInfo === undefined){
+        res.render("404")
+      }
+      else {
+          res.render("userSpace", { visitor: name, name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows, loggedIn: changeNavLoginButton(isLoggedIn) })  
+      }
+    })
+  })
+})
 
+/* POST new blog post form */
+router.post('/newUserSpacePost', upload.single('image'), function (req, res, next) {
+  var form = req.body;
+  let db = req.app.locals.SQLdatabase;
+  if (req.body.image === undefined){
+    //defaults the image field is left blank
+    req.body.image = "/images/default-post-image.png"
+  }
+  if (req.body.link === ""){
+    //defaults the link to go nowhere
+    req.body.link = ""
+  } 
+  //upload.single(req.image);
+  var params = [ form.author, form.title, form.image, form.content, form.link, getDate(), req.body.recipient];
+  //create the JSON object to add to posts.json
+  postDataJSON.entries.unshift({
+    id: postDataJSON.entries.length + 1,
+    author: req.body.author,
+    title: req.body.title,
+    image: req.body.image,
+    content: req.body.content,
+    link: req.body.link,
+    date: getDate(),
+    recipient: req.body.username
+  })
+  // RE-WRITE the posts.json file with the new posts added to the top,
+  // JSON.stringify has extra arguments to handle formatting  
+  fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON, null, 2)); 
+  posts++;
+  db.run('UPDATE `users` SET `posts` = posts+1 WHERE name = ?',  form.author), function(err, result) {
+    if (err){
+      console.log(err)
+    }
+  }
+  //Add to SQL database.
+  db.run(SQL_ADD_BLOG_POST, params, function(err, result) {
+    if (err) {
+      res.status(500).send(err.message);
+      return;
+    }
+    res.render("blog-db-done", { loggedIn: changeNavLoginButton(isLoggedIn) })
+  })
+})
 module.exports = router;
