@@ -53,9 +53,9 @@ date is a string that represents the date object attached to the blog post and i
 
 FORMAT (MULTIPART/FORM-DATA)
 
-### -----------------------------------------------------------------
+### '/newPost' => GET
 
-'/newPost' => GET
+
 
 Serves the user the newPost.hbs page where they can find the form to create a new blog post
 
@@ -177,3 +177,15 @@ register registers the user when fields are filled.
 FORMAT (URL ENCODED FORMAT) = "email=USER%40EMAIL.COM&username=USERNAME&password1=PASSWORD&password2=PASSWORD"
 
 -----------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
