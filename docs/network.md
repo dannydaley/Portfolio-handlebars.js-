@@ -28,75 +28,6 @@ Sets up the initial blog table in the SQL database.
 
 -----------------------------------------------------------------
 
-### '/manageBlog' => GET 
-
-Gets the manageBlog hbs template and displays blog posts authored by the logged in user.
-
------------------------------------------------------------------
-
-### '/manageBlog' => POST
-
-Updates the edited blog post through the form appended to the selected post. User is taken to the success page "blog-db-done" on completion
-
-post ID is an integer that represents the ID number of the post (read only and hidden)
-
-title is a string that represents the title of the blog post
-
-author is a string that represents the author of the blog post (read only and hidden)
-
-image is a file upload input, on change, the upload is processed and given a unique filename, the contents of the request.body.image field
-is then changed to a string representing the location of the image in the local files, which is then used to display the image. If field is left blank the original image location string remains unchanged.
-
-link represents the url of a working demo of the blog post (if about a project) Defaulyts to # if left blank
-
-date is a string that represents the date object attached to the blog post and is generated automatically.
-
-FORMAT (MULTIPART/FORM-DATA)
-
-### '/newPost' => GET
-
-
-
-Serves the user the newPost.hbs page where they can find the form to create a new blog post
-
------------------------------------------------------------------
-
-### '/newBlogPost' => POST
-
-
-Adds new blog post data taken from the new post form in newPost.hbs to the blog table. User is taken to blog-db-done.hbs on completion.
-
-Author is a string representing the author of the new post (read only and hidden)
-
-Title is a string representing the title of the new post.
-
-Image is a file upload input, the upload is processed and given a unique filename, the contents of the request.body.image field
-is then changed to a string representing the location of the image in the local files, which is then used to display the image. If field is left blank, the default image location string gets passed in.
-
-Link is a string representing the link to working project (defaults to '#' if the field is left blank)
-
-Date is a string that represents the date of the post. This is applied automatically.
-
-Content is a string that represents the main body of content for the blog post
-
-
-FORMAT (MULTIPART/FORM-DATA)
-
------------------------------------------------------------------
-
-### '/post-delete' => POST
-
-Deletes the post that the "delete form" is attached to from the blog table, post title and tick box must be checked for delete to happen,
-User is taken to blog-db-done.hbs on completion
-
-confirm post title requires user to enter the post title exactly as it appears at the top of the blog post
-
-tick to confirm represents the users confirmation to delete the post. Box must be checked for the delete to work.
-
-FORMAT (URL ENCODED FORMAT) = "deleteThisPost=POST+TITLE+CONTENT"
-
------------------------------------------------------------------
-
 ### '/' => GET
 
 Serves the user the index.hbs file
@@ -121,10 +52,31 @@ Serves the user a replicated copy of the blog page but with data coming from a n
 
 -----------------------------------------------------------------
 
-
 ### '/blogXml' => GET
 
 Serves the user a replicated copy of the blog page but with data coming from a noSQL XML database.
+
+-----------------------------------------------------------------
+
+### '/register' => GET
+
+Serves the user the register.hbs page, where users can register a new account.
+
+-----------------------------------------------------------------
+
+### '/register' => POST
+
+email is a string that represents the users email address they are registering with.
+
+username is a string that represents the users display name they wish to register with.
+
+password is a string that represents the desired password they wish to register with.
+
+confirm password is a string that must match the previously entered password as confirmation of correct entry.
+
+register registers the user when fields are filled.
+
+FORMAT (URL ENCODED FORMAT) = "email=USER%40EMAIL.COM&username=USERNAME&password1=PASSWORD&password2=PASSWORD"
 
 -----------------------------------------------------------------
 
@@ -156,36 +108,111 @@ Serves the user with the index.hbs page after logging the user out.
 
 -----------------------------------------------------------------
 
-### '/register' => GET
+### '/manageBlog' => GET 
 
-Serves the user the register.hbs page, where users can register a new account.
-
------------------------------------------------------------------
-
-### '/register' => POST
-
-email is a string that represents the users email address they are registering with.
-
-username is a string that represents the users display name they wish to register with.
-
-password is a string that represents the desired password they wish to register with.
-
-confirm password is a string that must match the previously entered password as confirmation of correct entry.
-
-register registers the user when fields are filled.
-
-FORMAT (URL ENCODED FORMAT) = "email=USER%40EMAIL.COM&username=USERNAME&password1=PASSWORD&password2=PASSWORD"
+Gets the manageBlog hbs template and displays blog posts authored by the logged in user.
 
 -----------------------------------------------------------------
 
+### '/manageBlog' => POST
+
+Updates the edited blog post through the form appended to the selected post. User is taken to the success page "blog-db-done" on completion
+
+post ID is an integer that represents the ID number of the post (read only and hidden)
+
+title is a string that represents the title of the blog post
+
+author is a string that represents the author of the blog post (read only and hidden)
+
+image is a file upload input, on change, the upload is processed and given a unique filename, the contents of the request.body.image field
+is then changed to a string representing the location of the image in the local files, which is then used to display the image. If field is left blank the original image location string remains unchanged.
+
+link represents the url of a working demo of the blog post (if about a project) Defaulyts to # if left blank
+
+date is a string that represents the date object attached to the blog post and is generated automatically.
+
+FORMAT (MULTIPART/FORM-DATA)
+
+### '/newPost' => GET
+
+Serves the user the newPost.hbs page where they can find the form to create a new blog post
+
+-----------------------------------------------------------------
+
+### '/newBlogPost' => POST
+
+Adds new blog post data taken from the new post form in newPost.hbs to the blog table. User is taken to blog-db-done.hbs on completion.
+
+Author is a string representing the author of the new post (read only and hidden)
+
+Title is a string representing the title of the new post.
+
+Image is a file upload input, the upload is processed and given a unique filename, the contents of the request.body.image field
+is then changed to a string representing the location of the image in the local files, which is then used to display the image. If field is left blank, the default image location string gets passed in.
+
+Link is a string representing the link to working project (defaults to '#' if the field is left blank)
+
+Date is a string that represents the date of the post. This is applied automatically.
+
+Content is a string that represents the main body of content for the blog post.
+
+Recipient is a string that represents who or where the post is attached to. For blog posts this is set to "blogPost"
 
 
+FORMAT (MULTIPART/FORM-DATA)
 
+-----------------------------------------------------------------
 
+### '/post-delete' => POST
 
+Deletes the post that the "delete form" is attached to from the blog table, post title and tick box must be checked for delete to happen,
+User is taken to blog-db-done.hbs on completion
 
+confirm post title requires user to enter the post title exactly as it appears at the top of the blog post
 
+tick to confirm represents the users confirmation to delete the post. Box must be checked for the delete to work.
 
+FORMAT (URL ENCODED FORMAT) = "deleteThisPost=POST+TITLE+CONTENT"
 
+-----------------------------------------------------------------
 
+### '/editProfile' => GET
+
+Serves the user the editProfile.hbs page where users can update their about me and other profile info.
+
+-----------------------------------------------------------------
+
+### '/editProfile' => POST
+
+Actions submitted changes made to the users profile
+
+req.body.image, form.aboutMe, name
+
+FORMAT (URL ENCODED FORMAT) = "editProfile=POST+TITLE+CONTENT"
+
+-----------------------------------------------------------------
+
+### '/userProfile' => POST
+
+Retreives the clicked on users profile, set up as a post request so that we dont need an endpoint for each individual 
+user that creates an account, this takes the username parameter from the request body, uses it to query the database,
+then serves the userProfile page with the fetched information
+
+FORMAT (URL ENCODED FORMAT) = 
+
+-----------------------------------------------------------------
+
+### '/getUserSpace' => POST
+
+This retrieves the selected users personal Space, This first uses the selected users username to fetch the relevant profile data, then as a nested query pulls all posts from the database where the recipient is equal to the username of the viewed profile. This gives us all posts directly addressed to this user.
+
+-----------------------------------------------------------------
+
+### '/newUserSpacePost' => POST
+
+This creates a new blog post but setting the recipient field to the currently viewed user. The post created can only be viewed by coming to the users space and kept off of the main blog section.
+
+FORMAT (MULTIPART/FORM-DATA)
+
+-----------------------------------------------------------------
 

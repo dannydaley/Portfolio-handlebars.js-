@@ -647,7 +647,6 @@ router.post('/getUserSpace', (req, res, next) => {
   })
 })
 
-/* POST new blog post form */
 router.post('/newUserSpacePost', upload.single('image'), function (req, res, next) {
   // get data from the request body
   var form = req.body;

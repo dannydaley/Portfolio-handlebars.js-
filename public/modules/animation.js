@@ -22,23 +22,27 @@ scene.add( directionalLight );
 
 // glTf 2.0 Loader
 var object;
-var object2;
+
 var loader = new THREE.GLTFLoader();
-loader.load( 'images/yojiVia.gltf', function ( gltf ) {  
-    object2 = gltf.scene;	                    
-    gltf.scene.scale.set( 2, 2, 2 );			   
-    gltf.scene.position.x += 0.7;			    //Position (x = right+ left-) 
-    gltf.scene.position.y = 1;    	    //Position (y = up+, down-)
-    gltf.scene.position.z = 18.0;          //Position (z = front +, back-)    
-    scene.add( object2 );
-    animate();    
-    });	 
+
+/* STUFF TO RENDER YOJIVIA LOGO */
+// loader.load( 'images/yojiVia.gltf', function ( gltf ) {  
+//     object2 = gltf.scene;	                    
+//     gltf.scene.scale.set( 2, 2, 2 );			   
+//     gltf.scene.position.x += 0.7;			    //Position (x = right+ left-) 
+//     gltf.scene.position.y = 1;    	    //Position (y = up+, down-)
+//     gltf.scene.position.z = 18.0;          //Position (z = front +, back-)    
+//     scene.add( object2 );
+//     animate();    
+//     });
+// var object2;	 
+/* END YOJIVIA STUFF */
 loader.load( 'images/D2LogoAqua3D.gltf', function ( gltf ) {  
 object = gltf.scene;	                    
 gltf.scene.scale.set( 2, 2, 2 );			   
-gltf.scene.position.x += 1.35;			    //Position (x = right+ left-) 
-gltf.scene.position.y = 0.6;    	    //Position (y = up+, down-)
-gltf.scene.position.z = 18.0;          //Position (z = front +, back-)    
+gltf.scene.position.x += 1;			    //Position (x = right+ left-) 
+gltf.scene.position.y = 0.76;    	    //Position (y = up+, down-)
+gltf.scene.position.z = 17.0;          //Position (z = front +, back-)    
 scene.add( object );
 animate();    
 });	 
@@ -52,7 +56,7 @@ function render() {
 
 //rotate object
 object.rotation.y += 0.05;
-object2.rotation.y += 0.05;
+// object2.rotation.y += 0.05;
 
 renderer.render( scene, camera );
 
