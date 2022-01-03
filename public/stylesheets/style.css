@@ -1111,4 +1111,8 @@ textarea {
 
 }
 
+.buttonLinkText {
+  text-decoration: underline;
+  font-weight: bold;
+  }
 /* CONFIRMATION PAGES END */

@@ -142,3 +142,8 @@ Users seemed to be able to navigate the website well
 ### HOW EASY DID USERS FIND INFORMATION THEY WANTED
 
 Given the data, users seemed to have an easy time finding the information they wanted.
+
+### FIXES IMPLEMENTED
+
+Added an underline to usernames attached to blog posts so it is more obvious things can be clicked as per the 
+suggestions attached to the form.
