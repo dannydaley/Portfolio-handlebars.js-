@@ -1,0 +1,70 @@
+<div class="login-welcome">
+    <h1>{{name}}'s profile</h1>
+        <div class="profile-container">
+            <div class="profile-picture">
+                <img class="dashboard-profile-image" src="{{profilePicture}}" width="100px" height="100px">
+            </div>
+            <div class="profile-info">
+                <h2>{{name}}</h2>
+                <p class="about-me">{{aboutMe}}</p>  
+                <h3>post count: {{posts}}</h3>
+                <h3>date joined: {{dateJoined}}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="new-post-form">
+    <form method="POST" action="/newUserSpacePost" enctype="multipart/form-data">
+       
+        <input type="hidden" name="author" value="{{visitor}}" readonly/>
+        <input type="hidden" name="recipient" value="{{name}}" readonly/>
+        
+        <label for="title" required >title: 
+            <input type="text" name="title">
+        </label>
+        <label for="title">image: 
+            <input type="file" accept="image/png, image/jpeg" name="image">
+        </label>
+        <label for="title">link: 
+            <input type="text" name="link">
+        </label>
+        {{!-- <input type="date" name="date"> --}}
+        <div class="content-field">
+            <label for="content">content:  
+                <textarea type="text" name="content" rows="10" cols="70"></textarea>
+            </label>
+        </div>
+        <button type="submit">POST</button>
+    </form>
+</div>
+<section id="projectsSection">
+    <div class="filter-links">
+        <ul class="filter-list">
+                <form method="POST" action="/userProfile">
+                    <button class="leftButton" type="submit" name="username" value="{{name}}">{{name}}'s Posts</button>
+                </form>
+                <form method="POST" action="/getUserSpace">
+                    <button class="rightButton" type="submit" name="username" value="{{name}}">{{name}}'s Space</button>
+                </form>       
+        </ul>
+    </div>
+
+    {{#each rows}}
+        <!-- PROJECTS START -->
+        <div class="project-slide-container" id="{{title}}">
+            <div class="project-slide">
+                <div class="projInfo">
+                    <p><a href="{{link}}" rel="noopener"  target="_blank">{{title}}</a></p>      
+                    <p>{{{content}}}</p>
+                </div>
+                <a href="{{link}}" rel="noopener" target="_blank">
+                    <img src="{{image}}" alt="project thumbnail image">
+                </a>
+            </div>            
+            <div class="projectTags">
+                <form method="POST" action="/userProfile">
+                <p>posted by <button type="submit" value="{{author}}">{{author}}</button> on <button type="submit" value="{{date}}">{{date}}</button> post id: {{id}}</p></form>
+            </div>
+        </div>
+    {{/each}}
+</section>

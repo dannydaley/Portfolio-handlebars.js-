@@ -1,14 +1,22 @@
+<!-- HERO ANIMATION (WORK IN PROGRESS) -->
+{{!-- <div id="HeroAnim" class="HeroAnim">
+    <script src="modules/HeroDependencies.js"></script>
+    <script src="modules/animation.js"></script>
+</div> --}}
+<!-- WELCOME SECTION START -->
 <section id="welcome-section">
     <h1>.daley<span class="version flashingLight">v4</span><span class="flashingLight title-under">Web.Developer</span></h1>
 </section>
+<!-- WELCOME SECTION END -->
+<!-- PROJECTS WINDOW START (5 MOST RECENT POSTS) -->
 <div id="projWindow">
     <h1>{{navLink}}</h1>
     <section id="projects">
-        {{#each entries}}        
+        {{#each rows}}        
             <div class="project-tile">
-                <a href="" target="_blank">
-                    <img alt="Project Thumbnail" src="{{this.image}}"/>
-                    <p>{{this.title}}</p>
+                <a href="/blog#{{title}}" target="_blank">
+                    <img alt="Project Thumbnail" src="{{image}}"/>
+                    <p>{{title}}</p>
                 </a>  
             </div>        
         {{/each}}       
@@ -19,20 +27,22 @@
         </ul>
     </div>
 </div>
+<!-- PROJECTS WINDOW END -->
+<!-- CONTACT INFO START -->
 <section id="contact">
     <header>Let's build something..</header>
     <div class="contact-links">                
-        <a href="https://github.com/dannydaley" target="_blank" id="profile-link" class="contact-link">
+        <a href="https://github.com/dannydaley" target="_blank" id="profile-link" class="contact-link" rel="noopener">
             <i class="fab fa-github">
                 <FontAwesomeIcon icon={['fab', 'github']} />                        
             </i> GitHub                        
         </a>                
-        <a href="https://www.freecodecamp.org/dannydaley" target="_blank" class="contact-link">
+        <a href="https://www.freecodecamp.org/dannydaley" target="_blank" class="contact-link" rel="noopener">
             <i class="fab fa-free-code-camp">
                 <FontAwesomeIcon icon={['fab', 'free-code-camp']} />
             </i> freeCodeCamp
         </a>
-        <a href="https://codepen.io/dannydaley" target="_blank" class="contact-link">
+        <a href="https://codepen.io/dannydaley" target="_blank" class="contact-link" rel="noopener">
             <i class="fab fa-codepen">
                 <FontAwesomeIcon icon={['fab', 'codepen']} />
             </i> CodePen
@@ -45,30 +55,10 @@
             </i>dannydaley@outlook.com
         </a>
     </div>
-    <div className="sandbox">                
+    <div className="sandbox">            
         <img alt="HTML5 Logo" class="html" src="images/html5.png" height="100px" width="80px" />
         <img alt="CSS3 Logo" class="css" src="images/css3.png" height="100px" width="80px" />
         <img alt="JavaScript Logo"class="js play" src="images/jslogo.png" height="100px" width="80px" />
-    </div>
+    </div>    
 </section>
-
-<script>
-    window.onload = function(){
-        let socket = new WebSocket("ws://localhost:8080");
-        socket.onopen = function(evt) {
-            console.log("client happened!");
-            socket.send("hi server!");
-        };
-        socket.onmessage = function(evt) {
-            console.log(evt);
-        };
-    }
-    let socket = new WebSocket("ws://localhost:8080");
-    socket.onopen = function(evt) {
-        console.log("client happened!");
-        socket.send("hi server!");
-    };
-    socket.onmessage = function(evt) {
-        console.log(evt);
-    };
-</script>
+<!-- CONTACT INFO END -->

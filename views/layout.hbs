@@ -1,7 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-GB">
   <head>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=6">
     <title>{{title}}</title>
+    <meta name="description" content="dannydaley portfolio and blogging platform, share your coding or creative projects, see my portfolio work and blog posts in the work section. don't forget to check out the community tab!">
+    <link rel="apple-touch-icon" sizes="180x180" href='/stylesheets/apple-touch-icon.png'>
+    <link rel="icon" type="image/png" sizes="32x32" src="./android-chrome-256x256.png" href='/public/stylesheets/android-chrome-256x256.png'>
+    <link rel="icon" type="image/png" sizes="16x16" src="./android-chrome-256x256.png" href='/stylesheets/android-chrome-256x256.png'>
+    <link rel="manifest" href='/stylesheets/site.webmanifest'>
+    <link rel="mask-icon" href='/stylesheets/safari-pinned-tab.svg' color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
     <script src="https://kit.fontawesome.com/a7b4d738fb.js" crossorigin="anonymous"></script>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
@@ -13,15 +22,16 @@
         <ul>
           <li><a href="/">home</a></li>
           <li><a href="/blog">work</a></li>
-          {{!-- <li><a href="/blogXml">work(XML)</a></li> --}}
-          <li><a href="http://localhost:3000/#contact">contact</a></li>
-          <li><a href="/login">log in</a></li>
+          {{!-- <li><a href="/blogJson">work(JSON)</a></li>
+          <li><a href="/blogXml">work(XML)</a></li> --}}
+          <li><a href="/#contact">contact</a></li>
+          <li><a href="/login">{{loggedIn}}</a></li>
         </ul>
       </nav>
     </header>
     {{{body}}}
     <footer>
-      &copy;danny daley
+      <a href="/">&copy;danny daley</a>
     </footer>
   </body>
 </html>

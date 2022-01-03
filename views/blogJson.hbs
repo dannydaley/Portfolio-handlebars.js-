@@ -1,0 +1,21 @@
+<section id="projectsSection">
+    {{#each postDataJSON.entries}}
+        <!-- PROJECTS START -->
+        <div class="project-slide-container">
+        <div class="project-slide">
+            <div class="projInfo">
+                <a href="{{this.link}}" target="_blank">
+                    <p>{{this.title}}</p>
+                </a>  
+                <p>{{this.content}}</p>
+            </div>
+            <a href="{{this.link}}" target="_blank">
+                <img src="{{this.image}}">
+            </a>
+            </div>            
+        <div class="projectTags">
+            <p>posted by <a href="">{{this.author}}</a> on {{this.date}} post id: {{this.id}}</p>
+        </div>
+        </div>
+    {{/each}}
+</section>

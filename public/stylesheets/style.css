@@ -1,19 +1,64 @@
+:root {
+  /*  PLATFORM COLORS */
+  --main-text-color: aqua;
+  --second-text-color: white;
+  --card-background-color: aqua;
+  --background-color: black;
+  --second-background-color: #303841;
+  --dashboard-ui-color: rgba(82, 82, 82, 0.31);
+  --dashboard-ui-option-color: rgba(90, 90, 90, 0.438);
+
+  /* PLATFORM FONTS */
+  --main-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+}
 body {
-  color:aqua;
+   color:aqua;
   background-color: black;
   margin: 0;
+  overflow-x: hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;  
 }
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.HeroAnim {
+  margin: 55px auto 0;
+  display: flex;  
+  justify-content: center;
+  align-items: center;
+  width: 95vw;
+  height: 700px;
+  overflow: hidden;
+}
 
+/* width */
+::-webkit-scrollbar {
+  width: 15px;
+
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #222121;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {  
+  background: aqua;  border:2px solid aqua;
+  border-radius: 30px 0;;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(160, 248, 248);
+}
 
 /*NAV START*/
 #navbar {
@@ -24,8 +69,7 @@ code {
   top:0;
   display: flex;
   width: 100%;
-  justify-content: flex-end;
-  
+  justify-content: flex-end;  
 }
 nav ul {
   list-style: none;
@@ -63,9 +107,8 @@ nav li {
 /* NAV END */
 
 /* WELCOME START */
-#welcome-section {
+#welcome-section {  
   background-color: black;
-  margin-top: 0px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -88,19 +131,7 @@ font-size: 32px;
 font-size: 0.5em;
 margin-left: -3%;
 }
-/*
-@media (max-width: 700px) {
-#welcome-section {
-  height: 70vh;
-}
-#welcome-section .title-under{
-  display: block;
-  font-size: 4vw;
-  margin-left: 20%;
-  margin-top: -4%;    
-  }
-}
-*/
+
 .flashingLight {
  text-shadow: 0px 0px 10px aqua, 0px 0px 30px aqua;
  font-size: 32px;
@@ -225,13 +256,11 @@ margin-left: -3%;
     }
     99% {
       opacity: 0;
-    }
-    
+    }    
     100% {        
       opacity: 1;
     }
 }
-
 @media (max-width: 700px) { /*IPHONE 11*//*
 #welcome-section {
   height: 400px
@@ -269,7 +298,6 @@ margin-left: -3%;
 }
 /* WELCOME END */
 
-
 #projects {
   padding: 30vh 0px 50px 0px;
   background-image: linear-gradient(180deg, black, #303841, black);
@@ -279,8 +307,6 @@ margin-left: -3%;
   flex-wrap: wrap;
   width: 100%;  
 }
-
-
 .seeMore {
     background-color: black;
   color: aqua;
@@ -296,14 +322,12 @@ margin-left: -3%;
 .seeMore a {
   color: aqua;
 }
-
 .seeMore li:hover {
   cursor: pointer;
 }
-
 @media (max-width: 900px) {
-  #projects {
-    flex-direction: column;
+  #projects {    
+   flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 25vh 0 50px 0;
@@ -318,7 +342,6 @@ margin-left: -3%;
   padding: 25vh 0 50px 0;
 }
 }
-
 @media (max-width: 500px) {
 #projectsSection {
   padding: 10px;
@@ -351,7 +374,6 @@ margin-left: -3%;
   transform: scale(1.1);
   z-index: 1;
 }
-
 .project-slide {
   /* background-color: rgb(82, 82, 82); */
   padding: 20px;
@@ -361,21 +383,19 @@ margin-left: -3%;
 }
 .project-slide a {
   font-weight: bold;
-  color: white;
+  color: aqua;
   text-decoration: none;
 }
 .project-slide img {
   width: 27vw;
   height: 20vw;
 }
-
 .projInfo p {
   font-size: 25px;
   color: aqua;
   padding: 20px;
   width: 80%;
 }
-
 @media (max-width: 900px) {
   .project-tile {
     width: 60vw;
@@ -384,7 +404,6 @@ margin-left: -3%;
       width: 100%;
     height: 100%;
   }
-
   .project-slide {
     text-align: center;
     flex-direction: column;
@@ -399,8 +418,7 @@ margin-left: -3%;
   }
   .project-slide img {
     width: 60vw;
-    height: auto;
-    
+    height: auto;    
   }
 }  
 @media (max-width: 500px) {
@@ -445,7 +463,6 @@ margin-left: -3%;
 }
 .emailicon {
   margin-right: 10px;
-
 }
 #email_link a {
   color: aqua;
@@ -471,12 +488,11 @@ footer {
   background-color: aqua;
   padding: 10px;
   text-align: center;
-  margin-top: 20vh;
-  
+  margin-top: 20vh;  
   }
 footer a, footer {
   padding: 10px 50px;
-  color: white;
+  color: rgb(49, 45, 45);
   text-decoration: none;
   font-weight: bold;
 }
@@ -487,47 +503,44 @@ footer a, footer {
 }
 /* FOOTER END */
 
-
-
 /* LOG IN CARD */
-
 .login-card {
   font-size: 30pt;
   color: aqua;
   background-color: rgba(82, 82, 82, 0.31);
-  padding: 30px 100px 30px 170px;
-  margin: 0vh 29vw ;
-  margin-top: 100px;
-  width: 25vw;  
+  width: 45vw;
+  margin: 150px auto 0;
+  padding: 5%;
 }
-
+.login-card-text { 
+  margin-bottom: 25px;
+  }
 .login-card form {  
-  margin: 80px 60px;
+  margin: 0 auto;
+  width: 75%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   text-align: end;
 }
-
 .login-label {
   vertical-align: middle;
   font-size: 22pt;  
-  margin-bottom: 20px;
-  margin-right: 10px;  
+  margin-bottom: 20px;  
 }
-
 .username-container, .password-container  {
-  width: 350px;
+  width: 90%;
   display: flex;    
   justify-content: space-between;
+  margin: 0 auto;
 }
-
 .login-field {
   height: 30px; 
+  width: 50%;
 }
-
 .login-button, .register-button {
-  margin-top: 50px;
-  align-self: end;
+  margin: 20px;
+  /* align-self: end; */
   width: 100px;
   border-radius: 10px;
   border: 3px solid black;
@@ -537,6 +550,76 @@ footer a, footer {
   color: white;
   height:50px;
 }
+.form-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  margin: 0 auto;
+}
+@media (max-width: 950px) {
+  .login-card 
+  {
+    font-size: 30pt;
+    color: aqua;
+    background-color: rgba(82, 82, 82, 0.31);
+    width: 75vw; margin: 150px auto 0;
+    padding: 5%;
+  }
+  .login-card-text { 
+    margin-bottom: 25px;
+  }
+  .login-card form {  
+    margin: 0 auto;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: end;
+  }
+  
+  .login-label {
+    vertical-align: middle;
+    font-size: 22pt;  
+    margin-bottom: 20px;    
+  }
+  
+  .username-container, .password-container  {
+    width: 80%;
+    display: flex;    
+    justify-content: space-between;
+  }
+  .login-field {
+    height: 30px; 
+    width: 50%;
+  }
+  
+  .login-button, .register-button {
+    margin: 20px;
+    /* align-self: end; */
+    width: 100px;
+    border-radius: 10px;
+    border: 3px solid black;
+    background-color: aqua;
+    font-weight: bold;
+    font-size: 16pt;;
+    color: white;
+    height:50px;
+  }
+  .form-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+}
+.confirm-password {
+  height: 200px;
+  text-align: left;
+}
+}
 /* LOG IN PAGE END */
 
 /* LOGGED IN START */
@@ -545,10 +628,8 @@ footer a, footer {
   background-color: rgba(82, 82, 82, 0.31);
   padding: 20px;
   margin: 100px;
-}
-
-.login-welcome h1 {
-  margin-left: 2vw;
+  margin-top: 150px;
+  padding-bottom: 32px;
 }
 
 .post-manager {
@@ -556,20 +637,16 @@ footer a, footer {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-left: -22px;
-  margin: 50px 0 80px -22px;
+  margin-left: 6vw;
 }
-
 .post-manager ul {
-  list-style-type: none;  
+  margin: 0 auto;
+  list-style-type: none; 
 }
-
 .post-manager a, .post-manager a:visited {
   color:aqua;
   text-decoration: none;
 }
-
-
 .UI-option {
   background-color: rgba(90, 90, 90, 0.438);
   font-size: 22pt;
@@ -580,15 +657,158 @@ footer a, footer {
   border: 3px solid black;
   width: 400px;  
 }
+.options-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.options-container .profile-card {
+  margin-top: 70px;
+}
+.profile-card {  
+  background-color: rgba(90, 90, 90, 0.438);
+  padding: 10px;
+  border: 2px solid black;  
+  width: 300px;
+  margin: 0 50px;
+}
+.profile-card-image {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 150px;  
+}
+.profile-card-info {
+  padding: 5px; 
+  width: 290px;  
+}
 
+.profile-card-links {
+  
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.profile-card .nameTag {
+  text-align: center;
+}
+.profile-card-links button {
+  text-decoration: underline;
+  padding: 0;    
+  font-size: medium;
+  border: none;
+  background: none;
+  color: aqua;
+  font-weight: bold;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;  
+}
+.profile-card-links button:hover {
+  cursor: pointer;
+}
+.profile-card-links, .profile-card-links a, .profile-card-links a:visited {
+  /* margin: 0 auto; */
+  color: aqua;
+  font-weight: bold;
+}
+@media (max-width: 900px) {
+  .login-welcome  {
+    display: flex;
+    flex-direction: column;
+    color: aqua;
+    background-color: rgba(82, 82, 82, 0.31);
+    padding: 5%;
+    margin: 5%;
+    margin-top: 150px;
+  }
+
+  .login-welcome h1 {
+    margin: 0 auto;
+  }
+  .post-manager {
+    margin: 0 auto;
+    padding: 0;    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .post-manager ul {    
+    list-style-type: none; 
+    margin-left: 3%; 
+    padding: 0;    
+  }
+  .UI-option {
+    background-color: rgba(90, 90, 90, 0.438);
+    font-size: 22pt;
+    font-weight: bold;    
+    margin: 0 auto 20px;
+    text-align: center;
+    padding: 15%;
+    border: 3px solid black;
+    width: 100%;  
+  }
+}
+
+@media (max-width: 500px) {
+
+}
 /* LOGGED IN PAGE END */
-
 
 .testPage {
   color: aqua;
 }
+
+/* BLOG SECTION STYLING */
+
+.filter-links {  
+  margin-bottom: 30px;
+}
+.filter-list{  
+  display: flex;  
+  list-style-type: none;
+}
+.filter-list a {
+  text-decoration: none;
+  color:white;
+}
+.filter-list a:visited {
+  text-decoration: none;
+  color:white;
+}
+.filter-list li {
+  color: white;
+  margin: 0 50px;
+  font-weight: bold;
+}
+.left a {
+  padding: 0 7px;
+  border: 9px solid rgb(48, 48, 48);
+  border-radius: 30px 0;
+  background-color: rgb(48, 48, 48);;
+}
+.left a:hover {
+  background-color: aqua;
+  border-color: aqua;
+}
+.right a {
+  border: 9px solid rgb(48, 48, 48);
+  border-radius: 0px 30px;
+  background-color: rgb(48, 48, 48);
+}
+.right a:hover {
+  background-color: aqua;
+  border-color: aqua;
+}
+
 #projectsSection {
-  padding: 200px 0 100px;
+  padding: 150px 0 100px;
   display: flex;
   flex-direction: column;
 
@@ -610,9 +830,30 @@ footer a, footer {
   width: 50vw;
   height:30px;
 }
+.projectTags button {
+  padding: 0;
+  
+  font-size: medium;
+  border: none;
+  background-color: aqua;
+  font-weight: bold;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;  
+}
+
+.projectTags button:hover {
+  cursor: pointer;  
+}
 .projectTags a {
   color:black;
 }
+/* END BLOG SECTION STYLING */
+
+
+/* NEW POST FORM START */
 .new-post-form {
   margin: 265px auto;
   background-color: rgba(82, 82, 82, 0.31);
@@ -622,8 +863,8 @@ footer a, footer {
   align-items: center;
   align-content: center;
   justify-content: center;
+  margin-bottom: 274px;
 }
-
 .content-field {
   display: flex;
   margin: 20px 20px 20px 0px;
@@ -633,10 +874,188 @@ textarea {
   font-weight: bold;
   color: black;
   padding: 3px 5px;
-  margin: 0px 5px;
-  
+  margin: 0px 5px;  
+}
+.updateButton {
+  border-radius: 5px;
+  background-color: aqua;
+  color: white;
+  padding: 5px;
+  font-weight: bold;
 }
 
+@media (max-width: 900px) {
+
+}
+@media (max-width: 600px) {
+
+}
+
+@media (max-width: 500px) {
+
+}
+
+/* NEW POST FORM END */
+
+/* UPDATE BLOG FORM */
+.updateBlogPost {
+  display: flex;
+  flex-direction: row;
+  font-size: 19px;
+  border-top: 5px solid black;
+  background-color: aqua;
+}
+
+.updateForm {
+  border-right: 2px solid black;
+  width: 100%;
+  color: black;
+  font-weight: bold;
+  padding: 20px;   
+  display: flex;  
+  justify-content: space-evenly;
+  flex-direction: row;
+}
+.updateInputs {
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+}
+
+.postDetails {
+  display:flex;
+  flex-direction: column;   
+  width: 50%;  
+  padding: 10px;
+}
+
+.postContent {
+  width: 55%;
+  display: flex;
+  height: 200px;  
+  padding: 10px;  
+}
+.postContent textarea {
+  width: 90%;
+}
+.updateButton {
+  height: 30px;
+  color: black;
+}
+.deletePost {
+  background-color: aqua;
+  width: 50%;
+  border-radius: 0px 0px 30px 30px;
+  padding: 0px 20px 20px 7%;
+  color: black;
+  font-weight: bold;
+  display: flex;  
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-evenly;  
+}
+
+@media (max-width: 900px) {
+
+}
+@media (max-width: 900px) {
+  .updateBlogPost {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 500px) {
+
+}
+/* UPDATE BLOG FORM END*/
+
+/* USER PROFILE */
+
+.profile-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;   
+}
+.profile-picture {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.update-profile-picture {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+.update-profile-picture input {
+  padding: 10px 0 10px 50px;
+  margin: 0 10px;
+  justify-self: center;  
+  display: flex;
+  flex-direction: column;
+}
+.profile-container h2 {
+  text-align: center;
+}
+.profile-container .profile-picture form {
+  display: flex;
+  flex-direction: column;
+}
+.profile-info form {
+  display: flex;
+  flex-direction: column;
+}
+.profile-info .about-me {
+  white-space: pre-line;
+}
+
+
+.leftButton {
+  font-weight: bold;
+  font-size: 12pt;
+  background-color: aqua;
+  border-color: aqua;
+  padding: 5px 10px;
+  border: 9px solid rgb(48, 48, 48);
+  border-radius: 30px 0;
+  background-color: rgb(48, 48, 48);
+  color: white;
+  margin: 0 50px;
+  font-weight: bold;
+}
+.leftButton:hover {
+  background-color: aqua;
+  border-color: aqua;
+  cursor: pointer;
+}
+.rightButton {
+  font-weight: bold;
+  font-size: 12pt;
+  background-color: aqua;
+  border-color: aqua;
+  padding: 5px 10px;
+  border: 9px solid rgb(48, 48, 48);
+  border-radius: 0px 30px;
+  background-color: rgb(48, 48, 48);
+  color: white;
+  margin: 0 50px;
+  font-weight: bold;
+}
+.rightButton:hover {
+  background-color: aqua;
+  border-color: aqua;
+  cursor: pointer;
+}
+/* USER PROFILE END */
+
+
+/* CONFIRMATION PAGES */
 
 .donePage {
   width: 100%;
@@ -658,14 +1077,13 @@ textarea {
   font-weight: bold;
   color: aqua
 }
-.donePage a:visited {
-  
+.donePage a:visited {  
   font-weight: bold;
   color: aqua;
 }
+
 .testDbCard {
-  background-color: rgba(82, 82, 82, 0.31);
-  /* width: 90vw; */
+  background-color: rgba(82, 82, 82, 0.31); 
   margin: 200px 10vw;
   padding: 50px;
 }
@@ -675,10 +1093,22 @@ textarea {
 .testDbCard input {
   padding: 5px;;
 }
-.testDbCard .updateButton {
+.testDbCard {
   border-radius: 5px;
   background-color: aqua;
   color: white;
   padding: 5px;
   font-weight: bold;
 }
+@media (max-width: 900px) {
+
+}
+@media (max-width: 600px) {
+
+}
+
+@media (max-width: 500px) {
+
+}
+
+/* CONFIRMATION PAGES END */
