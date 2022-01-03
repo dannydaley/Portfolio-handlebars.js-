@@ -74,7 +74,6 @@ const upload = multer({ storage: storage });
 
 /* END OF IMAGE UPLOAD HANDLING */
 
-
 //get the saved post information from external JSON file
 // mainly for keeping up to date when new post are created etc
 let postDataJSON = require("../public/posts.json");
@@ -131,7 +130,6 @@ function passwordHash(thePassword, theSalt) {
 }
 
 /////////////////////////////////////// SQL DATABASE STUFF /////////////////////////////////////////////
-
 
 
 const GET_USER_PROFILE_INFO = "SELECT name, joined, posts, profilePicture, aboutMe FROM users WHERE name = ?"
@@ -365,6 +363,7 @@ router.post('/login', (req, res, next) => {
       }       
     })   
 })
+
 /*GET logged in page (dashboard) */
 router.get('/loggedIn', function(req, res, next) {
   // query the database to get the logged in users profile info
@@ -514,79 +513,6 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
       res.render("blog-db-done",{ loggedIn: changeNavLoginButton(isLoggedIn) });
   })
 })
-
-
-///////////////////////////////////////////
-
-//SECURITY STUFF
-
-let loggedIn = false;
-
-let crypto = require('crypto');
-const { debugPort } = require('process');
-
-const iterations = 1000;
-
-const hashSize = 64;
-
-const hashAlgorithm = 'sha256';
-
-const pepper = crypto.randomBytes(256).toString('hex'); // NOT USED BUT THIS IS HOW A RANDOM PEPPER WOULD WORK.
-
-//need to change the salt
-function emailHash(theEmail) {
-  return crypto.pbkdf2Sync(theEmail, 'PEPPERRRRR', iterations, hashSize, hashAlgorithm).toString('hex');
-}
-
-function passwordHash(thePassword, saltGenerator) {
-return crypto.pbkdf2Sync(thePassword, 'PEPPERRRRR' + saltGenerator, iterations, hashSize, hashAlgorithm).toString('hex');
-}
-
-function validateLoginData(data) { 
-  let found = false;
-  for (let i = 0; i < userDatabase.users.length; i++) {
-      console.log(passwordHash(data.password, userDatabase.users[i].passwordSalt));
-      console.log(userDatabase.users[i].password)                
-    if (emailHash(data.email) === userDatabase.users[i].email && passwordHash(data.password, userDatabase.users[i].passwordSalt) === userDatabase.users[i].password) {  
-  
-      found = true;
-    } 
-  }
-  return found
-}
-
-///////////////////////////////////////////
-/* POST login data to validate login page */
-router.post('/login', function(req, res, next){
-  if (validateLoginData(req.body)) {    
-    logInStatus = true;
-    loggedIn = true;
-    res.render('loggedIn', { title: 'You are logged in!' });
-  } else {
-    res.status(400).json("failed credentials");
-  };
-})
-
-//adds new user to user database
-router.post('/register', function (req, res, next) {
-  let { email, username, password1, password2 } = req.body; 
-  if (req.body.password1 === req.body.password2){
-    let storeEmail = emailHash(email);
-    // gensalt
-    let generateSalt = crypto.randomBytes(256).toString('hex');
-    let storePassword = passwordHash(password2, generateSalt);
-    
-    userDatabase.users.push({
-    id: userDatabase.users.length,
-    name: username,
-    email: storeEmail,
-    password: storePassword,
-    passwordSalt: generateSalt,
-    posts: 0,
-    joined: new Date()
-      })
-      // console.log(JSON.stringify(userDatabase)) FOR PRINTING NEW USER DATA DELETE WHEN FINISHED TESTING!!!!!!!!!!!!
-      res.render('index');
 
 /* POST delete blog post form */
 router.post('/post-delete', (req, res, next) => {
@@ -757,7 +683,6 @@ router.post('/newUserSpacePost', upload.single('image'), function (req, res, nex
   db.run('UPDATE `users` SET `posts` = posts+1 WHERE name = ?',  form.author), function(err, result) {
     if (err){
       console.log(err)
-
     }
   }
   //Add to SQL database.
@@ -768,4 +693,6 @@ router.post('/newUserSpacePost', upload.single('image'), function (req, res, nex
     }
     res.render("blog-db-done", { loggedIn: changeNavLoginButton(isLoggedIn) })
   })
-})}})
+})
+
+module.exports = router;
