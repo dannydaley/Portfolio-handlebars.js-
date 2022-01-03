@@ -188,7 +188,7 @@ Actions submitted changes made to the users profile
 
 req.body.image, form.aboutMe, name
 
-FORMAT (URL ENCODED FORMAT) = "editProfile=POST+TITLE+CONTENT"
+FORMAT (MULTIPART/FORM-DATA)
 
 -----------------------------------------------------------------
 
@@ -198,13 +198,19 @@ Retreives the clicked on users profile, set up as a post request so that we dont
 user that creates an account, this takes the username parameter from the request body, uses it to query the database,
 then serves the userProfile page with the fetched information
 
-FORMAT (URL ENCODED FORMAT) = 
+USERNAME
+
+FORMAT (TEXT/HTML, CHARSET=UTF-8) 
 
 -----------------------------------------------------------------
 
 ### '/getUserSpace' => POST
 
 This retrieves the selected users personal Space, This first uses the selected users username to fetch the relevant profile data, then as a nested query pulls all posts from the database where the recipient is equal to the username of the viewed profile. This gives us all posts directly addressed to this user.
+
+USERNAME
+
+FORMAT (TEXT/HTML, CHARSET=UTF-8) 
 
 -----------------------------------------------------------------
 

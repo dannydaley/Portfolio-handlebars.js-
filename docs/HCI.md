@@ -1,25 +1,9 @@
 ### HUMAN COMPUTER INTERACTION
 ===============================================================
 
-### OVERALL
+Google form results as follows
 
-Overall Users seemed to have a good experience using this website
-
-### WHERE DID USERS STRUGGLE THE MOST
-
-Although scores were very positive, it seems navigation of the site scored the lowest.
-
-### DID USERS FIND INFORMATION RELEVANT
-
-Users seemed to find the given information relevant
-
-### HOW EASY DID USERS FIND THE SITE TO NAVIGATE
-
-Users seemed to be able to navigate the website well
-
-### HOW EASY DID USERS FIND INFORMATION THEY WANTED
-
-Given the data, users seemed to have an easy time finding the information they wanted.
+https://docs.google.com/forms/d/e/1FAIpQLSctgifPim1MwOg-GhdkwxAlXmAcn3VFO5fU7sWyoeQHYcUDCw/viewform?usp=sf_link
 
 ### Overall, I am satisfied with how easy it is to navigate this website.
 
@@ -131,6 +115,30 @@ Given the data, users seemed to have an easy time finding the information they w
 6 - 66.7%
 7 - 33.3%
 
+
+
 ### Can you think of any ways to improve this website?
 
 1 response : Username links could be more visible or could just stand out more
+
+==============================================================================
+
+### OVERALL
+
+Overall Users seemed to have a good experience using this website
+
+### WHERE DID USERS STRUGGLE THE MOST
+
+Although scores were very positive, it seems navigation of the site scored the lowest.
+
+### DID USERS FIND INFORMATION RELEVANT
+
+Users seemed to find the given information relevant
+
+### HOW EASY DID USERS FIND THE SITE TO NAVIGATE
+
+Users seemed to be able to navigate the website well
+
+### HOW EASY DID USERS FIND INFORMATION THEY WANTED
+
+Given the data, users seemed to have an easy time finding the information they wanted.
