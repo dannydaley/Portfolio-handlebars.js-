@@ -22,7 +22,8 @@ TABLE: `entries`
                 "image": "IMAGES/IMAGELOCATION.png",
                 "content": "POST CONTENT BODY",
                 "link": "PROJECT LINK",
-                "date": "2021, 2, 28"
+                "date": "2021, 2, 28",
+                "recipient": "blogPost"
             },
             ...
     ]
@@ -85,7 +86,9 @@ FIELDS & DATA TYPES :
 |`password` VARCHAR(255)|,
 |`passwordSalt` VARCHAR(512)|,
 |`posts` INTEGER|,
-|`joined` VARCHAR(255)|
+|`joined` VARCHAR(255)|,
+|`profilePicture` VARCHAR(255)|,
+|`aboutMe` VARCHAR(255)|
 
 ----------------------------------------------------------------------
 
@@ -97,7 +100,9 @@ FIELDS & DATA TYPES :
 |`title` VARCHAR(255), UNIQUE|,
 |`image` VARCHAR(255)|,
 |`content` BLOB|,
-|`link` VARCHAR(255)|
+|`link` VARCHAR(255)|,
+|`date` VARCHAR(255)|,
+|`recipient` VARCHAR(255)|
 
 
 --------------------------------------------------------------------
