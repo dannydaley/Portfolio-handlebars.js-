@@ -1,7 +1,6 @@
 {
-  "users":[
+  "users": [
     {
-
       "id": 123,
       "name": "Danny",
       "email": "b4be1160e2b68f4821142a304e05a4d33bab1f98997ab73dd7c2e81b517e1fc61732a7f8cf04608da3520dcf86b53dcc2531d88d372d7b68400a945c699087c1",
@@ -17,7 +16,6 @@
       "passwordSalt":"4aae2963b54bdf7aa63fa8a3a8af791ddbd3ee1f8a5f7169ee4cb2c107ddadc3b84310e9761e3bbac1572c7d264026200dcdb6c97e0b24bbe18542bc51a062e6be3deeb39b9a99ec964cba5cfcd340bf4b719d7cbc3ea8dc3c317592ed391771b279427d04c296c5be94c25ac828e6fa5906ac8b820d7611d85c836ac1ee4acd26496e4665bfa711361a13165bbecdb79afc47b70b46e9d05487ac01ad87249042e8d916b59e4231231550bca5e1f0e3b2ffad1d33edbbf10f69a350f6753c9b37665e468a5bfc275ba834474197a91c1dc2b9e1cfc4d4746e912bfd4cf404f9d34b560e3c23fdc56a0d78d3cadbf49b3c727c0fca7ac1a9eb6c7cd2d63a41da",
       "posts": 0,
       "joined": "new Date()"
-
     }
     ,    {
       "id":0,
