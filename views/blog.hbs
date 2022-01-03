@@ -1,21 +1,27 @@
+
 <section id="projectsSection">
-    {{#each entries}}
+    <div class="filter-links">
+        <ul class="filter-list">
+            <li class="left"><a href="/blog">portfolio</a></li>
+            <li class="right"><a href="/community-blog">community</a></li>
+        </ul>
+    </div>
+    {{#each rows}}
         <!-- PROJECTS START -->
-        <div class="project-slide-container">
-        <div class="project-slide">
-            <div class="projInfo">
-                <a href="{{this.link}}" target="_blank">
-                    <p>{{this.title}}</p>
-                </a>  
-                <p>{{this.content}}</p>
-            </div>
-            <a href="{{this.link}}" target="_blank">
-                <img src="{{this.image}}">
-            </a>
+        <div class="project-slide-container" id="{{title}}">
+            <div class="project-slide">
+                <div class="projInfo">
+                    <p><a href="{{link}}" rel="noopener"  target="_blank">{{title}}</a></p>      
+                    <p>{{{content}}}</p>
+                </div>
+                <a href="{{link}}" rel="noopener" target="_blank">
+                    <img src="{{image}}" alt="project thumbnail image">
+                </a>
             </div>            
-        <div class="projectTags">
-            <p>posted by <a href="">{{this.author}}</a> on {{this.date}} post id: {{this.id}}</p>
-        </div>
+            <div class="projectTags">
+                <form method="POST" action="/userProfile">
+                <p>posted by <button type="submit" name="username" value="{{author}}">{{author}}</button> on <button type="submit" value="{{date}}">{{date}}</button> post id: {{id}}</p></form>
+            </div>
         </div>
     {{/each}}
 </section>

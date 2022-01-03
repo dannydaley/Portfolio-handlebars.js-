@@ -1,6 +1,4 @@
-
-
-## Quickstart Guide
+### Quickstart Guide
 
 ### install dependencies:
 
