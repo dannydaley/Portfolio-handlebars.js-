@@ -409,6 +409,21 @@ router.get('/manageBlog', (req, res, next) => {
     res.render('manageBlog', { title: "manage blog","rows": rows,  loggedIn: changeNavLoginButton(isLoggedIn) });
   })
 })
+/* GET manage blog page */
+router.get('/manageGuestbook', (req, res, next) => {
+  // ready database for query
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  // get all posts authored by the logged in user of the context "blogPost"
+  SQLdatabase.all(GET_ALL_POSTS_BY_RECIPIENT, [name], (err, rows) => {
+    if (err) {
+      // error case
+      res.status(500).send(err.message);
+      return;
+    }
+    // render manage blog page on success
+    res.render('manageGuestbook', { title: "manage Guestbook","rows": rows,  loggedIn: changeNavLoginButton(isLoggedIn) });
+  })
+})
 
 /* POST manageblog form */
 router.post('/manageBlog', upload.single('change-image'), function (req, res, next) {
