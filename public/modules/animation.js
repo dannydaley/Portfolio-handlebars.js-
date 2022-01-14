@@ -31,7 +31,7 @@ var loader = new THREE.GLTFLoader();
 //     gltf.scene.scale.set( 2, 2, 2 );			   
 //     gltf.scene.position.x += 0.7;			    //Position (x = right+ left-) 
 //     gltf.scene.position.y = 1;    	    //Position (y = up+, down-)
-//     gltf.scene.position.z = 18.0;          //Position (z = front +, back-)    
+//     gltf.scene.position.z = 18.0;          //Position (z = front +, back-)
 //     scene.add( object2 );
 //     animate();    
 //     });
