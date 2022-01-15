@@ -199,7 +199,10 @@ router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
 
 /* GET all users */
 router.get('/getAllUsers', (req, res, next) => {
+
   let SQLdatabase = req.app.locals.SQLdatabase;
+  SQLdatabase.run("ALTER TABLE users ADD pinnedPost INTEGER")
+  // SQLdatabase.run("ALTER TABLE users DROP COLUMN pinPost")
   // grab all user data
   SQLdatabase.all(GET_ALL_USERS, [], (err, rows) => {
     if (err) {
