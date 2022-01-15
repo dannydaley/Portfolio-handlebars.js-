@@ -973,6 +973,8 @@ textarea {
 /* USER PROFILE */
 
 .profile-container {
+
+  width: 40%;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -1014,8 +1016,6 @@ textarea {
 .profile-info .about-me {
   white-space: pre-line;
 }
-
-
 .leftButton {
   font-weight: bold;
   font-size: 12pt;
@@ -1116,3 +1116,78 @@ textarea {
   font-weight: bold;
   }
 /* CONFIRMATION PAGES END */
+
+
+/* PINNED POST START */
+.outer-profile-container {
+  justify-content: space-around;
+  display: flex;
+  flex-direction: row;
+}
+.pinned-post-container {
+
+  width: 40vw;
+  background-color: rgba(82, 82, 82, 0.31);
+  margin-bottom: 100px;;
+ 
+
+}
+
+.pinned-post-slide { 
+    /* background-color: rgb(82, 82, 82); */
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-bottom: 50px;
+
+  }
+  .pinned-post-slide a {
+    font-weight: bold;
+    color: aqua;
+    text-decoration: none;
+  }
+  .pinned-post-slide img {
+    width: 60%;
+   margin-left: 35%;
+  }
+
+  .pinned-post-info p {
+    font-size: 25px;
+    color: aqua;
+    padding: 20px;
+    width: 80%;
+  }
+
+
+.pinned-post-tags {
+  color:black;
+  font-weight: bold;
+  display:flex;
+  align-items: center;
+  padding-left: 20px;
+  background-color: aqua;
+  border-radius: 0 30px 0 0;
+  width: 90%;
+  height:30px;
+}
+.pinned-post-tags button {
+  padding: 0;
+  
+  font-size: medium;
+  border: none;
+  background-color: aqua;
+  font-weight: bold;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;  
+}
+
+.pinned-post-tags button:hover {
+  cursor: pointer;  
+}
+.pinned-post-tags a {
+  color:black;
+}
