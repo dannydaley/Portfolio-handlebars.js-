@@ -1184,3 +1184,15 @@ textarea {
 .pinned-post-tags a {
   color:black;
 }
+@media (max-width: 900px) {
+
+}
+@media (max-width: 600px) {
+
+}
+
+@media (max-width: 500px) {
+
+}
+
+/* PINNED POST END */
