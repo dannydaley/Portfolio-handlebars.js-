@@ -142,6 +142,7 @@ const GET_RECENT_POSTS_BY_AUTHOR = "SELECT * FROM blog WHERE author = ? AND reci
 const SQL_ADD_BLOG_POST = "INSERT INTO `blog` (author, title, image, content, link, date, recipient) VALUES(?,?,?,?,?,?,?)"
 const SQL_UPDATE_BLOG =  "UPDATE `blog` SET title = ?, image = ?, link = ?, author = ?, content = ? WHERE id = ?" //SQL command
 const SQL_UPDATE_USER_PROFILE = "UPDATE users SET profilePicture = ?, aboutMe = ? WHERE name = ?"
+const SQL_UPDATE_USERS_PINNED_POST = "UPDATE users SET pinnedPost = ? WHERE name = ?"
 const GET_ALL_USERS = "SELECT * FROM users"; // SQL command
 
 /* Database setup endpoint */
@@ -425,12 +426,14 @@ router.get('/manageGuestbook', (req, res, next) => {
   })
 })
 
+
+
 /* POST manageblog form */
 router.post('/manageBlog', upload.single('change-image'), function (req, res, next) {
   // ready the passed in data
   var form = req.body;
   // ready the database for a query
-  let SQLdatabase = req.app.locals.SQLdatabase;
+  let SQLdatabase = req.app.locals.SQLdatabase;  
   // do the validation
   var errors = []; 
   if (!form.title || !form.image || !form.author || !form.content){
@@ -448,7 +451,11 @@ router.post('/manageBlog', upload.single('change-image'), function (req, res, ne
     if (err) {
       res.status(500).send(err.message)
       return;
-    }  
+    }   
+    // If pinPost is checked on form, update the users pinned post
+    if (form.pin === "pinPost") {
+      SQLdatabase.run(SQL_UPDATE_USERS_PINNED_POST, [ form.id, name ])
+    }
     // get ready to rewrite the posts json file..
     // gather all existing posts
     SQLdatabase.all(GET_ALL_POSTS, [], (err, rows) => {
@@ -475,6 +482,7 @@ router.post('/manageBlog', upload.single('change-image'), function (req, res, ne
         // re-write the posts.json file
      fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON3, null, 2));       
     })
+    
     res.render("blog-db-done", { title: "blog updated",loggedIn: changeNavLoginButton(isLoggedIn) });
   })
 })
@@ -626,21 +634,21 @@ router.post('/userProfile', (req, res, next) => {
       if (err) {        
         res.status(500).send(err.message);
         return;        
-      } 
-      console.log(pinned)
+      }  
     // get all of that users posts according to username and blogPost 
-    SQLdatabase.all(GET_POSTS_BY_AUTHOR, [ req.body.username, "blogPost" ], (err, blogRows) => {
-      if (err) {
-        res.status(500).send(err.message);
-        return;        
-      } 
-      if (userInfo === undefined){
-        res.render("404")
-      }
-      else {
-          res.render("userprofile", { name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows, pinned: pinned[0], loggedIn: changeNavLoginButton(isLoggedIn) })  
-      }
-    })})
+      SQLdatabase.all(GET_POSTS_BY_AUTHOR, [ req.body.username, "blogPost" ], (err, blogRows) => {
+        if (err) {
+          res.status(500).send(err.message);
+          return;        
+        } 
+        if (userInfo === undefined){
+          res.render("404")
+        }
+        else {
+            res.render("userprofile", { name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows, pinned: pinned[0], loggedIn: changeNavLoginButton(isLoggedIn) })  
+        }
+      })
+    })
   })
 })
 
@@ -653,18 +661,25 @@ router.post('/getUserSpace', (req, res, next) => {
       res.status(500).send(err.message);
       return;
     }   
-    // get all posts that are addressed to the users profile
-    SQLdatabase.all(GET_ALL_POSTS_BY_RECIPIENT, [ req.body.username ], (err, blogRows) => {
-      if (err) {
+    //Get users pinned post from user data, check against post id    
+    SQLdatabase.all("SELECT * FROM 'blog' WHERE id = ?", [ userInfo[0].pinnedPost ], (err, pinned) => {
+      if (err) {        
         res.status(500).send(err.message);
-        return;        
-      } 
-      if (userInfo === undefined){
-        res.render("404")
+        return;
       }
-      else {
-          res.render("userSpace", { visitor: name, name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows, loggedIn: changeNavLoginButton(isLoggedIn) })  
-      }
+      // get all posts that are addressed to the users profile
+      SQLdatabase.all(GET_ALL_POSTS_BY_RECIPIENT, [ req.body.username ], (err, blogRows) => {
+        if (err) {
+          res.status(500).send(err.message);
+          return;        
+        } 
+        if (userInfo === undefined){
+          res.render("404")
+        }
+        else {
+            res.render("userSpace", { visitor: name, name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows,pinned: pinned[0], loggedIn: changeNavLoginButton(isLoggedIn) })  
+        }
+      })
     })
   })
 })

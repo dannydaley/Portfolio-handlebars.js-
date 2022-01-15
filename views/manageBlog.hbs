@@ -25,6 +25,8 @@
                 <form action="/manageBlog" method="post" class="updateForm" enctype="multipart/form-data">
                     <div class="updateInputs">
                         <div class="postDetails">
+                            <label for="pin">pin this post?
+                            <input type="checkbox" name="pin" value="pinPost" /></label>
                             <input type="hidden" name="context" value="blogPost" readonly />
                             <label for="id">post ID
                                 <input type="number" name="id" value="{{id}}" readonly /></label>
