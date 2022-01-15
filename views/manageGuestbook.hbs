@@ -45,8 +45,17 @@
                         <input class="updateButton" type="submit" value="Update" />
                     </div>
                 </form>                 --}}
+                <div class="pin-post">
+                    <form action="/pinGuestbookPost" method="post">
+                        <label for="pin">pin this post?
+                            <input type="checkbox" name="pin" value="pinPost" /></label>
+                            <input type="hidden" name="postId" value="{{id}}">
+                            <input class="updateButton" type="submit" value="pin" />
+                        </form>
+                </div>
                 <div class="deletePost">
                     <form action="/post-delete" method="post">
+ 
                         <h1>delete this post?</h1>
                         <div class="deleteTextField">
                             <label for="deleteThisPost">confirm post title

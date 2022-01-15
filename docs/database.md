@@ -89,6 +89,7 @@ FIELDS & DATA TYPES :
 |`joined` VARCHAR(255)|,
 |`profilePicture` VARCHAR(255)|,
 |`aboutMe` VARCHAR(255)|
+|`pinnedPost` INTEGER|
 
 ----------------------------------------------------------------------
 

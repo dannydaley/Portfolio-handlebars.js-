@@ -426,6 +426,17 @@ router.get('/manageGuestbook', (req, res, next) => {
   })
 })
 
+router.post('/pinGuestbookPost',function (req, res, next) {
+    // ready the passed in data
+    var form = req.body;
+    // ready the database for a query
+    let SQLdatabase = req.app.locals.SQLdatabase;
+  if (form.pin === "pinPost") {
+  SQLdatabase.run(SQL_UPDATE_USERS_PINNED_POST, [ form.postId, name ])
+}
+res.render("blog-db-done", { title: "blog updated",loggedIn: changeNavLoginButton(isLoggedIn) });
+} )
+
 
 
 /* POST manageblog form */
@@ -625,10 +636,12 @@ router.post('/userProfile', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
   // get the users profile info according to the name clicked on
   SQLdatabase.all(GET_USER_PROFILE_INFO, [ req.body.username ], (err, userInfo) => {
+    console.log(userInfo)
     if (err) {
       res.status(500).send(err.message);
       return;
     }
+    
     //Get users pinned post from user data, check against post id    
     SQLdatabase.all("SELECT * FROM 'blog' WHERE id = ?", [ userInfo[0].pinnedPost ], (err, pinned) => {
       if (err) {        

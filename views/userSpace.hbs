@@ -3,10 +3,10 @@
         <div class="outer-profile-container">
             <div class="profile-container">
                 <div class="profile-picture">
-                    <img class="dashboard-profile-image" src="{{profilePicture}}" width="100px" height="100px">
-                </div>
+                    <img class="dashboard-profile-image" src="{{profilePicture}}" width="250px" height="250px">
+                </div><h2>{{name}}</h2>
                 <div class="profile-info">
-                    <h2>{{name}}</h2>
+                    
                     <p class="about-me">{{aboutMe}}</p>  
                     <h3>post count: {{posts}}</h3>
                     <h3>date joined: {{dateJoined}}</h3>
@@ -16,20 +16,23 @@
             <div class="pinned-post-container" id="{{pinned.title}}">
                 <div class="pinned-post-slide">
                     <div class="pinned-post-info">
-                        <p><a href="{{pinned.link}}" rel="noopener"  target="_blank">{{pinned.title}}</a></p>      
-                        <p>{{{pinned.content}}}</p>
-                    </div>
-                    <div class="pinned-post-image-container">
+                        <div class="pinned-title-and-image">
+                        <p><a href="{{pinned.link}}" rel="noopener"  target="_blank">{{pinned.title}}</a></p>
+                        <div class="pinned-post-image-container">
                         <a href="{{pinned.link}}" rel="noopener" target="_blank">
                             <img src="{{pinned.image}}" alt="project thumbnail image">
                         </a>
+                        </div>
+                    </div>      
+                        <p>{{{pinned.content}}}</p>
                     </div>
+
                 </div>  
                 <div class="pinned-post-tags">
                     <form method="POST" action="/userProfile">
                     <p>posted by <button type="submit" value="{{pinned.author}}" class="buttonLinkText">{{pinned.author}}</button> on <button type="submit" value="{{date}}">{{date}}</button> post id: {{id}}</p></form>
                 </div>
-        </div>
+            </div>
         </div>    
 </div>
     <div class="new-post-form">

@@ -717,7 +717,7 @@ footer a, footer {
   color: aqua;
   font-weight: bold;
 }
-@media (max-width: 900px) {
+@media (max-width: 1300px) {
   .login-welcome  {
     display: flex;
     flex-direction: column;
@@ -726,6 +726,10 @@ footer a, footer {
     padding: 5%;
     margin: 5%;
     margin-top: 150px;
+  }
+  .options-container {
+    flex-direction: column;
+    align-items: center;
   }
 
   .login-welcome h1 {
@@ -954,7 +958,13 @@ textarea {
   align-items: flex-start;
   justify-content: space-evenly;  
 }
-
+.pin-post {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  font-weight: bold;
+  color: black;
+}
 @media (max-width: 900px) {
 
 }
@@ -978,10 +988,20 @@ textarea {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: flex-start;   
+}
+
+ .edit-profile {
+
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;   
 }
-.profile-picture {
+.profile-picture {  
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -995,8 +1015,8 @@ textarea {
   align-items: center;
   justify-content: space-around;
 }
-.update-profile-picture input {
-  padding: 10px 0 10px 50px;
+.update-profile-picture * {
+  padding: 5px;
   margin: 0 10px;
   justify-self: center;  
   display: flex;
@@ -1052,6 +1072,112 @@ textarea {
   border-color: aqua;
   cursor: pointer;
 }
+/* PINNED POST START */
+.outer-profile-container {
+  justify-content: space-between;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;  
+}
+.pinned-title-and-image {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.pinned-post-container {
+  width: 40vw;
+  background-color: rgba(82, 82, 82, 0.31);
+  
+}
+.pinned-post-slide { 
+    /* background-color: rgb(82, 82, 82); */
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-bottom: 50px;
+  }
+  .pinned-post-slide a {
+    font-weight: bold;
+    color: aqua;
+    text-decoration: none;
+  }
+  .pinned-post-slide img {
+    width: 60%;
+   margin-left: 35%;
+  }
+
+  .pinned-post-info p {
+    font-size: 25px;
+    color: aqua;
+    padding: 20px;
+    width: 100%;
+  }
+.pinned-post-tags {
+  color:black;
+  font-weight: bold;
+  display:flex;
+  align-items: center;
+  padding-left: 20px;
+  background-color: aqua;
+  border-radius: 0 30px 0 0;
+  width: 90%;
+  height:30px;
+}
+.pinned-post-tags button {
+  padding: 0;  
+  font-size: medium;
+  border: none;
+  background-color: aqua;
+  font-weight: bold;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;  
+}
+
+.pinned-post-tags button:hover {
+  cursor: pointer;  
+}
+.pinned-post-tags a {
+  color:black;
+}
+@media (max-width: 900px) {
+  .outer-profile-container {
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    flex-direction: column;  
+  }
+  .pinned-post-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;    
+    background-color: rgba(82, 82, 82, 0.31);
+    margin-bottom: 100px;
+  }
+  .pinned-title-and-image {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .pinned-post-info p {
+    font-size: 25px;
+    color: aqua;
+    padding: 20px;
+    width: 100%;
+  }
+}
+@media (max-width: 600px) {
+
+}
+
+@media (max-width: 500px) {
+
+}
+
+/* PINNED POST END */
 /* USER PROFILE END */
 
 
@@ -1118,81 +1244,3 @@ textarea {
 /* CONFIRMATION PAGES END */
 
 
-/* PINNED POST START */
-.outer-profile-container {
-  justify-content: space-between;
-  display: flex;
-  align-items: flex-end;
-  flex-direction: row;  
-}
-.pinned-post-container {
-  width: 40vw;
-  background-color: rgba(82, 82, 82, 0.31);
-  margin-bottom: 100px;
-}
-.pinned-post-slide { 
-    /* background-color: rgb(82, 82, 82); */
-    padding: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    margin-bottom: 50px;
-  }
-  .pinned-post-slide a {
-    font-weight: bold;
-    color: aqua;
-    text-decoration: none;
-  }
-  .pinned-post-slide img {
-    width: 60%;
-   margin-left: 35%;
-  }
-
-  .pinned-post-info p {
-    font-size: 25px;
-    color: aqua;
-    padding: 20px;
-    width: 80%;
-  }
-.pinned-post-tags {
-  color:black;
-  font-weight: bold;
-  display:flex;
-  align-items: center;
-  padding-left: 20px;
-  background-color: aqua;
-  border-radius: 0 30px 0 0;
-  width: 90%;
-  height:30px;
-}
-.pinned-post-tags button {
-  padding: 0;  
-  font-size: medium;
-  border: none;
-  background-color: aqua;
-  font-weight: bold;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-  sans-serif;
--webkit-font-smoothing: antialiased;
--moz-osx-font-smoothing: grayscale;  
-}
-
-.pinned-post-tags button:hover {
-  cursor: pointer;  
-}
-.pinned-post-tags a {
-  color:black;
-}
-@media (max-width: 900px) {
-
-}
-@media (max-width: 600px) {
-
-}
-
-@media (max-width: 500px) {
-
-}
-
-/* PINNED POST END */

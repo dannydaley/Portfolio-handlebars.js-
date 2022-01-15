@@ -1,8 +1,8 @@
 <div class="login-welcome">
     <h1>{{name}}'s profile</h1>
-        <div class="profile-container">
+        <div class="profile-container edit-profile">
             <div class="profile-picture">
-                <img class="dashboard-profile-image" src="{{profilePicture}}" width="100px" height="100px">
+                <img class="dashboard-profile-image" src="{{profilePicture}}" width="250px" height="250px">
 
                 <form action="/editProfile" method="post" class="update-profile-picture" enctype="multipart/form-data">              
                     <input type="hidden" name="context" value="profile" readonly />                        
@@ -10,7 +10,7 @@
                     <input type="hidden" value="{{profilePicture}}" name="image" readonly />
                     <input class="updateButton" type="file" accept=".png" name="update-profile-picture" /></label>          
                     <label for="about-me">about me     
-                    <textarea type="text" name="aboutMe" rows="5" cols="50">{{aboutMe}}</textarea></label>    
+                    <textarea type="text" name="aboutMe" rows="10" cols="75">{{aboutMe}}</textarea></label>    
                     <input class="updateButton" type="submit" value="Update" />
                 </form> 
 
