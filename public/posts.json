@@ -1,7 +1,7 @@
 {
   "entries": [
     {
-      "id": 33,
+      "id": 32,
       "author": "Daley",
       "title": "Pinned Posts",
       "image": "/images/default-post-image.png",
@@ -195,7 +195,7 @@
       "author": "Daley",
       "title": "Posts now support HTML embeds",
       "image": "/images/uploads/Daley-change-image-1640179177434-972506776.png",
-      "content": "Posts now offer the functionality to embed content such as iframes so users can get really creative with what they post (within reason) </p><iframe width=\"100%\" height=\"300\" scrolling=\"no\" frameborder=\"no\" allow=\"autoplay\" src=\"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1106070253&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true\"></iframe><div style=\"font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;\"><a href=\"https://soundcloud.com/dannytdaley\" title=\"DannyDaley\" target=\"_blank\" style=\"color: #cccccc; text-decoration: none;\">DannyDaley</a> · <a href=\"https://soundcloud.com/dannytdaley/in-a-hurry\" title=\"In a Hurry\" target=\"_blank\" style=\"color: #cccccc; text-decoration: none;\">In a Hurry</a></div>",
+      "content": "Posts now offer the functionality to embed content such as iframes so users can get really creative with what they post (within reason)\r\n<br>\r\n<br>\r\n <iframe width=\"100%\" height=\"300\" scrolling=\"no\" frameborder=\"no\" allow=\"autoplay\" src=\"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1106070253&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true\"></iframe><div style=\"font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;\"><a href=\"https://soundcloud.com/dannytdaley\" title=\"DannyDaley\" target=\"_blank\" style=\"color: #cccccc; text-decoration: none;\">DannyDaley</a> · <a href=\"https://soundcloud.com/dannytdaley/in-a-hurry\" title=\"In a Hurry\" target=\"_blank\" style=\"color: #cccccc; text-decoration: none;\">In a Hurry</a></div>",
       "link": "",
       "date": "9-12-2021",
       "recipient": "blogPost"

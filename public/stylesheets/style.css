@@ -1037,6 +1037,7 @@ textarea {
   white-space: pre-line;
 }
 .leftButton {
+  width: 250px;
   font-weight: bold;
   font-size: 12pt;
   background-color: aqua;
@@ -1055,6 +1056,7 @@ textarea {
   cursor: pointer;
 }
 .rightButton {
+  min-width: 250px;
   font-weight: bold;
   font-size: 12pt;
   background-color: aqua;
