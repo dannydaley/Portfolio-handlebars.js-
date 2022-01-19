@@ -7,7 +7,7 @@
                 </div><h2>{{name}}</h2>
                 <div class="profile-info">
                     
-                    <p class="about-me">{{aboutMe}}</p>  
+                    <p class="about-me">{{{aboutMe}}}</p>  
                     <h3>post count: {{posts}}</h3>
                     <h3>date joined: {{dateJoined}}</h3>
                 </div>
@@ -30,15 +30,12 @@
                 </div>  
                 <div class="pinned-post-tags">
                 <form method="POST" action="/userProfile">
-                    <p>posted by <button type="submit" name="username" value="{{pinned.author}}" class="buttonLinkText">{{pinned.author}}</button> on <button type="submit" value="{{pinned.date}}">{{pinned.date}}</button> post id: {{id}}</p>
+                    <p>posted by <button type="submit" name="username" value="{{pinned.author}}" class="buttonLinkText">{{pinned.author}}</button> on <button type="submit" value="{{pinned.date}}">{{pinned.date}}</button> post id: {{pinned.id}}</p>
                 </form>
                 </div>
             </div>
         </div>    
 </div>
-
-
-
 <section id="projectsSection">
     <div class="filter-links">
         <ul class="filter-list">
@@ -47,8 +44,7 @@
                 </form>
                 <form method="POST" action="/getUserSpace">
                     <button class="rightButton" type="submit" name="username" value="{{name}}">{{name}}'s Guestbook</button>
-                </form> 
-      
+                </form>       
         </ul>
     </div>
     {{#each rows}}

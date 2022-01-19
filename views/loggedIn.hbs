@@ -7,13 +7,12 @@
             </div>
             <div class="profile-card-info">
                 <h2 class="nameTag">{{name}}</h2>
-
                 <div class="profile-card-links">
                     <form method="POST" action="/userProfile">
                         <button type="submit" name="username" value="{{name}}">view profile</button> 
                     </form>|<a href="/editProfile">edit profile</a>                   
                 </div>
-                                <h3>date joined: {{dateJoined}}</h3>
+                <h3>date joined: {{dateJoined}}</h3>
                 <h3>post count : {{posts}}</h3>                
             </div>
         </div>

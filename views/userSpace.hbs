@@ -5,13 +5,11 @@
                 <div class="profile-picture">
                     <img class="dashboard-profile-image" src="{{profilePicture}}" width="250px" height="250px">
                 </div><h2>{{name}}</h2>
-                <div class="profile-info">
-                    
+                <div class="profile-info">                    
                     <p class="about-me">{{aboutMe}}</p>  
                     <h3>post count: {{posts}}</h3>
                     <h3>date joined: {{dateJoined}}</h3>
-                </div>
- 
+                </div> 
             </div>
             <div class="pinned-post-container" id="{{pinned.title}}">
                 <div class="pinned-post-slide">
@@ -26,7 +24,6 @@
                     </div>      
                         <p>{{{pinned.content}}}</p>
                     </div>
-
                 </div>  
                 <div class="pinned-post-tags">
                     <form method="POST" action="/userProfile">
@@ -36,11 +33,9 @@
         </div>    
 </div>
     <div class="new-post-form">
-    <form method="POST" action="/newUserSpacePost" enctype="multipart/form-data">
-       
+    <form method="POST" action="/newUserSpacePost" enctype="multipart/form-data">       
         <input type="hidden" name="author" value="{{visitor}}" readonly/>
-        <input type="hidden" name="recipient" value="{{name}}" readonly/>
-        
+        <input type="hidden" name="recipient" value="{{name}}" readonly/>        
         <label for="title" required >title: 
             <input type="text" name="title">
         </label>
@@ -70,7 +65,6 @@
                 </form>       
         </ul>
     </div>
-
     {{#each rows}}
         <!-- PROJECTS START -->
         <div class="project-slide-container" id="{{title}}">
