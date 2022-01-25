@@ -88,11 +88,11 @@ var fs = require('fs');
 // (session management still to do)
 let sessionUsername = 'User';
 let sessionUserPosts = 0;
-let dateJoined = ""
-let profilePicture = ""
-let aboutMe = ""
+let sessionUserDateJoined = ""
+let sessionUserProfilePicture = ""
+let sessionUserAboutMe = ""
 // variable that changes "login" to "dashboard" on nav
-let isLoggedIn = false;
+let sessionUserIsLoggedIn = false;
 
 // switch nav link according to isLoggedIn status
 let changeNavLoginButton = (loggedInStatus) => {
@@ -166,7 +166,7 @@ router.get('/SQLDatabaseUserSetup', (req, res, next) => {
     });
   })
   //render success page
-  res.render("user-db-done", { loggedIn: changeNavLoginButton(isLoggedIn) });
+  res.render("user-db-done", { loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
 })
 
 // set up blog table in database
@@ -193,7 +193,7 @@ router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
     });
   })
   // render success page
-  res.render("blog-db-done", { loggedIn: changeNavLoginButton(isLoggedIn) });
+  res.render("blog-db-done", { loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
 })
 
 /*==============================DEBUGGING AND TESTING ENDPOINTS========================*/
@@ -236,7 +236,7 @@ router.get('/', function(req, res, next) {
       res.status(500).send(err.message);
       return;
     }    
-    res.render('index', { title: "dannydaley","rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });  
+    res.render('index', { title: "dannydaley","rows": rows, loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });  
   })
 })
 
@@ -249,7 +249,7 @@ router.get('/blog', (req, res, next) => {
       res.status(500).send(err.message);
       return;
     }    
-    res.render('blog', { title: "work", "rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });
+    res.render('blog', { title: "work", "rows": rows, loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
   })
 })
 
@@ -262,23 +262,23 @@ router.get('/community-blog', (req, res, next) => {
       res.status(500).send(err.message);
       return;
     }    
-    res.render('blog', { title: "community blog", "rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });
+    res.render('blog', { title: "community blog", "rows": rows, loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
   })
 })
 
 /* GET workJSON page. */
 router.get('/blogJson', function(req, res, next) {
-  res.render('blogJson', { title: "work.JSON", postDataJSON, loggedIn: changeNavLoginButton(isLoggedIn) });
+  res.render('blogJson', { title: "work.JSON", postDataJSON, loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
 });
 
 /* GET workXML page. */
 router.get('/blogXml', function(req, res, next) {
-  res.render('blogXml', { title: "work.XML",loggedIn: changeNavLoginButton(isLoggedIn) });
+  res.render('blogXml', { title: "work.XML",loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
 });
 
 /* GET user registration page. */
 router.get('/register', function (req, res, next) {
-  res.render('register',{ title: "register",loggedIn: changeNavLoginButton(isLoggedIn) })
+  res.render('register',{ title: "register",loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })
 })
 
 //adds new user to user database
@@ -300,10 +300,10 @@ router.post('/register', function (req, res, next) {
       if (err) {
         console.log(err.message);
         if (err.message === "SQLITE_CONSTRAINT: UNIQUE constraint failed: users.name") {
-          res.render("registrationError", { cause: "username", loggedIn: changeNavLoginButton(isLoggedIn) })
+          res.render("registrationError", { cause: "username", loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })
         }
         if (err.message === "SQLITE_CONSTRAINT: UNIQUE constraint failed: users.email") {
-          res.render("registrationError", { cause: "email", loggedIn: changeNavLoginButton(isLoggedIn) })
+          res.render("registrationError", { cause: "email", loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })
         }
         else {
           res.status(500).send(err.message);
@@ -311,20 +311,20 @@ router.post('/register', function (req, res, next) {
         }  
       }  
       // render on success
-       res.render('user-db-done', {  title: "registered", loggedIn: changeNavLoginButton(isLoggedIn) })     
+       res.render('user-db-done', {  title: "registered", loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })     
     })
   }
 });
 
 /* GET login page. */
 router.get('/login', function(req, res, next) {
-  // if isLoggedIn function returns true, load page with session variables in  play
-  if (isLoggedIn) {
-    res.render('loggedIn', { name: sessionUsername, posts: sessionUserPosts, dateJoined: dateJoined, profilePicture: profilePicture,title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });
+  // if sessionUserIsLoggedIn function returns true, load page with session variables in  play
+  if (sessionUserIsLoggedIn) {
+    res.render('loggedIn', { name: sessionUsername, posts: sessionUserPosts, dateJoined: sessionUserDateJoined, profilePicture: sessionUserProfilePicture,title: 'You are logged in!', loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
   }
   else {
     // otherwise render default
-    res.render('login', { title: 'Log in', loggedIn: changeNavLoginButton(isLoggedIn) });
+    res.render('login', { title: 'Log in', loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
   }
 })
 
@@ -351,12 +351,12 @@ router.post('/login', (req, res, next) => {
       if (rows !== undefined && rows.password === passwordHash(data.password, rows.passwordSalt)){    
         sessionUsername = rows.name;        
         sessionUserPosts = rows.posts;
-        dateJoined = rows.joined;
-        profilePicture = rows.profilePicture;
-        aboutMe = rows.aboutMe;        
+        sessionUserDateJoined = rows.joined;
+        sessionUserProfilePicture = rows.profilePicture;
+        sessionUserAboutMe = rows.aboutMe;        
         logInStatus = true;
-        isLoggedIn = true;                  
-        res.render('loggedIn', { name: sessionUsername, posts: sessionUserPosts, dateJoined: dateJoined, profilePicture: profilePicture, title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });  
+        sessionUserIsLoggedIn = true;                  
+        res.render('loggedIn', { name: sessionUsername, posts: sessionUserPosts, dateJoined: sessionUserDateJoined, profilePicture: sessionUserProfilePicture, title: 'You are logged in!', loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });  
       }
       // otherwise invalid user or pass
       else {
@@ -372,27 +372,33 @@ router.get('/loggedIn', function(req, res, next) {
   db.get(GET_USER_PROFILE_INFO, sessionUsername, (err, rows) => {
     // apply this data to the session variables
     sessionUserPosts = rows.posts;
-    dateJoined = rows.joined;
-    profilePicture = rows.profilePicture;
-    aboutMe = rows.aboutMe;
+    sessionUserDateJoined = rows.joined;
+    sessionUserProfilePicture = rows.profilePicture;
+    sessionUserAboutMe = rows.aboutMe;
   })
-  res.render('loggedIn', { title: 'logged in ', loggedIn: changeNavLoginButton(isLoggedIn) });
+  res.render('loggedIn', { title: 'logged in ', loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
 });
 
 /* GET logOut page. */
 router.get('/logOut', function(req, res, next) {
   // switch logged in status to false so that dashboard on nav returns to login etc
-  isLoggedIn = false;
+  sessionUserIsLoggedIn = false;
+  // restore all session variables
+  sessionUsername = "";
+  sessionUserProfilePicture = "";
+  sessionUserAboutMe = "";
+  sessionUserDateJoined = "";
+  sessionUserPosts = 0;  
   // ready database for query
   let SQLdatabase = req.app.locals.SQLdatabase;
   // get recent posts ready for display on the index page 
-  SQLdatabase.all(GET_RECENT_POSTS, [ "blogPost"], (err, rows) => {
+  SQLdatabase.all(GET_RECENT_POSTS_BY_AUTHOR, ["Daley", "blogPost"], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;
     }    
     // render index page after successful logout
-    res.render('index', { title: "logged out","rows": rows, loggedIn: changeNavLoginButton(isLoggedIn) });  
+    res.render('index', { title: "logged out", rows: rows, loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });  
   })
 })
 
@@ -408,7 +414,7 @@ router.get('/manageBlog', (req, res, next) => {
       return;
     }
     // render manage blog page on success
-    res.render('manageBlog', { title: "manage blog","rows": rows,  loggedIn: changeNavLoginButton(isLoggedIn) });
+    res.render('manageBlog', { title: "manage blog","rows": rows,  loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
   })
 })
 /* GET manage blog page */
@@ -423,7 +429,7 @@ router.get('/manageGuestbook', (req, res, next) => {
       return;
     }
     // render manage blog page on success
-    res.render('manageGuestbook', { title: "manage Guestbook","rows": rows,  loggedIn: changeNavLoginButton(isLoggedIn) });
+    res.render('manageGuestbook', { title: "manage Guestbook","rows": rows,  loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
   })
 })
 
@@ -435,7 +441,7 @@ router.post('/pinGuestbookPost',function (req, res, next) {
   if (form.pin === "pinPost") {
   SQLdatabase.run(SQL_UPDATE_USERS_PINNED_POST, [ form.postId, sessionUsername ])
 }
-res.render("blog-db-done", { title: "blog updated",loggedIn: changeNavLoginButton(isLoggedIn) });
+res.render("blog-db-done", { title: "blog updated",loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
 } )
 
 
@@ -495,13 +501,13 @@ router.post('/manageBlog', upload.single('change-image'), function (req, res, ne
      fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON3, null, 2));       
     })
     
-    res.render("blog-db-done", { title: "blog updated",loggedIn: changeNavLoginButton(isLoggedIn) });
+    res.render("blog-db-done", { title: "blog updated",loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
   })
 })
 
 /*GET new post form page */
 router.get('/newPost', function(req, res){
-  res.render('newPost', { title: 'new post', loggedIn: changeNavLoginButton(isLoggedIn), name: sessionUsername });
+  res.render('newPost', { title: 'new post', loggedIn: changeNavLoginButton(sessionUserIsLoggedIn), name: sessionUsername });
 });
 
 /* POST new blog post form */
@@ -545,7 +551,7 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
       res.status(500).send(err.message);
       return;
     }
-      res.render("blog-db-done",{ loggedIn: changeNavLoginButton(isLoggedIn) });
+      res.render("blog-db-done",{ loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
   })
 })
 
@@ -593,12 +599,12 @@ router.post('/post-delete', (req, res, next) => {
       console.log("error deleting image")
     }});
     }
-    res.render('blog-db-done', { "changes": this.changes, loggedIn: changeNavLoginButton(isLoggedIn) })
+    res.render('blog-db-done', { "changes": this.changes, loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })
    })
 })
 
 router.get('/editProfile', (req, res, next) => {
-  res.render("editProfile", { name: sessionUsername, posts: sessionUserPosts, dateJoined: dateJoined, profilePicture: profilePicture, aboutMe: aboutMe, loggedIn: changeNavLoginButton(isLoggedIn) })
+  res.render("editProfile", { name: sessionUsername, posts: sessionUserPosts, dateJoined: sessionUserDateJoined, profilePicture: sessionUserProfilePicture, aboutMe: sessionUserAboutMe, loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })
 })
 
 router.post('/editProfile', upload.single('update-profile-picture'), function (req, res, next) {  
@@ -623,11 +629,11 @@ router.post('/editProfile', upload.single('update-profile-picture'), function (r
     // re-query the users own profile to serve back to them
     SQLdatabase.get(GET_USER_PROFILE_INFO, sessionUsername, (err, rows) => {
       // update session variables
-      profilePicture = rows.profilePicture;
-      aboutMe = rows.aboutMe;
+      sessionUserProfilePicture = rows.profilePicture;
+      sessionUserAboutMe = rows.aboutMe;
       sessionUserPosts = rows.posts;
       // render their manage profile page on success
-      res.render("editProfile", { name: sessionUsername, posts: rows.posts, dateJoined: rows.joined, profilePicture: rows.profilePicture, aboutMe: rows.aboutMe, loggedIn: changeNavLoginButton(isLoggedIn) })
+      res.render("editProfile", { name: sessionUsername, posts: rows.posts, dateJoined: rows.joined, profilePicture: rows.profilePicture, aboutMe: rows.aboutMe, loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })
     })
   })
 })
@@ -659,7 +665,7 @@ router.post('/userProfile', (req, res, next) => {
           res.render("404")
         }
         else {
-            res.render("userprofile", { name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows, pinned: pinned[0], loggedIn: changeNavLoginButton(isLoggedIn) })  
+            res.render("userprofile", { name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows, pinned: pinned[0], loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })  
         }
       })
     })
@@ -691,7 +697,7 @@ router.post('/getUserSpace', (req, res, next) => {
           res.render("404")
         }
         else {
-            res.render("userSpace", { visitor: sessionUsername, name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows,pinned: pinned[0], loggedIn: changeNavLoginButton(isLoggedIn) })  
+            res.render("userSpace", { visitor: sessionUsername, name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows,pinned: pinned[0], loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })  
         }
       })
     })
@@ -742,7 +748,7 @@ router.post('/newUserSpacePost', upload.single('image'), function (req, res, nex
       res.status(500).send(err.message);
       return;
     }
-    res.render("blog-db-done", { loggedIn: changeNavLoginButton(isLoggedIn) })
+    res.render("blog-db-done", { loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })
   })
 })
 
