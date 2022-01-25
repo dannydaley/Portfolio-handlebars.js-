@@ -87,7 +87,7 @@ var fs = require('fs');
 // These variables are what we will be changed over the course of a session
 // (session management still to do)
 let sessionUsername = 'User';
-let posts = 0;
+let sessionUserPosts = 0;
 let dateJoined = ""
 let profilePicture = ""
 let aboutMe = ""
@@ -320,7 +320,7 @@ router.post('/register', function (req, res, next) {
 router.get('/login', function(req, res, next) {
   // if isLoggedIn function returns true, load page with session variables in  play
   if (isLoggedIn) {
-    res.render('loggedIn', { name: sessionUsername, posts: posts, dateJoined: dateJoined, profilePicture: profilePicture,title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });
+    res.render('loggedIn', { name: sessionUsername, posts: sessionUserPosts, dateJoined: dateJoined, profilePicture: profilePicture,title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });
   }
   else {
     // otherwise render default
@@ -350,13 +350,13 @@ router.post('/login', (req, res, next) => {
        variables and log the user in   */
       if (rows !== undefined && rows.password === passwordHash(data.password, rows.passwordSalt)){    
         sessionUsername = rows.name;        
-        posts = rows.posts;
+        sessionUserPosts = rows.posts;
         dateJoined = rows.joined;
         profilePicture = rows.profilePicture;
         aboutMe = rows.aboutMe;        
         logInStatus = true;
         isLoggedIn = true;                  
-        res.render('loggedIn', { name: sessionUsername, posts: posts, dateJoined: dateJoined, profilePicture: profilePicture, title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });  
+        res.render('loggedIn', { name: sessionUsername, posts: sessionUserPosts, dateJoined: dateJoined, profilePicture: profilePicture, title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });  
       }
       // otherwise invalid user or pass
       else {
@@ -371,7 +371,7 @@ router.get('/loggedIn', function(req, res, next) {
   // query the database to get the logged in users profile info
   db.get(GET_USER_PROFILE_INFO, sessionUsername, (err, rows) => {
     // apply this data to the session variables
-    posts = rows.posts;
+    sessionUserPosts = rows.posts;
     dateJoined = rows.joined;
     profilePicture = rows.profilePicture;
     aboutMe = rows.aboutMe;
@@ -532,7 +532,7 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
   // RE-WRITE the posts.json file with the new posts added to the top,
   // JSON.stringify has extra arguments to handle formatting  
   fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON, null, 2)); 
-  posts++;
+  sessionUserPosts++;
   // increment the users post count
   db.run('UPDATE `users` SET `posts` = posts+1 WHERE name = ?',  form.author), function(err, result) {
     if (err){
@@ -577,7 +577,7 @@ router.post('/post-delete', (req, res, next) => {
     //overwrite posts.json with the latest data
     fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON2, null, 2));
   // decrement the users posts count.
-  posts--;
+  sessionUserPosts--;
   db.run('UPDATE `users` SET `posts` = posts-1 WHERE name = ?',  form.author)
   // delete the post
   db.run(BLOG_DELETE_POST, [ postToDelete, form.postId ], function(err, result) {
@@ -598,7 +598,7 @@ router.post('/post-delete', (req, res, next) => {
 })
 
 router.get('/editProfile', (req, res, next) => {
-  res.render("editProfile", { name: sessionUsername, posts: posts, dateJoined: dateJoined, profilePicture: profilePicture, aboutMe: aboutMe, loggedIn: changeNavLoginButton(isLoggedIn) })
+  res.render("editProfile", { name: sessionUsername, posts: sessionUserPosts, dateJoined: dateJoined, profilePicture: profilePicture, aboutMe: aboutMe, loggedIn: changeNavLoginButton(isLoggedIn) })
 })
 
 router.post('/editProfile', upload.single('update-profile-picture'), function (req, res, next) {  
@@ -625,7 +625,7 @@ router.post('/editProfile', upload.single('update-profile-picture'), function (r
       // update session variables
       profilePicture = rows.profilePicture;
       aboutMe = rows.aboutMe;
-      posts = rows.posts;
+      sessionUserPosts = rows.posts;
       // render their manage profile page on success
       res.render("editProfile", { name: sessionUsername, posts: rows.posts, dateJoined: rows.joined, profilePicture: rows.profilePicture, aboutMe: rows.aboutMe, loggedIn: changeNavLoginButton(isLoggedIn) })
     })
@@ -730,7 +730,7 @@ router.post('/newUserSpacePost', upload.single('image'), function (req, res, nex
   // RE-WRITE the posts.json file with the new posts added to the top,
   // JSON.stringify has extra arguments to handle formatting  
   fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON, null, 2)); 
-  posts++;
+  sessionUserPosts++;
   db.run('UPDATE `users` SET `posts` = posts+1 WHERE name = ?',  form.author), function(err, result) {
     if (err){
       console.log(err)
