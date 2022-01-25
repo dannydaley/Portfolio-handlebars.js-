@@ -38,7 +38,8 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     if (file.fieldname !== undefined) {
       // delete the attached image
-      if (req.body.image !== "images/default-post-image.png" && req.body.image !== "images/defaultUser.png"){        
+      console.log(req.body.image)
+      if (req.body.image !== "/images/default-post-image.png" && req.body.image !== "images/defaultUser.png"){        
         fs.unlink('public/' + req.body.image, (err) => {
       //console.log error if error
         if (err) {
@@ -57,9 +58,9 @@ const storage = multer.diskStorage({
     }
     if (req.body.context === "profile") {
       // create filename (author + filename + unique suffix + filetype)
-      cb(null, name + '-' + file.fieldname + '-' + uniqueSuffix + '.png')
+      cb(null, sessionUsername + '-' + file.fieldname + '-' + uniqueSuffix + '.png')
       // reset the request.body.image field with the image location + new filename to be put in the database as a link
-      req.body.image = "images/profilePictures/" + name + '-' + file.fieldname + '-' + uniqueSuffix + '.png';
+      req.body.image = "images/profilePictures/" + sessionUsername + '-' + file.fieldname + '-' + uniqueSuffix + '.png';
       }
     }
     // if upload image field on form is left blank..
@@ -85,7 +86,7 @@ var fs = require('fs');
 /*  SESSION STUFF   */
 // These variables are what we will be changed over the course of a session
 // (session management still to do)
-let name = 'User';
+let sessionUsername = 'User';
 let posts = 0;
 let dateJoined = ""
 let profilePicture = ""
@@ -319,7 +320,7 @@ router.post('/register', function (req, res, next) {
 router.get('/login', function(req, res, next) {
   // if isLoggedIn function returns true, load page with session variables in  play
   if (isLoggedIn) {
-    res.render('loggedIn', { name: name, posts: posts, dateJoined: dateJoined, profilePicture: profilePicture,title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });
+    res.render('loggedIn', { name: sessionUsername, posts: posts, dateJoined: dateJoined, profilePicture: profilePicture,title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });
   }
   else {
     // otherwise render default
@@ -348,14 +349,14 @@ router.post('/login', (req, res, next) => {
        function on what the user entered along with the stored password salt, set up the session
        variables and log the user in   */
       if (rows !== undefined && rows.password === passwordHash(data.password, rows.passwordSalt)){    
-        name = rows.name;        
+        sessionUsername = rows.name;        
         posts = rows.posts;
         dateJoined = rows.joined;
         profilePicture = rows.profilePicture;
         aboutMe = rows.aboutMe;        
         logInStatus = true;
         isLoggedIn = true;                  
-        res.render('loggedIn', { name: name, posts: posts, dateJoined: dateJoined, profilePicture: profilePicture, title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });  
+        res.render('loggedIn', { name: sessionUsername, posts: posts, dateJoined: dateJoined, profilePicture: profilePicture, title: 'You are logged in!', loggedIn: changeNavLoginButton(isLoggedIn) });  
       }
       // otherwise invalid user or pass
       else {
@@ -368,7 +369,7 @@ router.post('/login', (req, res, next) => {
 /*GET logged in page (dashboard) */
 router.get('/loggedIn', function(req, res, next) {
   // query the database to get the logged in users profile info
-  db.get(GET_USER_PROFILE_INFO, name, (err, rows) => {
+  db.get(GET_USER_PROFILE_INFO, sessionUsername, (err, rows) => {
     // apply this data to the session variables
     posts = rows.posts;
     dateJoined = rows.joined;
@@ -400,7 +401,7 @@ router.get('/manageBlog', (req, res, next) => {
   // ready database for query
   let SQLdatabase = req.app.locals.SQLdatabase;
   // get all posts authored by the logged in user of the context "blogPost"
-  SQLdatabase.all(GET_POSTS_BY_AUTHOR, [name, "blogPost"], (err, rows) => {
+  SQLdatabase.all(GET_POSTS_BY_AUTHOR, [sessionUsername, "blogPost"], (err, rows) => {
     if (err) {
       // error case
       res.status(500).send(err.message);
@@ -415,7 +416,7 @@ router.get('/manageGuestbook', (req, res, next) => {
   // ready database for query
   let SQLdatabase = req.app.locals.SQLdatabase;
   // get all posts authored by the logged in user of the context "blogPost"
-  SQLdatabase.all(GET_ALL_POSTS_BY_RECIPIENT, [name], (err, rows) => {
+  SQLdatabase.all(GET_ALL_POSTS_BY_RECIPIENT, [sessionUsername], (err, rows) => {
     if (err) {
       // error case
       res.status(500).send(err.message);
@@ -432,7 +433,7 @@ router.post('/pinGuestbookPost',function (req, res, next) {
     // ready the database for a query
     let SQLdatabase = req.app.locals.SQLdatabase;
   if (form.pin === "pinPost") {
-  SQLdatabase.run(SQL_UPDATE_USERS_PINNED_POST, [ form.postId, name ])
+  SQLdatabase.run(SQL_UPDATE_USERS_PINNED_POST, [ form.postId, sessionUsername ])
 }
 res.render("blog-db-done", { title: "blog updated",loggedIn: changeNavLoginButton(isLoggedIn) });
 } )
@@ -465,7 +466,7 @@ router.post('/manageBlog', upload.single('change-image'), function (req, res, ne
     }   
     // If pinPost is checked on form, update the users pinned post
     if (form.pin === "pinPost") {
-      SQLdatabase.run(SQL_UPDATE_USERS_PINNED_POST, [ form.id, name ])
+      SQLdatabase.run(SQL_UPDATE_USERS_PINNED_POST, [ form.id, sessionUsername ])
     }
     // get ready to rewrite the posts json file..
     // gather all existing posts
@@ -500,7 +501,7 @@ router.post('/manageBlog', upload.single('change-image'), function (req, res, ne
 
 /*GET new post form page */
 router.get('/newPost', function(req, res){
-  res.render('newPost', { title: 'new post', loggedIn: changeNavLoginButton(isLoggedIn), name: name });
+  res.render('newPost', { title: 'new post', loggedIn: changeNavLoginButton(isLoggedIn), name: sessionUsername });
 });
 
 /* POST new blog post form */
@@ -597,7 +598,7 @@ router.post('/post-delete', (req, res, next) => {
 })
 
 router.get('/editProfile', (req, res, next) => {
-  res.render("editProfile", { name: name, posts: posts, dateJoined: dateJoined, profilePicture: profilePicture, aboutMe: aboutMe, loggedIn: changeNavLoginButton(isLoggedIn) })
+  res.render("editProfile", { name: sessionUsername, posts: posts, dateJoined: dateJoined, profilePicture: profilePicture, aboutMe: aboutMe, loggedIn: changeNavLoginButton(isLoggedIn) })
 })
 
 router.post('/editProfile', upload.single('update-profile-picture'), function (req, res, next) {  
@@ -612,7 +613,7 @@ router.post('/editProfile', upload.single('update-profile-picture'), function (r
     return;
   }
   // set up the params ready to be passed into the SQL query
-  var params = [ req.body.image, form.aboutMe, name ];
+  var params = [ req.body.image, form.aboutMe, sessionUsername ];
   // run the SQL command given the parameters
   SQLdatabase.run(SQL_UPDATE_USER_PROFILE, params, function(err, result){
     if (err) {
@@ -620,13 +621,13 @@ router.post('/editProfile', upload.single('update-profile-picture'), function (r
       return;
     }   
     // re-query the users own profile to serve back to them
-    SQLdatabase.get(GET_USER_PROFILE_INFO, name, (err, rows) => {
+    SQLdatabase.get(GET_USER_PROFILE_INFO, sessionUsername, (err, rows) => {
       // update session variables
       profilePicture = rows.profilePicture;
       aboutMe = rows.aboutMe;
       posts = rows.posts;
       // render their manage profile page on success
-      res.render("editProfile", { name: name, posts: rows.posts, dateJoined: rows.joined, profilePicture: rows.profilePicture, aboutMe: rows.aboutMe, loggedIn: changeNavLoginButton(isLoggedIn) })
+      res.render("editProfile", { name: sessionUsername, posts: rows.posts, dateJoined: rows.joined, profilePicture: rows.profilePicture, aboutMe: rows.aboutMe, loggedIn: changeNavLoginButton(isLoggedIn) })
     })
   })
 })
@@ -690,7 +691,7 @@ router.post('/getUserSpace', (req, res, next) => {
           res.render("404")
         }
         else {
-            res.render("userSpace", { visitor: name, name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows,pinned: pinned[0], loggedIn: changeNavLoginButton(isLoggedIn) })  
+            res.render("userSpace", { visitor: sessionUsername, name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows,pinned: pinned[0], loggedIn: changeNavLoginButton(isLoggedIn) })  
         }
       })
     })
