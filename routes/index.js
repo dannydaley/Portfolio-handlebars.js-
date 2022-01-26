@@ -1,8 +1,6 @@
-const { json } = require('express');
-
 let express = require('express');
-// var animation = require('../public/modules/animation');
-let { MethodNotAllowed } = require('http-errors');
+
+var app = express();
 
 // set up router for endpoints
 let router = express.Router();
@@ -58,9 +56,9 @@ const storage = multer.diskStorage({
     }
     if (req.body.context === "profile") {
       // create filename (author + filename + unique suffix + filetype)
-      cb(null, sessionUsername + '-' + file.fieldname + '-' + uniqueSuffix + '.png')
+      cb(null, req.session.cookie.userData.sessionUsername + '-' + file.fieldname + '-' + uniqueSuffix + '.png')
       // reset the request.body.image field with the image location + new filename to be put in the database as a link
-      req.body.image = "images/profilePictures/" + sessionUsername + '-' + file.fieldname + '-' + uniqueSuffix + '.png';
+      req.body.image = "images/profilePictures/" + req.session.cookie.userData.sessionUsername + '-' + file.fieldname + '-' + uniqueSuffix + '.png';
       }
     }
     // if upload image field on form is left blank..
@@ -72,7 +70,6 @@ const storage = multer.diskStorage({
 
 // set upload storage to the previously set up desitnation
 const upload = multer({ storage: storage });
-
 /* END OF IMAGE UPLOAD HANDLING */
 
 //get the saved post information from external JSON file
@@ -84,17 +81,6 @@ var fs = require('fs');
 
 
 /*  SESSION STUFF   */
-// These variables are what we will be changed over the course of a session
-// (session management still to do)
-let sessionUsername = 'User';
-let sessionUserPosts = 0;
-let sessionUserDateJoined = ""
-let sessionUserProfilePicture = ""
-let sessionUserAboutMe = ""
-// variable that changes "login" to "dashboard" on nav
-let sessionUserIsLoggedIn = false;
-
-// switch nav link according to isLoggedIn status
 let changeNavLoginButton = (loggedInStatus) => {
   if (loggedInStatus) {
     return "dashboard";
@@ -108,9 +94,12 @@ let changeNavLoginButton = (loggedInStatus) => {
 
 // This stuff will be put into a .env file ( still to do )
 // set up crypto middleware
-let crypto = require('crypto');
 
+let crypto = require('crypto');
 const { debugPort } = require('process');
+const { Cookie } = require('express-session');
+// const session = require('express-session');
+// const { Session } = require('express-session');
 
 // number of iterations to jumble the hash
 const iterations = 1000;
@@ -166,7 +155,7 @@ router.get('/SQLDatabaseUserSetup', (req, res, next) => {
     });
   })
   //render success page
-  res.render("user-db-done", { loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
+  res.render("user-db-done", { loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) });
 })
 
 // set up blog table in database
@@ -193,11 +182,10 @@ router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
     });
   })
   // render success page
-  res.render("blog-db-done", { loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
+  res.render("blog-db-done", { loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) });
 })
 
 /*==============================DEBUGGING AND TESTING ENDPOINTS========================*/
-
 /* GET all users */
 router.get('/getAllUsers', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
@@ -229,27 +217,29 @@ router.get('/getAllPosts', (req, res, next) => {
 ///////////////////////////////////////    ENDPOINTS    /////////////////////////////////////////////
 
 /* GET home page. */
-router.get('/', function(req, res, next) {   
+router.get('/', function(req, res, next) {  
   let SQLdatabase = req.app.locals.SQLdatabase;
-  SQLdatabase.all(GET_RECENT_POSTS_BY_AUTHOR, ["Daley", "blogPost"], (err, rows) => {
+  SQLdatabase.all(GET_RECENT_POSTS_BY_AUTHOR, ["Daley", "blogPost"], (err, rows) => {    
     if (err) {
       res.status(500).send(err.message);
       return;
     }    
-    res.render('index', { title: "dannydaley","rows": rows, loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });  
+    console.log(req.session)
+    res.render('index', { title: "dannydaley","rows": rows, loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) });  
   })
 })
 
 /* GET work SQL page */
 router.get('/blog', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
+  console.log(req.session);
   // get all blogPosts by author: "Daley", for portfolio purposes
   SQLdatabase.all(GET_POSTS_BY_AUTHOR, [ "Daley", "blogPost" ], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;
     }    
-    res.render('blog', { title: "work", "rows": rows, loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
+    res.render('blog', { title: "work", "rows": rows, loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) });
   })
 })
 
@@ -262,23 +252,23 @@ router.get('/community-blog', (req, res, next) => {
       res.status(500).send(err.message);
       return;
     }    
-    res.render('blog', { title: "community blog", "rows": rows, loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
+    res.render('blog', { title: "community blog", "rows": rows, loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) });
   })
 })
 
 /* GET workJSON page. */
 router.get('/blogJson', function(req, res, next) {
-  res.render('blogJson', { title: "work.JSON", postDataJSON, loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
+  res.render('blogJson', { title: "work.JSON", postDataJSON, loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) });
 });
 
 /* GET workXML page. */
 router.get('/blogXml', function(req, res, next) {
-  res.render('blogXml', { title: "work.XML",loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
+  res.render('blogXml', { title: "work.XML",loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) });
 });
 
 /* GET user registration page. */
 router.get('/register', function (req, res, next) {
-  res.render('register',{ title: "register",loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })
+  res.render('register',{ title: "register",loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) })
 })
 
 //adds new user to user database
@@ -300,10 +290,10 @@ router.post('/register', function (req, res, next) {
       if (err) {
         console.log(err.message);
         if (err.message === "SQLITE_CONSTRAINT: UNIQUE constraint failed: users.name") {
-          res.render("registrationError", { cause: "username", loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })
+          res.render("registrationError", { cause: "username", loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) })
         }
         if (err.message === "SQLITE_CONSTRAINT: UNIQUE constraint failed: users.email") {
-          res.render("registrationError", { cause: "email", loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })
+          res.render("registrationError", { cause: "email", loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) })
         }
         else {
           res.status(500).send(err.message);
@@ -311,20 +301,21 @@ router.post('/register', function (req, res, next) {
         }  
       }  
       // render on success
-       res.render('user-db-done', {  title: "registered", loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })     
+       res.render('user-db-done', {  title: "registered", loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) })     
     })
   }
 });
 
 /* GET login page. */
 router.get('/login', function(req, res, next) {
-  // if sessionUserIsLoggedIn function returns true, load page with session variables in  play
-  if (sessionUserIsLoggedIn) {
-    res.render('loggedIn', { name: sessionUsername, posts: sessionUserPosts, dateJoined: sessionUserDateJoined, profilePicture: sessionUserProfilePicture,title: 'You are logged in!', loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
+  
+  // if req.session.cookie.userData.sessionUserIsLoggedIn function returns true, load page with session variables in  play
+  if (req.session.cookie.userData.sessionUserIsLoggedIn) {
+    res.render('loggedIn', { name: req.session.cookie.userData.sessionUsername, posts: req.session.cookie.userData.sessionUserPosts, dateJoined: req.session.cookie.userData.sessionUserDateJoined, profilePicture: req.session.cookie.userData.sessionUserProfilePicture,title: 'You are logged in!', loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) });
   }
   else {
     // otherwise render default
-    res.render('login', { title: 'Log in', loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
+    res.render('login', { title: 'Log in', loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) });
   }
 })
 
@@ -348,15 +339,18 @@ router.post('/login', (req, res, next) => {
       /* if we get a user back, and the stored password matches the output of use running the hashing
        function on what the user entered along with the stored password salt, set up the session
        variables and log the user in   */
-      if (rows !== undefined && rows.password === passwordHash(data.password, rows.passwordSalt)){    
-        sessionUsername = rows.name;        
-        sessionUserPosts = rows.posts;
-        sessionUserDateJoined = rows.joined;
-        sessionUserProfilePicture = rows.profilePicture;
-        sessionUserAboutMe = rows.aboutMe;        
-        logInStatus = true;
-        sessionUserIsLoggedIn = true;                  
-        res.render('loggedIn', { name: sessionUsername, posts: sessionUserPosts, dateJoined: sessionUserDateJoined, profilePicture: sessionUserProfilePicture, title: 'You are logged in!', loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });  
+      if (rows !== undefined && rows.password === passwordHash(data.password, rows.passwordSalt)){
+        req.session.cookie.userData.sessionUsername = rows.name;         
+        req.session.cookie.userData.sessionUserPosts = rows.posts;
+        req.session.cookie.userData.sessionUserDateJoined = rows.joined;
+        req.session.cookie.userData.sessionUserProfilePicture = rows.profilePicture;
+        req.session.cookie.userData.sessionUserAboutMe = rows.aboutMe;
+        req.session.cookie.userData.sessionUserIsLoggedIn = true;
+        // this prints the whole userData object
+        //console.log(req.cookies.userData)
+        console.log(req.session.cookie)
+        // this just prints the sessionUsername from the userData object        
+        res.render('loggedIn', { name: req.session.cookie.userData.sessionUsername, posts: req.session.cookie.userData.sessionUserPosts, dateJoined: req.session.cookie.userData.sessionUserDateJoined, profilePicture: req.session.cookie.userData.sessionUserProfilePicture, title: 'You are logged in!', loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) });  
       }
       // otherwise invalid user or pass
       else {
@@ -368,27 +362,28 @@ router.post('/login', (req, res, next) => {
 
 /*GET logged in page (dashboard) */
 router.get('/loggedIn', function(req, res, next) {
+
   // query the database to get the logged in users profile info
-  db.get(GET_USER_PROFILE_INFO, sessionUsername, (err, rows) => {
+  db.get(GET_USER_PROFILE_INFO, req.session.cookie.userData.sessionUsername, (err, rows) => {
     // apply this data to the session variables
-    sessionUserPosts = rows.posts;
-    sessionUserDateJoined = rows.joined;
-    sessionUserProfilePicture = rows.profilePicture;
-    sessionUserAboutMe = rows.aboutMe;
+    req.session.cookie.userData.sessionUserPosts = rows.posts;
+    req.session.cookie.userData.sessionUserDateJoined = rows.joined;
+    req.session.cookie.userData.sessionUserProfilePicture = rows.profilePicture;
+    req.session.cookie.userData.sessionUserAboutMe = rows.aboutMe;
   })
-  res.render('loggedIn', { title: 'logged in ', loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
+  res.render('loggedIn', { title: 'logged in ', loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) });
 });
 
 /* GET logOut page. */
 router.get('/logOut', function(req, res, next) {
   // switch logged in status to false so that dashboard on nav returns to login etc
-  sessionUserIsLoggedIn = false;
   // restore all session variables
-  sessionUsername = "";
-  sessionUserProfilePicture = "";
-  sessionUserAboutMe = "";
-  sessionUserDateJoined = "";
-  sessionUserPosts = 0;  
+  req.session.cookie.userData.sessionUserIsLoggedIn = false;  
+  req.session.cookie.userData.sessionUsername = "";
+  req.session.cookie.userData.sessionUserProfilePicture = "";
+  req.session.cookie.userData.sessionUserAboutMe = "";
+  req.session.cookie.userData.sessionUserDateJoined = "";
+  req.session.cookie.userData.sessionUserPosts = 0;  
   // ready database for query
   let SQLdatabase = req.app.locals.SQLdatabase;
   // get recent posts ready for display on the index page 
@@ -398,7 +393,7 @@ router.get('/logOut', function(req, res, next) {
       return;
     }    
     // render index page after successful logout
-    res.render('index', { title: "logged out", rows: rows, loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });  
+    res.render('index', { title: "logged out", rows: rows, loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) });  
   })
 })
 
@@ -407,14 +402,14 @@ router.get('/manageBlog', (req, res, next) => {
   // ready database for query
   let SQLdatabase = req.app.locals.SQLdatabase;
   // get all posts authored by the logged in user of the context "blogPost"
-  SQLdatabase.all(GET_POSTS_BY_AUTHOR, [sessionUsername, "blogPost"], (err, rows) => {
+  SQLdatabase.all(GET_POSTS_BY_AUTHOR, [req.session.cookie.userData.sessionUsername, "blogPost"], (err, rows) => {
     if (err) {
       // error case
       res.status(500).send(err.message);
       return;
     }
     // render manage blog page on success
-    res.render('manageBlog', { title: "manage blog","rows": rows,  loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
+    res.render('manageBlog', { title: "manage blog", rows: rows,  loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) });
   })
 })
 /* GET manage blog page */
@@ -422,14 +417,14 @@ router.get('/manageGuestbook', (req, res, next) => {
   // ready database for query
   let SQLdatabase = req.app.locals.SQLdatabase;
   // get all posts authored by the logged in user of the context "blogPost"
-  SQLdatabase.all(GET_ALL_POSTS_BY_RECIPIENT, [sessionUsername], (err, rows) => {
+  SQLdatabase.all(GET_ALL_POSTS_BY_RECIPIENT, [req.session.cookie.userData.sessionUsername], (err, rows) => {
     if (err) {
       // error case
       res.status(500).send(err.message);
       return;
     }
     // render manage blog page on success
-    res.render('manageGuestbook', { title: "manage Guestbook","rows": rows,  loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
+    res.render('manageGuestbook', { title: "manage Guestbook",rows: rows,  loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) });
   })
 })
 
@@ -439,12 +434,10 @@ router.post('/pinGuestbookPost',function (req, res, next) {
     // ready the database for a query
     let SQLdatabase = req.app.locals.SQLdatabase;
   if (form.pin === "pinPost") {
-  SQLdatabase.run(SQL_UPDATE_USERS_PINNED_POST, [ form.postId, sessionUsername ])
+  SQLdatabase.run(SQL_UPDATE_USERS_PINNED_POST, [ form.postId, req.session.cookie.userData.sessionUsername ])
 }
-res.render("blog-db-done", { title: "blog updated",loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
-} )
-
-
+res.render("blog-db-done", { title: "blog updated", loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) });
+})
 
 /* POST manageblog form */
 router.post('/manageBlog', upload.single('change-image'), function (req, res, next) {
@@ -472,7 +465,7 @@ router.post('/manageBlog', upload.single('change-image'), function (req, res, ne
     }   
     // If pinPost is checked on form, update the users pinned post
     if (form.pin === "pinPost") {
-      SQLdatabase.run(SQL_UPDATE_USERS_PINNED_POST, [ form.id, sessionUsername ])
+      SQLdatabase.run(SQL_UPDATE_USERS_PINNED_POST, [ form.id, req.session.cookie.userData.sessionUsername ])
     }
     // get ready to rewrite the posts json file..
     // gather all existing posts
@@ -499,15 +492,14 @@ router.post('/manageBlog', upload.single('change-image'), function (req, res, ne
         },))
         // re-write the posts.json file
      fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON3, null, 2));       
-    })
-    
-    res.render("blog-db-done", { title: "blog updated",loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
+    })    
+    res.render("blog-db-done", { title: "blog updated",loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) });
   })
 })
 
 /*GET new post form page */
 router.get('/newPost', function(req, res){
-  res.render('newPost', { title: 'new post', loggedIn: changeNavLoginButton(sessionUserIsLoggedIn), name: sessionUsername });
+  res.render('newPost', { title: 'new post', loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn), name: req.session.cookie.userData.sessionUsername });
 });
 
 /* POST new blog post form */
@@ -538,7 +530,7 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
   // RE-WRITE the posts.json file with the new posts added to the top,
   // JSON.stringify has extra arguments to handle formatting  
   fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON, null, 2)); 
-  sessionUserPosts++;
+  req.session.cookie.userData.sessionUserPosts++;
   // increment the users post count
   db.run('UPDATE `users` SET `posts` = posts+1 WHERE name = ?',  form.author), function(err, result) {
     if (err){
@@ -551,7 +543,7 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
       res.status(500).send(err.message);
       return;
     }
-      res.render("blog-db-done",{ loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) });
+      res.render("blog-db-done",{ loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) });
   })
 })
 
@@ -583,7 +575,7 @@ router.post('/post-delete', (req, res, next) => {
     //overwrite posts.json with the latest data
     fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON2, null, 2));
   // decrement the users posts count.
-  sessionUserPosts--;
+  req.session.cookie.userData.sessionUserPosts--;
   db.run('UPDATE `users` SET `posts` = posts-1 WHERE name = ?',  form.author)
   // delete the post
   db.run(BLOG_DELETE_POST, [ postToDelete, form.postId ], function(err, result) {
@@ -599,12 +591,12 @@ router.post('/post-delete', (req, res, next) => {
       console.log("error deleting image")
     }});
     }
-    res.render('blog-db-done', { "changes": this.changes, loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })
+    res.render('blog-db-done', { "changes": this.changes, loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) })
    })
 })
 
 router.get('/editProfile', (req, res, next) => {
-  res.render("editProfile", { name: sessionUsername, posts: sessionUserPosts, dateJoined: sessionUserDateJoined, profilePicture: sessionUserProfilePicture, aboutMe: sessionUserAboutMe, loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })
+  res.render("editProfile", { name: req.session.cookie.userData.sessionUsername, posts: req.session.cookie.userData.sessionUserPosts, dateJoined: req.session.cookie.userData.sessionUserDateJoined, profilePicture: req.session.cookie.userData.sessionUserProfilePicture, aboutMe: req.session.cookie.userData.sessionUserAboutMe, loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) })
 })
 
 router.post('/editProfile', upload.single('update-profile-picture'), function (req, res, next) {  
@@ -619,7 +611,7 @@ router.post('/editProfile', upload.single('update-profile-picture'), function (r
     return;
   }
   // set up the params ready to be passed into the SQL query
-  var params = [ req.body.image, form.aboutMe, sessionUsername ];
+  var params = [ req.body.image, form.aboutMe, req.session.cookie.userData.sessionUsername ];
   // run the SQL command given the parameters
   SQLdatabase.run(SQL_UPDATE_USER_PROFILE, params, function(err, result){
     if (err) {
@@ -627,13 +619,13 @@ router.post('/editProfile', upload.single('update-profile-picture'), function (r
       return;
     }   
     // re-query the users own profile to serve back to them
-    SQLdatabase.get(GET_USER_PROFILE_INFO, sessionUsername, (err, rows) => {
+    SQLdatabase.get(GET_USER_PROFILE_INFO, req.session.cookie.userData.sessionUsername, (err, rows) => {
       // update session variables
-      sessionUserProfilePicture = rows.profilePicture;
-      sessionUserAboutMe = rows.aboutMe;
-      sessionUserPosts = rows.posts;
+      req.session.cookie.userData.sessionUserProfilePicture = rows.profilePicture;
+      req.session.cookie.userData.sessionUserAboutMe = rows.aboutMe;
+      req.session.cookie.userData.sessionUserPosts = rows.posts;
       // render their manage profile page on success
-      res.render("editProfile", { name: sessionUsername, posts: rows.posts, dateJoined: rows.joined, profilePicture: rows.profilePicture, aboutMe: rows.aboutMe, loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })
+      res.render("editProfile", { name: req.session.cookie.userData.sessionUsername, posts: rows.posts, dateJoined: rows.joined, profilePicture: rows.profilePicture, aboutMe: rows.aboutMe, loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) })
     })
   })
 })
@@ -647,8 +639,7 @@ router.post('/userProfile', (req, res, next) => {
     if (err) {
       res.status(500).send(err.message);
       return;
-    }
-    
+    }  
     //Get users pinned post from user data, check against post id    
     SQLdatabase.all("SELECT * FROM 'blog' WHERE id = ?", [ userInfo[0].pinnedPost ], (err, pinned) => {
       if (err) {        
@@ -665,7 +656,7 @@ router.post('/userProfile', (req, res, next) => {
           res.render("404")
         }
         else {
-            res.render("userprofile", { name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows, pinned: pinned[0], loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })  
+            res.render("userprofile", { name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows, pinned: pinned[0], loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) })  
         }
       })
     })
@@ -697,7 +688,7 @@ router.post('/getUserSpace', (req, res, next) => {
           res.render("404")
         }
         else {
-            res.render("userSpace", { visitor: sessionUsername, name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows,pinned: pinned[0], loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })  
+            res.render("userSpace", { visitor: req.session.cookie.userData.sessionUsername, name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows,pinned: pinned[0], loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) })  
         }
       })
     })
@@ -736,7 +727,7 @@ router.post('/newUserSpacePost', upload.single('image'), function (req, res, nex
   // RE-WRITE the posts.json file with the new posts added to the top,
   // JSON.stringify has extra arguments to handle formatting  
   fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON, null, 2)); 
-  sessionUserPosts++;
+  req.session.cookie.userData.sessionUserPosts++;
   db.run('UPDATE `users` SET `posts` = posts+1 WHERE name = ?',  form.author), function(err, result) {
     if (err){
       console.log(err)
@@ -748,7 +739,7 @@ router.post('/newUserSpacePost', upload.single('image'), function (req, res, nex
       res.status(500).send(err.message);
       return;
     }
-    res.render("blog-db-done", { loggedIn: changeNavLoginButton(sessionUserIsLoggedIn) })
+    res.render("blog-db-done", { loggedIn: changeNavLoginButton(req.session.cookie.userData.sessionUserIsLoggedIn) })
   })
 })
 
