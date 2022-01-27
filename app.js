@@ -1,40 +1,25 @@
 var createError = require('http-errors');
-
 var path = require('path');
-let crypto = require('crypto');
 var express = require('express');
 var app = express();
 
-// let crypto = require('crypto');
-var cookieParser = require('cookie-parser');
 
-
-var session = require('express-session')
 // Session setup
-let generateSecret = crypto.randomBytes(128).toString('hex');
+var session = require('express-session');
+var cookieParser = require('cookie-parser');
 var userSession = {
   secret: "megaSecret",
   originalMaxAge: 24,
   resave: true,
-  saveUninitialized: true,
+  saveUninitialized: true,  
   cookie: {
-    originalMaxAge: 24,
-    userData: {
-          sessionUsername: "",      
-          sessionUserPosts: "",
-          sessionUserDateJoined: "",
-          sessionUserProfilePicture: "",
-          sessionUserAboutMe: "",      
-          logInStatus: "",
-          sessionUserIsLoggedIn: false
-    }      
+    httpOnly: true,    
+    secure: false,
+    maxAge: null  
   }
 }
 app.use(cookieParser())
 app.use(session(userSession))
-
-
-
 
 var logger = require('morgan');
 var webSocket = require('ws');
@@ -46,14 +31,6 @@ var multer  = require('multer');
 
 let SQLdatabase = new sqlite3.Database('./SQLdatabase.db');
 app.locals.SQLdatabase = SQLdatabase;
-
-
-
-// if (app.get('env') === 'production') {
-//   app.set('trust proxy', 1) // trust first proxy
-//   sess.cookie.secure = true // serve secure cookies
-//   sess.cookie.originalMaxAge = 24
-// }
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
