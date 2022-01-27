@@ -63,6 +63,7 @@ const storage = multer.diskStorage({
     }
     // if upload image field on form is left blank..
     else {
+      console.log("file fieldname is undefined")
       return
     }
   }
@@ -504,7 +505,9 @@ router.get('/newPost', function(req, res){
 
 /* POST new blog post form */
 router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
+  
   var form = req.body;
+  console.log(form);
   let db = req.app.locals.SQLdatabase;
   if (req.body.image === undefined){
     //defaults the image field is left blank
@@ -514,6 +517,7 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
     //defaults the link to go nowhere
     req.body.link = ""
   } 
+  console.log("made it hereeeeeee");
   //upload.single(req.image);
   var params = [ form.author, form.title, form.image, form.content, form.link, getDate(), "blogPost"];
   //create the JSON object to add to posts.json
@@ -537,6 +541,7 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
       console.log(err)
     }
   }
+  console.log(params);
   //Add to SQL database.
   db.run(SQL_ADD_BLOG_POST, params, function(err, result) {
     if (err) {
