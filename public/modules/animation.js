@@ -6,8 +6,8 @@ var camera = new THREE.PerspectiveCamera( 25, window.innerWidth / window.innerHe
 camera.position.set( 1, 1, 20 );
 
 // Load a Renderer
-var renderer = new THREE.WebGLRenderer({ alpha: false });
-renderer.setClearColor( 0x000000 );
+var renderer = new THREE.WebGLRenderer({ alpha: true });
+renderer.setClearColor( 0x000000, 0 );
 renderer.setPixelRatio( window.devicePixelRatio );
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById("HeroAnim").appendChild(renderer.domElement);
@@ -40,9 +40,9 @@ var loader = new THREE.GLTFLoader();
 loader.load( 'images/D2LogoAqua3D.gltf', function ( gltf ) {  
 object = gltf.scene;	                    
 gltf.scene.scale.set( 2, 2, 2 );			   
-gltf.scene.position.x += 1;			    //Position (x = right+ left-) 
+gltf.scene.position.x += 1.05;			    //Position (x = right+ left-) 
 gltf.scene.position.y = 0.76;    	    //Position (y = up+, down-)
-gltf.scene.position.z = 17.0;          //Position (z = front +, back-)    
+gltf.scene.position.z = 1.0;          //Position (z = front +, back-)    
 scene.add( object );
 animate();    
 });	 

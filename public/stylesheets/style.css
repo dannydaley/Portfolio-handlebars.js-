@@ -38,6 +38,8 @@ code {
   overflow: hidden;
 }
 
+
+
 /* width */
 ::-webkit-scrollbar {
   width: 15px;
@@ -67,14 +69,19 @@ code {
   height: 60px;
   position: fixed;
   top:0;
+  width:100%;  
+  /* display: flex;
+  width: 100%;
+  justify-content: flex-end;   */
+}
+nav ul {  
   display: flex;
   width: 100%;
+  margin-right: 50px;
   justify-content: flex-end;  
-}
-nav ul {
   list-style: none;
 }
-nav li {
+nav li {  
   opacity: 1;
   color: white;
   font-weight: bold;
@@ -89,6 +96,22 @@ nav li {
 #navbar a:visited {
   color: white;
 }
+
+.HeroAnimNav {
+  margin: 0 0;
+  margin-left: -40px;
+  margin-right: auto;
+  margin-bottom: 20px;
+  justify-self: flex-start;
+  display: flex;  
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 65px;
+  padding-bottom: 30px;;
+  overflow: hidden;
+}
+
 #navbar a:hover {  
   padding: 0;
   margin-left: -18px;
@@ -523,6 +546,12 @@ footer a, footer {
   justify-content: center;
   text-align: end;
 }
+.credential-fail {
+  padding: 0 20px;
+  width: 60%;
+  background-color: #303841;
+  font-size: 28pt;
+}
 .login-label {
   vertical-align: middle;
   font-size: 22pt;  
@@ -629,7 +658,7 @@ footer a, footer {
   padding: 20px;
   margin: 100px;
   margin-top: 150px;
-  padding-bottom: 32px;
+  padding-bottom: 24px;
 }
 
 .post-manager {
@@ -858,7 +887,7 @@ footer a, footer {
 
 
 /* NEW POST FORM START */
-.new-post-form {
+.new-post-form, .new-guestbook-post-form {
   margin: 265px auto;
   background-color: rgba(82, 82, 82, 0.31);
   padding: 50px;
@@ -868,6 +897,22 @@ footer a, footer {
   align-content: center;
   justify-content: center;
   margin-bottom: 274px;
+}
+.new-post-form {
+  height: 110%;
+  margin: 265px auto;
+  background-color: rgba(82, 82, 82, 0.31);
+  padding: 50px;
+  width: 60vw;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  margin-bottom: 295px;
+}
+.new-guestbook-post-form  {
+  margin: 50px auto;
+  margin-bottom: 0px;
 }
 .content-field {
   display: flex;

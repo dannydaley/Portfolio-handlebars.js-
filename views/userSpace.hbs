@@ -6,7 +6,7 @@
                     <img class="dashboard-profile-image" src="{{profilePicture}}" width="250px" height="250px">
                 </div><h2>{{name}}</h2>
                 <div class="profile-info">                    
-                    <p class="about-me">{{aboutMe}}</p>  
+                    <p class="about-me">{{{aboutMe}}}</p>  
                     <h3>post count: {{posts}}</h3>
                     <h3>date joined: {{dateJoined}}</h3>
                 </div> 
@@ -32,7 +32,7 @@
             </div>
         </div>    
 </div>
-    <div class="new-post-form">
+    <div class="new-guestbook-post-form">
     <form method="POST" action="/newUserSpacePost" enctype="multipart/form-data">       
         <input type="hidden" name="author" value="{{visitor}}" readonly/>
         <input type="hidden" name="recipient" value="{{name}}" readonly/>        
@@ -61,7 +61,7 @@
                     <button class="leftButton" type="submit" name="username" value="{{name}}">{{name}}'s Posts</button>
                 </form>
                 <form method="POST" action="/getUserSpace">
-                    <button class="rightButton" type="submit" name="username" value="{{name}}">{{name}}'s Space</button>
+                    <button class="rightButton" type="submit" name="username" value="{{name}}">{{name}}'s Guestbook</button>
                 </form>       
         </ul>
     </div>
@@ -79,8 +79,9 @@
             </div>            
             <div class="projectTags">
                 <form method="POST" action="/userProfile">
-                <p>posted by <button type="submit" value="{{author}}" class="buttonLinkText">{{author}}</button> on <button type="submit" value="{{date}}">{{date}}</button> post id: {{id}}</p></form>
+                <p>posted by <button type="submit" name="username" value="{{author}}" class="buttonLinkText">{{author}}</button> on <button type="submit" value="{{date}}">{{date}}</button> post id: {{id}}</p></form>
             </div>
+                          
         </div>
     {{/each}}
 </section>

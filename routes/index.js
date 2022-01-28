@@ -36,7 +36,6 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     if (file.fieldname !== undefined) {
       // delete the attached image
-      console.log(req.body.image)
       if (req.body.image !== "/images/default-post-image.png" && req.body.image !== "images/defaultUser.png"){        
         fs.unlink('public/' + req.body.image, (err) => {
       //console.log error if error
@@ -234,16 +233,14 @@ router.get('/', function(req, res, next) {
     if (err) {
       res.status(500).send(err.message);
       return;
-    }    
-    console.log(req.sessionID)
+    }   
     res.render('index', { title: "dannydaley", rows: rows, loggedIn: changeNavLoginButton(sessionExists(req)) });  
   })
 })
 
 /* GET work SQL page */
 router.get('/blog', (req, res, next) => {
-  let SQLdatabase = req.app.locals.SQLdatabase;
-  console.log(req.session);
+  let SQLdatabase = req.app.locals.SQLdatabase;  
   // get all blogPosts by author: "Daley", for portfolio purposes
   SQLdatabase.all(GET_POSTS_BY_AUTHOR, [ "Daley", "blogPost" ], (err, rows) => {
     if (err) {
@@ -366,7 +363,7 @@ router.post('/login', (req, res, next) => {
       // otherwise invalid user or pass
       else {
         found = false;        
-        res.json("INVALID EMAIL OR PASSWORD");
+        res.render('failedLogin', { title: 'Log in', loggedIn: changeNavLoginButton(sessionExists(req)) });
       }       
     })   
 })
@@ -510,7 +507,6 @@ router.get('/newPost', function(req, res){
 router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
   
   var form = req.body;
-  console.log(form);
   let db = req.app.locals.SQLdatabase;
   if (req.body.image === undefined){
     //defaults the image field is left blank
@@ -520,7 +516,6 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
     //defaults the link to go nowhere
     req.body.link = ""
   } 
-  console.log("made it hereeeeeee");
   //upload.single(req.image);
   var params = [ form.author, form.title, form.image, form.content, form.link, getDate(), "blogPost"];
   //create the JSON object to add to posts.json
@@ -544,7 +539,6 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
       console.log(err)
     }
   }
-  console.log(params);
   //Add to SQL database.
   db.run(SQL_ADD_BLOG_POST, params, function(err, result) {
     if (err) {
@@ -642,8 +636,7 @@ router.post('/userProfile', (req, res, next) => {
   // ready the database
   let SQLdatabase = req.app.locals.SQLdatabase;
   // get the users profile info according to the name clicked on
-  SQLdatabase.all(GET_USER_PROFILE_INFO, [ req.body.username ], (err, userInfo) => {
-    console.log(userInfo)
+  SQLdatabase.all(GET_USER_PROFILE_INFO, [ req.body.username ], (err, userInfo) => {    
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -696,7 +689,11 @@ router.post('/getUserSpace', (req, res, next) => {
           res.render("404")
         }
         else {
-            res.render("userSpace", { visitor: req.session.userData.sessionUsername, name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows,pinned: pinned[0], loggedIn: changeNavLoginButton(sessionExists(req)) })  
+            if (sessionExists(req)) {
+              res.render("userSpace", { visitor: req.session.userData.sessionUsername, name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows,pinned: pinned[0], loggedIn: changeNavLoginButton(sessionExists(req)) }) ;
+            } else {
+              res.render("userprofile", { name: req.body.username, posts: userInfo[0].posts, dateJoined: userInfo[0].joined, profilePicture: userInfo[0].profilePicture, aboutMe: userInfo[0].aboutMe, rows: blogRows, pinned: pinned[0], loggedIn: changeNavLoginButton(sessionExists(req)) }) 
+            }            
         }
       })
     })

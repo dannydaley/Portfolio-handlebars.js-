@@ -44,9 +44,17 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 
+const sessionExists = (request) => {
+  if (request.session.userData) {
+    return "dashboard";
+  } else {
+    return "log in"
+  }
+}
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  res.render('404');
+  res.render('404', { loggedIn: sessionExists(req) });
   next(createError(404));
 });
 
