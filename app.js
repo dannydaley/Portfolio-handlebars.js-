@@ -4,18 +4,24 @@ var express = require('express');
 var app = express();
 
 
+var dotenv = require('dotenv').config();
+
+
+
+
 // Session setup
-var session = require('express-session');
+var session = require('cookie-session');
 var cookieParser = require('cookie-parser');
 var userSession = {
-  secret: "megaSecret",
-  originalMaxAge: 24,
+  secret: process.env.SESSION_SECRET,
+  originalMaxAge: 0,
+  maxAge:0,
   resave: true,
   saveUninitialized: true,  
   cookie: {
     httpOnly: true,    
     secure: false,
-    maxAge: null  
+    maxAge: 30  
   }
 }
 app.use(cookieParser())

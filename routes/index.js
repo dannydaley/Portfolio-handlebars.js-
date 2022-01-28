@@ -2,6 +2,8 @@ let express = require('express');
 
 var app = express();
 
+// console.log(express.proc)
+
 // set up router for endpoints
 let router = express.Router();
 
@@ -125,8 +127,8 @@ const generatePepper = crypto.randomBytes(256).toString('hex');
 
 //this function returns a hash of the password, combined with the pepper and the salt.
 function passwordHash(thePassword, theSalt) {  
-  const pepper = '6982cdde8310b6e9db3ead1798838ee72373be2a742cf69c17376c753976712e9fba11f4b4f225f82ea3a36afd903603ea96f2434e505ae2441094058d605d201470a388556bbdd5903dd081ba183d06f6fb11de85464f30770a9dd6ecee8e472d56295872692f092f90c835aecd0ae45bc0c0dd7acfa730a65ef9493ea8228d5a870d52488bfa5462d25093926ba7137f63975c71e6fc92851bc99c81f4ffc3c1408e4803f07940f704b942d979d6050f9e9c580b6f8820d992e290104fcdfe813e9cc60a351c2022cb2c9b6cb97c6c44dbac11b75463907817740ab3b312c597bd83ef128525c61495a3656c9ee08bd587c60def2e0d8a2100c1b34dbe7528';
-  return crypto.pbkdf2Sync(thePassword, pepper + theSalt, iterations, hashSize, hashAlgorithm).toString('hex');
+  const pepper = process.env.PEPPER;
+   return crypto.pbkdf2Sync(thePassword, pepper + theSalt, iterations, hashSize, hashAlgorithm).toString('hex');
 }
 
 /////////////////////////////////////// SQL DATABASE STUFF /////////////////////////////////////////////
@@ -339,7 +341,7 @@ router.post('/login', (req, res, next) => {
   // run the command with the email being passed in 
     db.get(FIND_USER, [data.email], (err, rows) => {  
       if (err) {  
-        // if user not found respong with an error      
+        // if user not found respond with an error      
         found = false;
         res.status(500).send(err);               
       }   
@@ -349,7 +351,6 @@ router.post('/login', (req, res, next) => {
       if (rows !== undefined && rows.password === passwordHash(data.password, rows.passwordSalt)){
         //create the session data
         req.session.userData = {
-
         };
         // add user data to the session for referencing across the site 
         req.session.userData.sessionUsername = rows.name;         
@@ -384,7 +385,7 @@ router.get('/loggedIn', function(req, res, next) {
 /* GET logOut page. */
 router.get('/logOut', function(req, res, next) {
   // destroy session data
-  req.session.destroy();
+  req.session = null;
   // ready database for query
   let SQLdatabase = req.app.locals.SQLdatabase;
   // get recent posts ready for display on the index page 
