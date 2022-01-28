@@ -1,0 +1,124 @@
+{
+    "users" : [
+        {
+            "id": 1,
+            "name": "Daley",
+            "email": "dannydaley@outlook.com",
+            "password": "493509dac1a23de8901b9564acea549d6d9d3ae960062978d90feef9bd77f2b4399a61bc396389119fbb7069f2dac7520497dc8ac733a98b4a734af8e4cf4883",
+            "passwordSalt": "8dc317df7da5cbc21859fe9e3fa07cb9cc81bbd1d58da2747d4282c4d9abbf2f372a8c73f68b7ef323a08b98da1401d8b639b1310f8094c7a1950e4a85300f70f7a92536b4b1a860bf759128ac9632b807100f48af7f906fbf14d27f4a16293eccb024f5182db76f356a3644a4c542ff35a17bd3a7b19a757a2fa318fbd3a45e62129a10fa481503233e9a998518b91430244157e328e7129c84a0d478e7d3c2360f0357d5b1a64d0d70de494436dcb84798bf8b629ee2089683e1b5d4faca23b1c5c43d031928684be00ce96b42a73269ddadf688c6737458642b5100d9db29be6594f327f4b44234786ecd407b2c98e52d766439e7742ac937ca58811b284c",
+            "posts": 123,
+            "joined": "22-12-2021",
+            "profilePicture": "images/profilePictures/Daley-update-profile-picture-1640184634605-875098110.png",
+            "aboutMe": "Hi everyone! I'm Danny Daley, a Full Stack Web Development student at Falmouth University in the UK.\nI created this platform using Express, Node.js, javascript, HTML5, CSS3 and Handlebars.js.\nAny ideas for features you would like to see? Post on my Space and let me know!\nCurrent coding skills include - HTML5, CSS3, JAVASCRIPT, NODE.JS, EXPRESS, SQL DATABASES, noSQL DATABASES, C#, C++ REACT, PYTHON, PHP, WORDPRESS\n<style>\n.outer-profile-container {\nborder: 5px solid black;\nbackground-image: url(\"https://st.depositphotos.com/1001214/3989/v/600/depositphotos_39895119-stock-illustration-vector-seamless-texture-with-abstract.jpg\");\n}\n.profile-info {\nbackground-color: rgba(0,0,0, 0.7);\npadding: 0 10px;}\n.pinned-post-container {\nbackground-color: rgba(0,0,0,0.7);\n}\n.project-slide-container {\nbackground-image: url(\"https://st.depositphotos.com/1001214/3989/v/600/depositphotos_39895119-stock-illustration-vector-seamless-texture-with-abstract.jpg\");}\n.project-slide {\nbackground-color: rgba(0,0,0,0.7);\n}\n       </style>\n       ",
+            "pinnedPost": 12
+        },
+        {
+            "id": 2,
+            "name": "Danny2",
+            "email": "dandaley@email.com",
+            "password": "bedb5e0ea27c1bcdba8eab671909819673eb0c87bd9c47f61a4163b74f494bfd1f4c4dfef209df4f30f8baa7fd3867f92d706b4dc8b6ee699b021615e0a6e7e7",
+            "passwordSalt": "4aae2963b54bdf7aa63fa8a3a8af791ddbd3ee1f8a5f7169ee4cb2c107ddadc3b84310e9761e3bbac1572c7d264026200dcdb6c97e0b24bbe18542bc51a062e6be3deeb39b9a99ec964cba5cfcd340bf4b719d7cbc3ea8dc3c317592ed391771b279427d04c296c5be94c25ac828e6fa5906ac8b820d7611d85c836ac1ee4acd26496e4665bfa711361a13165bbecdb79afc47b70b46e9d05487ac01ad87249042e8d916b59e4231231550bca5e1f0e3b2ffad1d33edbbf10f69a350f6753c9b37665e468a5bfc275ba834474197a91c1dc2b9e1cfc4d4746e912bfd4cf404f9d34b560e3c23fdc56a0d78d3cadbf49b3c727c0fca7ac1a9eb6c7cd2d63a41da",
+            "posts": 0,
+            "joined": "22-12-2021",
+            "profilePicture": "images/defaultUser.png",
+            "aboutMe": "HI! I'm pretty much a dummy user, which also means that I pretty much don't exist! Imagine that, over here, just not existing ;)",
+            "pinnedPost": 0
+        },
+        {
+            "id": 3,
+            "name": "TheOtherNewUser",
+            "email": "othernewuser@email.com",
+            "password": "1c5aabec6b66117c6df34bc3ec85cb485b6c57bf52fe5911c325476c0aec6567f6289f7e1f89dc18493834042cdf122e4050aded2d721ece0601b3ce04b01310",
+            "passwordSalt": "4671011783bfe6d025e3a72836d00170d92ab9014adc44cf23f0f52b4d5448737d53874691b40e0b62643f60747a03b32b592eed844f44841d63b28f057271c3b3bfaea5e48d207d0b16ec23e5d4ff26e36d47393de477d4bae7e1bafbe3cae41f4537410f987fc3efb628989249895efbe77d502e6eb7fa2b8d37ebce0986187bbda31ec6c130bdf8f8a45f6ea412f874c3c29f192f8f0489aacb73f36e72bc48e6915ba049fb5464f7c987b714a66aad3d8bd56d74c8673975a38a47ece91b7923a0579a435f6d5fe5350af8ff41eee05d7a955a75e732d6ba106656d59b2d77ffbd6e94b346438b1e56ed3032a44e43c263b6bc1cff090be33d6aef52848d",
+            "posts": 8,
+            "joined": "22-12-2021",
+            "profilePicture": "images/defaultUser.png",
+            "aboutMe": "",
+            "pinnedPost": 0
+        },
+        {
+            "id": 4,
+            "name": "newUser123",
+            "email": "newuser123@email.com",
+            "password": "ad335a73c47ec0c81be71d4e0f806fc46fe183f7631addbf20eef13893dfc96e02b4c14e08ba45547f9337c551c310babe9afa4e007fa666c2dfc88c108402a1",
+            "passwordSalt": "c5109e558e19775ea2d159533e400fc4e8c2d588d7721a0151cc1e368eada652567546523c7ee34938bedb11a04d3c4bd94005d6d9fca91aaf31dc376a1529d5a23816b16b92ebc48f46ff88239290adbeb188955b5f531d7ada1feac933cfdaa5c5c5d1338dcd3c16f792bbd33fdd12b3f6a809f276ef27e40d769e357ff594fe7251df5762920b8874b9c3776d14fdfa3bc5cba37460395b3334c03fee44c9ed768ed63e7e605f571f6ee4a8642ce5ba281053c4805f203f66a0de4b4a3cb7965fc58679e5a133e435a79c0d2cbf3ad08c58baead990df3da59eebcfb361c874ce63ec82bf8d09674690d7abf088fff2878859644275e5c7da5ebbfbc5a8eb",
+            "posts": 24,
+            "joined": "22-12-2021",
+            "profilePicture": "images/defaultUser.png",
+            "aboutMe": "",
+            "pinnedPost": 0
+        },
+        {
+            "id": 5,
+            "name": "newMan",
+            "email": "newman@email.com",
+            "password": "bf748f1370bf49fc5944ce850e67f274fde3d748b96782afaf0c1f0caf09e31808fc37357bc98fc4595045cd5621eb012774d306a087a41ac33dd47c2ac8c9b1",
+            "passwordSalt": "f0cdc197b6ddd6258f1364f1ac67c72adf3ac027d77c26682daf10b93d30869d4b7af4b2affcd1b6cfaae2ff0d88acf59b478c3916c29a566d1c3fcf136b3488aa3061fa83fe0fd37a43c2e1e1d617318fbf0a205521ae82b22657c51d78ad540e96e7d6a32b44b9bd4e2e4315d32c4d6d89f84b843226d4763963708fb76b7f955373c9eec5a709f646a2ccd16b75a593d38c8b5671234aafba4764dd0eaad3201047a22f4f88f578c6019cc1e45583ef3dd2805536475d1e988477d22615b31aee80f3e67f07a20575e18a4abdccd90262de47c6c720037c2450ceece84e37741bdf9bda34c54ae9d1e4f52fbed72da2749c627a782323098ef157e6f835e7",
+            "posts": 0,
+            "joined": "24-12-2021",
+            "profilePicture": "images/defaultUser.png",
+            "aboutMe": "",
+            "pinnedPost": 0
+        },
+        {
+            "id": 6,
+            "name": "yojivia",
+            "email": "robbie.george12@icloud.com",
+            "password": "e251dc4f858e3c10d206d4e0f44f78fc277c90ba93a78121080920fbd91cfbf6b06c82f9d319bfef1966c338b85af28ebad091bd352d38a829f5958bbfe35ed1",
+            "passwordSalt": "cc2e98234412fddc17991551693fabb24b3bad9cb1fe0ec0b6547877c5c52af95fafe6fa2452e630a8f120be34f5f1d0213cc77f9d56973954a7afcdec1b871fd3bcc53dd4be63999da1457a03971972b6d153f2f75b78385d0b24bd9e0f52c65311ef64abd562f365a93211cb25de35a2951ebe724e0453dae2768d2c70b1fa21c1848d70a2edb9668fe72c544dec68c9b9f0c0d12ba85016ea16c58992ffa7d44db328d7904c72f76e3f33bfd743a3f30276b8e758a93200260f668e127d368ba03075c6f40182cc566c3cf6f95269c9dd6c0bb86536b01ce4154f78d215ba95d796678b70b023f86ab4d51b7224c2f2836cb8d31a62795f438e7f4f9a074f",
+            "posts": 10,
+            "joined": "24-12-2021",
+            "profilePicture": "images/defaultUser.png",
+            "aboutMe": "",
+            "pinnedPost": 0
+        },
+        {
+            "id": 7,
+            "name": "angied65",
+            "email": "angied65184@gmail.com",
+            "password": "e890f3a08dbc0b704aa50489bb85b04f74ada0cecb5b65bc21d5e49d42719918fec808f231d00b0aa5c0a30a1a0337ee62fe3f01127e1609bd3fece6adcc457c",
+            "passwordSalt": "c40a3a36117fd9d63b69feb46690e739eb7530793bca3e652a3432d41f1f470846175397db420c279e585d808fee5f9d316474cb36c4c8c70d91a2cbaa36591cb97466cffe845fcb6643151a1e8e3a2a4f8986e81b9ca8dd62b3cd1f54c3cc928f5aed58ae950c7b9f63acdc6836ad22103bc7e56ed3f20403fcbff01a7c936467f81f06c9e4b73dd654c805c0bd558d55d56c26bb1338b5d801dd7aa8f2c8701e2e5cb977ee47cac4bb6174b63dededd31d1065816098dc0752fbd96a5412d8aa795521887c1fd0728cb9d781df6bfcfaad861c17d96417094f69fd9bd16bb3a76e2027723a90ece5711e35f7301f955749f7a0ebf4a13930ac69617dc8e226",
+            "posts": 2,
+            "joined": "2-1-2022",
+            "profilePicture": "images/defaultUser.png",
+            "aboutMe": "",
+            "pinnedPost": 0
+        },
+        {
+            "id": 8,
+            "name": "Rodwayyy",
+            "email": "jrodwayyy@gmail.com",
+            "password": "5298d64fa8c1eb9030832bdabe58760f74866446e316df1d2399255e892fe8fa61d10f0c29b90f20ea33eb914a09e7a2aad0b58692a70c6d67307ae440066722",
+            "passwordSalt": "1a2fcca3313845819e5949f333ae9b723e153f8b77298dd1a42f9d3d7a4012ccd3c59b6887150729a18d88cd2e40db414b3ceec7b8b7e6cac532b3ca59a24d9f50fa207dcb8cd80588c2ef9895caff714d97aa31e89562d3b948c55158f55db5cf0e4a50b3e5d3296856b9e10a328bfe12d6d23c182e68cdc46eb831f2c435b42dbd85f364013e4ed03428ad4e9bd38ae607af4d804eb6f1c8ab898624321cf726ba71d057dc248876b2418e829117bd7762439daaea4cbcaf3a0cd1eb2a577006aef93f5bb5294d64c014f574de0f56c1430084777df8f210a4623d10481ec036437e7ab7b279141afa6859d7edc10c81fd50c507d2b82e68fd313eec3841ee",
+            "posts": 2,
+            "joined": "2-1-2022",
+            "profilePicture": "images/defaultUser.png",
+            "aboutMe": "",
+            "pinnedPost": 0
+        },
+        {
+            "id": 9,
+            "name": "mjpswanwick",
+            "email": "mjpswanwick@icloud.com",
+            "password": "3fc95285c3bcb7007b5f9c85d97322a290523b01722843579bb291eada9112e1a4b815b2a6ec0b019f4210526db32a43f9cf43fba0535f13e8de41b19a64f793",
+            "passwordSalt": "419dec15c9e003c493fe11ef2ac23535892eac5b5952fff05b8900c66cefc2d50b0afc4d8ad6ba417738d985769c04aeec9932a3d274aa0ddf68eb09b7817ba5905350582c15c04813d933778b93cadbf5a3470ce0451796c6b8feb805152f568336608b0eaffc2252865b13893c1bdd5224f97ebe9ef566b6bde61497ed5048ec419ef13a623daf6d9296c8bda7f84b1f41411d1a446c8e99225ae35f622e1d976433d7914e1eda026a21550513ac05b555cce611cee74670c5e481f0f1d1da9276819996a0937ba08d6cfa15c561011d6de0bc201fdd172c7655b7fae6bbf67aeba2300d79d53c7f36ab4c32262395aeec1e81f1bcde44bbb28acf2489e442",
+            "posts": 2,
+            "joined": "2-1-2022",
+            "profilePicture": "images/profilePictures/mjpswanwick-update-profile-picture-1641157595596-588140937.png",
+            "aboutMe": "",
+            "pinnedPost": 0
+        },
+        {
+            "id": 10,
+            "name": "tester",
+            "email": "test@email.com",
+            "password": "8669e1079a26fd9a9acd35812bfc65a516d27a113b44108f117a56f590e707f2274ff26f125805d49132d74480df54d740e67693b0d84eb6b47875d71715f06c",
+            "passwordSalt": "d5d24ba38483b6ada5d46e8045a62d8185d1c963efafdf21ee0fb95575462cb1099b61b878a766b8c7273a20bf34e8c08bdbc81f164abd6acc39c9db17d4b87df5632f492d323f13d32db94798e9c3301caed2aa0482379c017e968a0854d57171a80dc4c94ce7560d1028ea36a7594c293c9a223ccc3813d2f275e681981a9a2f686b69b2f5b4fd9ee9910f10b178ea8f5df27d00ded77ef79f731b6a5ada87d080af97ed214a5347a07fbcebcb43192af3228bb5c3227105fb3df720bbbc8544c4f7aecf1f990d2bb10ee97feef2beae015a70b0355a709db499ed43a28a978941c5bdfceb725825ea7b5774e18642e8103b65894184fea59d1fa6870d2dcc",
+            "posts": 0,
+            "joined": "25-1-2022",
+            "profilePicture": "images/profilePictures/tester-update-profile-picture-1643116188746-79637386.png",
+            "aboutMe": "",
+            "pinnedPost": 0
+        }
+    ]
+}
