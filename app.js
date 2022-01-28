@@ -35,8 +35,20 @@ var usersRouter = require('./routes/users');
 
 var multer  = require('multer');
 
+//SQLITE3 SETUP
 let SQLdatabase = new sqlite3.Database('./SQLdatabase.db');
 app.locals.SQLdatabase = SQLdatabase;
+
+//MYSQL SETUP
+// let mysql = require('mysql');
+// let SQLdatabase = mysql.createConnection({
+// host: 'dannydaley.database.windows.net',
+// user: 'dannydaley',
+// password: 'Flat90210',
+// database: 'portfolio database'
+// })
+// app.locals.SQLdatabase = SQLdatabase;
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
