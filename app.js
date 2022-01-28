@@ -48,6 +48,7 @@ app.locals.SQLdatabase = SQLdatabase;
 // database: 'portfolio database'
 // })
 // app.locals.SQLdatabase = SQLdatabase;
+//
 
 
 // view engine setup
