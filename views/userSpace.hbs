@@ -33,7 +33,9 @@
         </div>    
 </div>
     <div class="new-guestbook-post-form">
-    <form method="POST" action="/newUserSpacePost" enctype="multipart/form-data">       
+    <form method="POST" action="/newUserSpacePost" enctype="multipart/form-data"> 
+        <input type="hidden" name="context" value="guestbook" readonly /> 
+        {{!-- <input type="hidden" name="context" value="blogPost" readonly />       --}}
         <input type="hidden" name="author" value="{{visitor}}" readonly/>
         <input type="hidden" name="recipient" value="{{name}}" readonly/>        
         <label for="title" required >title: 

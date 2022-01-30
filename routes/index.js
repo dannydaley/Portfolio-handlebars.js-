@@ -2,8 +2,6 @@ let express = require('express');
 
 var app = express();
 
-// console.log(express.proc)
-
 // set up router for endpoints
 let router = express.Router();
 
@@ -23,6 +21,7 @@ var multer  = require('multer');
 
 //set up storage location
 const storage = multer.diskStorage({
+  
   //set up save destination
   destination: function (req, file, cb) {  
     // different diestinations depending on whether its a profile picture or post picture
@@ -33,6 +32,9 @@ const storage = multer.diskStorage({
     //post route
     if (req.body.context === "blogPost"){
      cb(null, 'public/images/uploads') 
+    }
+    if (req.body.context === "guestbook") {
+      cb(null, 'public/images/guestbook')
     }
   }, //set up filename
   filename: function (req, file, cb) {
@@ -46,7 +48,7 @@ const storage = multer.diskStorage({
           console.log(err)
         }  
       });
-    }
+    }  
     //create unique suffix for naming
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
     if (req.body.context === "blogPost") {
@@ -60,6 +62,12 @@ const storage = multer.diskStorage({
       cb(null, req.session.userData.sessionUsername + '-' + file.fieldname + '-' + uniqueSuffix + '.png')
       // reset the request.body.image field with the image location + new filename to be put in the database as a link
       req.body.image = "images/profilePictures/" + req.session.userData.sessionUsername + '-' + file.fieldname + '-' + uniqueSuffix + '.png';
+      }    
+    if (req.body.context === "guestbook") {
+      // create filename (author + filename + unique suffix + filetype)
+      cb(null, req.session.userData.sessionUsername + '-' + file.fieldname + '-' + uniqueSuffix + '.png')
+      // reset the request.body.image field with the image location + new filename to be put in the database as a link
+      req.body.image = "/images/guestbook/" + req.session.userData.sessionUsername + '-' + file.fieldname + '-' + uniqueSuffix + '.png';
       }
     }
     // if upload image field on form is left blank..
@@ -113,6 +121,7 @@ const sessionExists = (request) => {
 
 // set up crypto middleware
 let crypto = require('crypto');
+const { captureRejectionSymbol } = require('events');
 
 // number of iterations to jumble the hash
 const iterations = 1000;
@@ -150,14 +159,42 @@ const GET_ALL_USERS = "SELECT * FROM users"; // SQL command
 
 
 /* Database setup endpoint */
+// router.get('/SQLDatabaseUserSetup', (req, res, next) => {
+//   let SQLdatabase = req.app.locals.SQLdatabase;
+//   //these queries must run one by one - dont try and delete and create tables at the same time.
+//   SQLdatabase.serialize( () => {
+//     console.log("1")
+//     //delete the table if it exists..
+//     SQLdatabase.run('DROP TABLE IF EXISTS `users`');
+//     console.log("2")
+//     //recreate the users table
+//     // SQLdatabase.query('CREATE TABLE `users` (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(255) UNIQUE COLLATE NOCASE, email varchar(255) UNIQUE, password varchar(255), passwordSalt varchar(512), posts int, joined varchar(255), profilePicture varchar(255), aboutMe text, pinnedPost INTEGER)');
+//     SQLdatabase.run('CREATE TABLE `users` (id INTEGER PRIMARY KEY AUTO_INCREMENT, name varchar(255) UNIQUE , email varchar(255) UNIQUE, password varchar(255), passwordSalt varchar(512), posts int, joined varchar(255), profilePicture varchar(255), aboutMe text, pinnedPost INTEGER)');
+//     //create test rows
+//     console.log("3")
+//     let rows = []
+//     let userDataJSON = require("../public/users.json");
+//     for (let i = 0; i < userDataJSON.users.length; i++) {
+//       rows[i] = [userDataJSON.users[i].name, userDataJSON.users[i].email, userDataJSON.users[i].password, userDataJSON.users[i].passwordSalt, userDataJSON.users[i].posts, userDataJSON.users[i].joined, userDataJSON.users[i].profilePicture,userDataJSON.users[i].aboutMe, userDataJSON.users[i].pinnedPost]
+//     }
+//     // add rows to database
+//     rows.forEach( (row) => {
+//       SQLdatabase.run('INSERT INTO `users` (name, email, password, passwordSalt, posts, joined, profilePicture, aboutMe, pinnedPost) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)', row);
+//     });
+//   })
+//   //render success page
+//   res.render("user-db-done", { loggedIn: changeNavLoginButton(sessionExists(req))});
+// })
+/* Database setup endpoint */
 router.get('/SQLDatabaseUserSetup', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
   //these queries must run one by one - dont try and delete and create tables at the same time.
-  SQLdatabase.serialize( () => {
+  SQLdatabase.query( () => {
     //delete the table if it exists..
-    SQLdatabase.run('DROP TABLE IF EXISTS `users`');
+    SQLdatabase.query('DROP TABLE IF EXISTS `users`');
     //recreate the users table
-    SQLdatabase.run('CREATE TABLE `users` (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(255) UNIQUE COLLATE NOCASE, email varchar(255) UNIQUE, password varchar(255), passwordSalt varchar(512), posts int, joined varchar(255), profilePicture varchar(255), aboutMe text, pinnedPost INTEGER)');
+    // SQLdatabase.query('CREATE TABLE `users` (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(255) UNIQUE COLLATE NOCASE, email varchar(255) UNIQUE, password varchar(255), passwordSalt varchar(512), posts int, joined varchar(255), profilePicture varchar(255), aboutMe text, pinnedPost INTEGER)');
+    SQLdatabase.query('CREATE TABLE `users` (id INTEGER PRIMARY KEY AUTO_INCREMENT, name varchar(255) UNIQUE , email varchar(255) UNIQUE, password varchar(255), passwordSalt varchar(512), posts int, joined varchar(255), profilePicture varchar(255), aboutMe text, pinnedPost INTEGER)');
     //create test rows
     let rows = []
     let userDataJSON = require("../public/users.json");
@@ -166,22 +203,21 @@ router.get('/SQLDatabaseUserSetup', (req, res, next) => {
     }
     // add rows to database
     rows.forEach( (row) => {
-      SQLdatabase.run('INSERT INTO `users` (name, email, password, passwordSalt, posts, joined, profilePicture, aboutMe, pinnedPost) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)', row);
+      SQLdatabase.query('INSERT INTO `users` (name, email, password, passwordSalt, posts, joined, profilePicture, aboutMe, pinnedPost) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)', row);
     });
   })
   //render success page
   res.render("user-db-done", { loggedIn: changeNavLoginButton(sessionExists(req))});
 })
-
 // set up blog table in database
 router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
   //these queries must run one by one - dont try and delete and create tables at the same time.
-  SQLdatabase.serialize( () => {
+  SQLdatabase.query( () => {
     //delete the table if it exists..
-    SQLdatabase.run('DROP TABLE IF EXISTS `blog`');
+    SQLdatabase.query('DROP TABLE IF EXISTS `blog`');
     // create blog table
-    SQLdatabase.run('CREATE TABLE `blog` ( id INTEGER PRIMARY KEY AUTOINCREMENT, author varchar(255) COLLATE NOCASE, title varchar(255), image varchar(255), content blob, link varchar(255), date varchar(255), recipient varchar(255) )');
+    SQLdatabase.query('CREATE TABLE `blog` ( id INTEGER PRIMARY KEY AUTO_INCREMENT, author varchar(255), title varchar(255), image varchar(255), content text, link varchar(255), date varchar(255), recipient varchar(255) )');
     //create base rows
     let rows = [];
     //loop through posts.json to populate rows array
@@ -191,21 +227,47 @@ router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
     // populate SQL command with rows array populated from posts.json
     rows.forEach( (row) => {
       // insert rows to table
-      SQLdatabase.run('INSERT INTO `blog` VALUES(?,?,?,?,?,?,?,?)', row);
+      SQLdatabase.query('INSERT INTO `blog` VALUES(?,?,?,?,?,?,?,?)', row);
       // increment users post count according to author of currently processed post
-      SQLdatabase.run('UPDATE `users` SET `posts` = posts+1 WHERE name = ?',  row[1])
+      SQLdatabase.query('UPDATE `users` SET `posts` = posts+1 WHERE name = ?',  row[1])
     });
   })
   // render success page
   res.render("blog-db-done", { loggedIn: changeNavLoginButton(sessionExists(req)) });
 })
+// // set up blog table in database
+// router.get('/SQLDatabaseBlogSetup', (req, res, next) => {
+//   let SQLdatabase = req.app.locals.SQLdatabase;
+//   //these queries must run one by one - dont try and delete and create tables at the same time.
+//   SQLdatabase.serialize( () => {
+//     //delete the table if it exists..
+//     SQLdatabase.run('DROP TABLE IF EXISTS `blog`');
+//     // create blog table
+//     SQLdatabase.run('CREATE TABLE `blog` ( id INTEGER PRIMARY KEY AUTOINCREMENT, author varchar(255) COLLATE NOCASE, title varchar(255), image varchar(255), content blob, link varchar(255), date varchar(255), recipient varchar(255) )');
+//     //create base rows
+//     let rows = [];
+//     //loop through posts.json to populate rows array
+//     for (let i = 0; i < postDataJSON.entries.length; i++) {
+//       rows[i] = [postDataJSON.entries[i].id, postDataJSON.entries[i].author, postDataJSON.entries[i].title, postDataJSON.entries[i].image, postDataJSON.entries[i].content, postDataJSON.entries[i].link, postDataJSON.entries[i].date, postDataJSON.entries[i].recipient]
+//     }
+//     // populate SQL command with rows array populated from posts.json
+//     rows.forEach( (row) => {
+//       // insert rows to table
+//       SQLdatabase.run('INSERT INTO `blog` VALUES(?,?,?,?,?,?,?,?)', row);
+//       // increment users post count according to author of currently processed post
+//       SQLdatabase.run('UPDATE `users` SET `posts` = posts+1 WHERE name = ?',  row[1])
+//     });
+//   })
+//   // render success page
+//   res.render("blog-db-done", { loggedIn: changeNavLoginButton(sessionExists(req)) });
+// })
 
 /*==============================DEBUGGING AND TESTING ENDPOINTS========================*/
 /* GET all users */
 router.get('/getAllUsers', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
   // grab all user data
-  SQLdatabase.all(GET_ALL_USERS, [], (err, rows) => {
+  SQLdatabase.query(GET_ALL_USERS, [], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -218,7 +280,7 @@ router.get('/getAllUsers', (req, res, next) => {
 router.get('/getAllPosts', (req, res, next) => {  
   let SQLdatabase = req.app.locals.SQLdatabase;
   // grab all posts
-  SQLdatabase.all(GET_ALL_POSTS, [], (err, rows) => {
+  SQLdatabase.query(GET_ALL_POSTS, [], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -234,7 +296,7 @@ router.get('/getAllPosts', (req, res, next) => {
 /* GET home page. */
 router.get('/', function(req, res, next) {  
   let SQLdatabase = req.app.locals.SQLdatabase;
-  SQLdatabase.all(GET_RECENT_POSTS_BY_AUTHOR, ["Daley", "blogPost"], (err, rows) => {    
+  SQLdatabase.query(GET_RECENT_POSTS_BY_AUTHOR, ["Daley", "blogPost"], (err, rows) => {    
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -247,11 +309,11 @@ router.get('/', function(req, res, next) {
 router.get('/blog', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;  
   // get all blogPosts by author: "Daley", for portfolio purposes
-  SQLdatabase.all(GET_POSTS_BY_AUTHOR, [ "Daley", "blogPost" ], (err, rows) => {
+  SQLdatabase.query(GET_POSTS_BY_AUTHOR, [ "Daley", "blogPost" ], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;
-    }    
+    }  
     res.render('blog', { title: "work", rows: rows, loggedIn: changeNavLoginButton(sessionExists(req)) });
   })
 })
@@ -260,7 +322,7 @@ router.get('/blog', (req, res, next) => {
 router.get('/community-blog', (req, res, next) => {
   let SQLdatabase = req.app.locals.SQLdatabase;
   // get all posts by all authors according to "blogPost" recipient
-  SQLdatabase.all(GET_ALL_POSTS_BY_RECIPIENT, ["blogPost"], (err, rows) => {
+  SQLdatabase.query(GET_ALL_POSTS_BY_RECIPIENT, ["blogPost"], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -298,7 +360,7 @@ router.post('/register', function (req, res, next) {
     // rename for easier access..
     let db = SQLdatabase;
     // store the data
-    db.run('INSERT INTO `users` (name, email, password, passwordSalt, posts, joined, profilePicture, aboutMe, pinnedPost) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',[username, email, storePassword, generateSalt, 0, getDate(), "images/defaultUser.png", "", 0], function(err, result) {
+    db.query('INSERT INTO `users` (name, email, password, passwordSalt, posts, joined, profilePicture, aboutMe, pinnedPost) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',[username, email, storePassword, generateSalt, 0, getDate(), "images/defaultUser.png", "", 0], function(err, result) {
       // error cases..
       if (err) {
         console.log(err.message);
@@ -342,31 +404,34 @@ router.post('/login', (req, res, next) => {
   // set up command, select all from user database with THIS email
   const FIND_USER = "SELECT * FROM users WHERE email = ?"  
   // run the command with the email being passed in 
-    db.get(FIND_USER, [data.email], (err, rows) => {  
+    db.query(FIND_USER, [data.email], (err, rows) => {  
       if (err) {  
         // if user not found respond with an error      
         found = false;
         res.status(500).send(err);               
       }   
+
+      let user = rows[0]
+
       /* if we get a user back, and the stored password matches the output of running the hashing
        function on what the user entered along with the stored password salt, set up the session
        variables and log the user in   */
-      if (rows !== undefined && rows.password === passwordHash(data.password, rows.passwordSalt)){
+        if (user !== undefined && user.password === passwordHash(data.password, user.passwordSalt)){
         //create the session data
         req.session.userData = {
         };
         // add user data to the session for referencing across the site 
-        req.session.userData.sessionUsername = rows.name;         
-        req.session.userData.sessionUserPosts = rows.posts;
-        req.session.userData.sessionUserDateJoined = rows.joined;
-        req.session.userData.sessionUserProfilePicture = rows.profilePicture;
-        req.session.userData.sessionUserAboutMe = rows.aboutMe;
+        req.session.userData.sessionUsername = user.name;         
+        req.session.userData.sessionUserPosts = user.posts;
+        req.session.userData.sessionUserDateJoined = user.joined;
+        req.session.userData.sessionUserProfilePicture = user.profilePicture;
+        req.session.userData.sessionUserAboutMe = user.aboutMe;
         req.session.userData.sessionUserIsLoggedIn = true; 
         res.render('loggedIn', { name: req.session.userData.sessionUsername, posts: req.session.userData.sessionUserPosts, dateJoined: req.session.userData.sessionUserDateJoined, profilePicture: req.session.userData.sessionUserProfilePicture, title: 'You are logged in!', loggedIn: changeNavLoginButton(sessionExists(req)) });  
       }
       // otherwise invalid user or pass
       else {
-        found = false;        
+        found = false;      
         res.render('failedLogin', { title: 'Log in', loggedIn: changeNavLoginButton(sessionExists(req)) });
       }       
     })   
@@ -392,7 +457,7 @@ router.get('/logOut', function(req, res, next) {
   // ready database for query
   let SQLdatabase = req.app.locals.SQLdatabase;
   // get recent posts ready for display on the index page 
-  SQLdatabase.all(GET_RECENT_POSTS_BY_AUTHOR, ["Daley", "blogPost"], (err, rows) => {
+  SQLdatabase.query(GET_RECENT_POSTS_BY_AUTHOR, ["Daley", "blogPost"], (err, rows) => {
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -407,7 +472,7 @@ router.get('/manageBlog', (req, res, next) => {
   // ready database for query
   let SQLdatabase = req.app.locals.SQLdatabase;
   // get all posts authored by the logged in user of the context "blogPost"
-  SQLdatabase.all(GET_POSTS_BY_AUTHOR, [req.session.userData.sessionUsername, "blogPost"], (err, rows) => {
+  SQLdatabase.query(GET_POSTS_BY_AUTHOR, [req.session.userData.sessionUsername, "blogPost"], (err, rows) => {
     if (err) {
       // error case
       res.status(500).send(err.message);
@@ -422,14 +487,14 @@ router.get('/manageGuestbook', (req, res, next) => {
   // ready database for query
   let SQLdatabase = req.app.locals.SQLdatabase;
   // get all posts authored by the logged in user of the context "blogPost"
-  SQLdatabase.all(GET_ALL_POSTS_BY_RECIPIENT, [req.session.userData.sessionUsername], (err, rows) => {
+  SQLdatabase.query(GET_ALL_POSTS_BY_RECIPIENT, [req.session.userData.sessionUsername], (err, rows) => {
     if (err) {
       // error case
       res.status(500).send(err.message);
       return;
     }
     // render manage blog page on success
-    res.render('manageGuestbook', { title: "manage Guestbook",rows: rows,  loggedIn: changeNavLoginButton(sessionExists(req)) });
+    res.render('manageGuestbook', { title: "manage Guestbook", rows: rows,  loggedIn: changeNavLoginButton(sessionExists(req)) });
   })
 })
 
@@ -439,7 +504,7 @@ router.post('/pinGuestbookPost',function (req, res, next) {
     // ready the database for a query
     let SQLdatabase = req.app.locals.SQLdatabase;
   if (form.pin === "pinPost") {
-  SQLdatabase.run(SQL_UPDATE_USERS_PINNED_POST, [ form.postId, req.session.userData.sessionUsername ])
+  SQLdatabase.query(SQL_UPDATE_USERS_PINNED_POST, [ form.postId, req.session.userData.sessionUsername ])
 }
 res.render("blog-db-done", { title: "blog updated", loggedIn: changeNavLoginButton(sessionExists(req)) });
 })
@@ -463,18 +528,18 @@ router.post('/manageBlog', upload.single('change-image'), function (req, res, ne
   // set the query parameters from the passed in data of the request
   var params = [ form.title, req.body.image,form.link, form.author, form.content, form.id  ];
   // run the update blog command with the given parameters
-  SQLdatabase.run(SQL_UPDATE_BLOG, params, function(err, result){
+  SQLdatabase.query(SQL_UPDATE_BLOG, params, function(err, result){
     if (err) {
       res.status(500).send(err.message)
       return;
     }   
     // If pinPost is checked on form, update the users pinned post
     if (form.pin === "pinPost") {
-      SQLdatabase.run(SQL_UPDATE_USERS_PINNED_POST, [ form.id, req.session.userData.sessionUsername ])
+      SQLdatabase.query(SQL_UPDATE_USERS_PINNED_POST, [ form.id, req.session.userData.sessionUsername ])
     }
     // get ready to rewrite the posts json file..
     // gather all existing posts
-    SQLdatabase.all(GET_ALL_POSTS, [], (err, rows) => {
+    SQLdatabase.query(GET_ALL_POSTS, [], (err, rows) => {
       if (err) {
         res.status(500).send(err.message);
         return;
@@ -538,13 +603,13 @@ router.post('/newBlogPost', upload.single('image'), function (req, res, next) {
   fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON, null, 2)); 
   req.session.userData.sessionUserPosts++;
   // increment the users post count
-  db.run('UPDATE `users` SET `posts` = posts+1 WHERE name = ?',  form.author), function(err, result) {
+  db.query('UPDATE `users` SET `posts` = posts+1 WHERE name = ?',  form.author), function(err, result) {
     if (err){
       console.log(err)
     }
   }
   //Add to SQL database.
-  db.run(SQL_ADD_BLOG_POST, params, function(err, result) {
+  db.query(SQL_ADD_BLOG_POST, params, function(err, result) {
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -582,9 +647,9 @@ router.post('/post-delete', (req, res, next) => {
     fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON2, null, 2));
   // decrement the users posts count.
   req.session.userData.sessionUserPosts--;
-  db.run('UPDATE `users` SET `posts` = posts-1 WHERE name = ?',  form.author)
+  db.query('UPDATE `users` SET `posts` = posts-1 WHERE name = ?',  form.author)
   // delete the post
-  db.run(BLOG_DELETE_POST, [ postToDelete, form.postId ], function(err, result) {
+  db.query(BLOG_DELETE_POST, [ postToDelete, form.postId ], function(err, result) {
     if (err) {
       res.status(500).send(err.message);
       return;
@@ -625,7 +690,7 @@ router.post('/editProfile', upload.single('update-profile-picture'), function (r
       return;
     }   
     // re-query the users own profile to serve back to them
-    SQLdatabase.get(GET_USER_PROFILE_INFO, req.session.userData.sessionUsername, (err, rows) => {
+    SQLdatabase.query(GET_USER_PROFILE_INFO, req.session.userData.sessionUsername, (err, rows) => {
       // update session variables
       req.session.userData.sessionUserProfilePicture = rows.profilePicture;
       req.session.userData.sessionUserAboutMe = rows.aboutMe;
@@ -640,19 +705,19 @@ router.post('/userProfile', (req, res, next) => {
   // ready the database
   let SQLdatabase = req.app.locals.SQLdatabase;
   // get the users profile info according to the name clicked on
-  SQLdatabase.all(GET_USER_PROFILE_INFO, [ req.body.username ], (err, userInfo) => {    
+  SQLdatabase.query(GET_USER_PROFILE_INFO, [ req.body.username ], (err, userInfo) => {    
     if (err) {
       res.status(500).send(err.message);
       return;
     }  
     //Get users pinned post from user data, check against post id    
-    SQLdatabase.all("SELECT * FROM 'blog' WHERE id = ?", [ userInfo[0].pinnedPost ], (err, pinned) => {
+    SQLdatabase.query("SELECT * FROM blog WHERE id = ?", [ userInfo[0].pinnedPost ], (err, pinned) => {
       if (err) {        
         res.status(500).send(err.message);
         return;        
       }  
     // get all of that users posts according to username and blogPost 
-      SQLdatabase.all(GET_POSTS_BY_AUTHOR, [ req.body.username, "blogPost" ], (err, blogRows) => {
+      SQLdatabase.query(GET_POSTS_BY_AUTHOR, [ req.body.username, "blogPost" ], (err, blogRows) => {
         if (err) {
           res.status(500).send(err.message);
           return;        
@@ -672,19 +737,19 @@ router.post('/getUserSpace', (req, res, next) => {
   // set up database for query
   let SQLdatabase = req.app.locals.SQLdatabase;
   // get users profile info by username
-  SQLdatabase.all(GET_USER_PROFILE_INFO, [ req.body.username ], (err, userInfo) => {
+  SQLdatabase.query(GET_USER_PROFILE_INFO, [ req.body.username ], (err, userInfo) => {
     if (err) {
       res.status(500).send(err.message);
       return;
     }   
     //Get users pinned post from user data, check against post id    
-    SQLdatabase.all("SELECT * FROM 'blog' WHERE id = ?", [ userInfo[0].pinnedPost ], (err, pinned) => {
+    SQLdatabase.query("SELECT * FROM blog WHERE id = ?", [ userInfo[0].pinnedPost ], (err, pinned) => {
       if (err) {        
         res.status(500).send(err.message);
         return;
       }
       // get all posts that are addressed to the users profile
-      SQLdatabase.all(GET_ALL_POSTS_BY_RECIPIENT, [ req.body.username ], (err, blogRows) => {
+      SQLdatabase.query(GET_ALL_POSTS_BY_RECIPIENT, [ req.body.username ], (err, blogRows) => {
         if (err) {
           res.status(500).send(err.message);
           return;        
@@ -737,13 +802,13 @@ router.post('/newUserSpacePost', upload.single('image'), function (req, res, nex
   // JSON.stringify has extra arguments to handle formatting  
   fs.writeFileSync('public/posts.json', JSON.stringify(postDataJSON, null, 2)); 
   req.session.userData.sessionUserPosts++;
-  db.run('UPDATE `users` SET `posts` = posts+1 WHERE name = ?',  form.author), function(err, result) {
+  db.query('UPDATE `users` SET `posts` = posts+1 WHERE name = ?',  form.author), function(err, result) {
     if (err){
       console.log(err)
     }
   }
   //Add to SQL database.
-  db.run(SQL_ADD_BLOG_POST, params, function(err, result) {
+  db.query(SQL_ADD_BLOG_POST, params, function(err, result) {
     if (err) {
       res.status(500).send(err.message);
       return;
