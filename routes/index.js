@@ -684,19 +684,20 @@ router.post('/editProfile', upload.single('update-profile-picture'), function (r
   // set up the params ready to be passed into the SQL query
   var params = [ req.body.image, form.aboutMe, req.session.userData.sessionUsername ];
   // run the SQL command given the parameters
-  SQLdatabase.run(SQL_UPDATE_USER_PROFILE, params, function(err, result){
+  SQLdatabase.query(SQL_UPDATE_USER_PROFILE, params, function(err, result){
     if (err) {
       res.status(500).send(err.message)
       return;
     }   
     // re-query the users own profile to serve back to them
     SQLdatabase.query(GET_USER_PROFILE_INFO, req.session.userData.sessionUsername, (err, rows) => {
-      // update session variables
-      req.session.userData.sessionUserProfilePicture = rows.profilePicture;
-      req.session.userData.sessionUserAboutMe = rows.aboutMe;
-      req.session.userData.sessionUserPosts = rows.posts;
+      let user = rows[0];
+      // update session variables     
+      req.session.userData.sessionUserProfilePicture = user.profilePicture;
+      req.session.userData.sessionUserAboutMe = user.aboutMe;
+      req.session.userData.sessionUserPosts = user.posts;
       // render their manage profile page on success
-      res.render("editProfile", { name: req.session.userData.sessionUsername, posts: rows.posts, dateJoined: rows.joined, profilePicture: rows.profilePicture, aboutMe: rows.aboutMe, loggedIn: changeNavLoginButton(sessionExists(req)) })
+      res.render("editProfile", { name: req.session.userData.sessionUsername, posts: user.posts, dateJoined: user.joined, profilePicture: user.profilePicture, aboutMe: user.aboutMe, loggedIn: changeNavLoginButton(sessionExists(req)) })
     })
   })
 })

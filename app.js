@@ -51,7 +51,7 @@ app.locals.SQLdatabase = SQLdatabase;
 
 SQLdatabase.connect(function(err) {
   if (err) throw err;
-  console.log("Connected!");
+  console.log("Database Connected!");
 });
 
 // view engine setup
