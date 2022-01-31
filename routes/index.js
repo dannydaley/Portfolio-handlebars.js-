@@ -381,6 +381,59 @@ router.post('/register', function (req, res, next) {
   }
 });
 
+router.get('/changePassword', function (req, res, next) {
+  res.render('changePassword', { title: "change password", loggedIn: changeNavLoginButton(sessionExists(req))})
+})
+
+//adds new user to user database
+router.post('/changePassword', function (req, res, next) {
+  let { currentPassword, newPassword1, newPassword2 } = req.body; 
+  //get username of logged in user
+  let SQLdatabase = req.app.locals.SQLdatabase;
+  let username = req.session.userData.sessionUsername;
+  let db = SQLdatabase;
+  // set up command, select all from user database with THIS email
+  const FIND_USER = "SELECT * FROM users WHERE name = ?"   
+  // run the command with the email being passed in 
+  db.query(FIND_USER, [username], (err, rows) => {  
+    if (err) {  
+      // if user not found respond with an error      
+      found = false;
+      res.status(500).send(err);               
+    }     
+    let user = rows[0]  
+    /* if we get a user back, and the stored password matches the output of running the hashing
+      function on what the user entered along with the stored password salt, set up the session
+      variables and log the user in   */
+      //check current password for auth
+      if (user !== undefined && user.password === passwordHash(currentPassword, user.passwordSalt)){
+        // if both password fields match
+        if (req.body.newPassword1 === req.body.newPassword2)  {
+          // set up the query
+          let query = "UPDATE users SET password = ?, passwordSalt = ? WHERE name = ?"          
+          // generate salt to be stored
+          let generateSalt = crypto.randomBytes(256).toString('hex');
+          // run the query
+          db.query(query, [ passwordHash(newPassword2, generateSalt), generateSalt, req.session.userData.sessionUsername ], (err, rows) => {
+            // error case
+            if (err) {
+              console.log(err)
+            }
+            // render on success
+            res.render('user-db-done', {  title: "password changed", loggedIn: changeNavLoginButton(sessionExists(req)) })
+          })
+        }
+        else {          
+          console.log("new password and confirmation doesnt match")    
+          res.render('changePassword', { title: 'Log in', loggedIn: changeNavLoginButton(sessionExists(req)) });
+        }
+    } else {          
+      console.log("current password doesnt match")    
+      res.render('changePassword', { title: 'Log in', loggedIn: changeNavLoginButton(sessionExists(req)) });
+    }     
+  })
+})
+
 /* GET login page. */
 router.get('/login', function(req, res, next) {  
   // if req.session.userData.sessionUserIsLoggedIn function returns true, load page with session variables in  play
@@ -409,10 +462,8 @@ router.post('/login', (req, res, next) => {
         // if user not found respond with an error      
         found = false;
         res.status(500).send(err);               
-      }   
-
+      }
       let user = rows[0]
-
       /* if we get a user back, and the stored password matches the output of running the hashing
        function on what the user entered along with the stored password salt, set up the session
        variables and log the user in   */
